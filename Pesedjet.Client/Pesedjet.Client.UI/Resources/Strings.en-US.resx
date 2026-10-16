@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Menu.Title" xml:space="preserve"><value>Pesedjet</value></data>
+  <data name="Menu.Subtitle" xml:space="preserve"><value>The game of the Nine Deities</value></data>
+  <data name="AccessMenu.WelcomeMessage" xml:space="preserve"><value>Welcome</value></data>
+  <data name="AccessMenu.Subtitle" xml:space="preserve"><value>Sign in to continue your journey</value></data>
+  <data name="AccessMenu.Username" xml:space="preserve"><value>Username</value></data>
+  <data name="AccessMenu.UsernamePlaceholder" xml:space="preserve"><value>Enter your username</value></data>
+  <data name="AccessMenu.Password" xml:space="preserve"><value>Password</value></data>
+  <data name="AccessMenu.ForgottenPassword" xml:space="preserve"><value>Forgot your password?</value></data>
+  <data name="AccessMenu.ShowPassword" xml:space="preserve"><value>Show password</value></data>
+  <data name="AccessMenu.HidePassword" xml:space="preserve"><value>Hide password</value></data>
+  <data name="AccessMenu.RememberSession" xml:space="preserve"><value>Remember session</value></data>
+  <data name="AccessMenu.LogIn" xml:space="preserve"><value>Log in</value></data>
+  <data name="AccessMenu.Verifying" xml:space="preserve"><value>Verifying...</value></data>
+  <data name="AccessMenu.Or" xml:space="preserve"><value>or</value></data>
+  <data name="AccessMenu.CreateAccount" xml:space="preserve"><value>Create account</value></data>
+  <data name="AccessMenu.PlayAsGuest" xml:space="preserve"><value>Play as guest</value></data>
+  <data name="Common.Retry" xml:space="preserve"><value>Retry</value></data>
+  <data name="AccessMenu.ObligatoryField" xml:space="preserve"><value>This field is required.</value></data>
+  <data name="AccessMenu.IncorrectCredentials" xml:space="preserve"><value>Incorrect username or password.</value></data>
+  <data name="AccessMenu.TooManyAttempts" xml:space="preserve"><value>Too many failed attempts. Taking you to password recovery.</value></data>
+  <data name="MSG-REG-010" xml:space="preserve"><value>The username must be 3 to 50 characters, letters and numbers only.</value></data>
+  <data name="AccessMenu.CouldntReachServer" xml:space="preserve"><value>Could not reach the server. Please try again.</value></data>
+</root>

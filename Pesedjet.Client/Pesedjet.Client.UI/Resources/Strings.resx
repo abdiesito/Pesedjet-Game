@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Menu.Title" xml:space="preserve"><value>Pesedjet</value></data>
+  <data name="Menu.Subtitle" xml:space="preserve"><value>El juego de las Nueve Deidades</value></data>
+  <data name="AccessMenu.WelcomeMessage" xml:space="preserve"><value>Bienvenido</value></data>
+  <data name="AccessMenu.Subtitle" xml:space="preserve"><value>Inicia sesión para continuar tu travesía</value></data>
+  <data name="AccessMenu.Username" xml:space="preserve"><value>Nombre de usuario</value></data>
+  <data name="AccessMenu.UsernamePlaceholder" xml:space="preserve"><value>Escribe tu nombre de usuario</value></data>
+  <data name="AccessMenu.Password" xml:space="preserve"><value>Contraseña</value></data>
+  <data name="AccessMenu.ForgottenPassword" xml:space="preserve"><value>¿Olvidaste tu contraseña?</value></data>
+  <data name="AccessMenu.ShowPassword" xml:space="preserve"><value>Mostrar contraseña</value></data>
+  <data name="AccessMenu.HidePassword" xml:space="preserve"><value>Ocultar contraseña</value></data>
+  <data name="AccessMenu.RememberSession" xml:space="preserve"><value>Recordar sesión</value></data>
+  <data name="AccessMenu.LogIn" xml:space="preserve"><value>Iniciar sesión</value></data>
+  <data name="AccessMenu.Verifying" xml:space="preserve"><value>Verificando...</value></data>
+  <data name="AccessMenu.Or" xml:space="preserve"><value>o</value></data>
+  <data name="AccessMenu.CreateAccount" xml:space="preserve"><value>Crear cuenta</value></data>
+  <data name="AccessMenu.PlayAsGuest" xml:space="preserve"><value>Jugar como invitado</value></data>
+  <data name="Common.Retry" xml:space="preserve"><value>Reintentar</value></data>
+  <data name="AccessMenu.ObligatoryField" xml:space="preserve"><value>Este campo es obligatorio.</value></data>
+  <data name="AccessMenu.IncorrectCredentials" xml:space="preserve"><value>Nombre de usuario o contraseña incorrectos.</value></data>
+  <data name="AccessMenu.TooManyAttempts" xml:space="preserve"><value>Demasiados intentos fallidos. Te llevaremos a la recuperación de contraseña.</value></data>
+  <data name="MSG-REG-010" xml:space="preserve"><value>El nombre de usuario debe tener de 3 a 50 caracteres, solo letras y números.</value></data>
+  <data name="AccessMenu.CouldntReachServer" xml:space="preserve"><value>No se pudo conectar con el servidor. Inténtalo de nuevo.</value></data>
+</root>
