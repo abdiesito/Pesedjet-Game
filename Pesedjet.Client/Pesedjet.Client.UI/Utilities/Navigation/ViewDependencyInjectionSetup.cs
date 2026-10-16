@@ -10,6 +10,7 @@ public static class ViewDependencyInjectionSetup
     {
         var services = new ServiceCollection();
         services.AddSingleton<INavigator, Navigator>();
+        services.AddSingleton(TimeProvider.System);
         
         // services.AddSingleton<IDialogManager, DialogManager>(); // TODO: When having Dialogs Views, add here
 

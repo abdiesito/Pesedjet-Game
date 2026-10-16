@@ -4,5 +4,8 @@ public enum FieldValidationError
 {
     None,
     Required,
-    InvalidFormat
+    InvalidFormat,
+    Underage,
+    PasswordRequirementsNotMet,
+    PasswordsDoNotMatch
 }

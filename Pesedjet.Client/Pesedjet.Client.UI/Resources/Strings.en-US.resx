@@ -24,6 +24,39 @@
   <data name="AccessMenu.ObligatoryField" xml:space="preserve"><value>This field is required.</value></data>
   <data name="AccessMenu.IncorrectCredentials" xml:space="preserve"><value>Incorrect username or password.</value></data>
   <data name="AccessMenu.TooManyAttempts" xml:space="preserve"><value>Too many failed attempts. Taking you to password recovery.</value></data>
-  <data name="MSG-REG-010" xml:space="preserve"><value>The username must be 3 to 50 characters, letters and numbers only.</value></data>
+  <data name="MSG-REG-010" xml:space="preserve"><value>Use 3 to 50 letters or numbers, no spaces.</value></data>
   <data name="AccessMenu.CouldntReachServer" xml:space="preserve"><value>Could not reach the server. Please try again.</value></data>
+  <data name="RegisterAccount.Back" xml:space="preserve"><value>Back</value></data>
+  <data name="RegisterAccount.Title" xml:space="preserve"><value>Create account</value></data>
+  <data name="RegisterAccount.RequiredFieldsNote" xml:space="preserve"><value>Fields marked * are required.</value></data>
+  <data name="RegisterAccount.FullName" xml:space="preserve"><value>Full name</value></data>
+  <data name="RegisterAccount.FullNamePlaceholder" xml:space="preserve"><value>e.g. Nefertari López</value></data>
+  <data name="RegisterAccount.Username" xml:space="preserve"><value>Username</value></data>
+  <data name="RegisterAccount.UsernamePlaceholder" xml:space="preserve"><value>e.g. Nefer12</value></data>
+  <data name="RegisterAccount.UsernameHint" xml:space="preserve"><value>3–50 letters or numbers, no spaces</value></data>
+  <data name="RegisterAccount.BirthDate" xml:space="preserve"><value>Date of birth</value></data>
+  <data name="RegisterAccount.BirthDatePlaceholder" xml:space="preserve"><value>mm/dd/yyyy</value></data>
+  <data name="RegisterAccount.BirthDateFormat" xml:space="preserve"><value>MM/dd/yyyy</value></data>
+  <data name="RegisterAccount.Email" xml:space="preserve"><value>Email</value></data>
+  <data name="RegisterAccount.EmailPlaceholder" xml:space="preserve"><value>you@email.com</value></data>
+  <data name="RegisterAccount.Password" xml:space="preserve"><value>Password</value></data>
+  <data name="RegisterAccount.ConfirmPassword" xml:space="preserve"><value>Confirm password</value></data>
+  <data name="RegisterAccount.Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="RegisterAccount.Register" xml:space="preserve"><value>Sign up</value></data>
+  <data name="RegisterAccount.Processing" xml:space="preserve"><value>Processing sign-up…</value></data>
+  <data name="RegisterAccount.RequirementsTitle" xml:space="preserve"><value>PASSWORD REQUIREMENTS</value></data>
+  <data name="RegisterAccount.RequirementMinLength" xml:space="preserve"><value>At least 8 characters</value></data>
+  <data name="RegisterAccount.RequirementUppercase" xml:space="preserve"><value>At least one uppercase letter</value></data>
+  <data name="RegisterAccount.RequirementNumber" xml:space="preserve"><value>At least one number</value></data>
+  <data name="RegisterAccount.RequirementSpecial" xml:space="preserve"><value>At least one special character</value></data>
+  <data name="RegisterAccount.RequirementMet" xml:space="preserve"><value>DONE</value></data>
+  <data name="RegisterAccount.CodeNotice" xml:space="preserve"><value>We'll email you a 6-digit code to confirm it's yours.</value></data>
+  <data name="RegisterAccount.MinimumAgeNotice" xml:space="preserve"><value>You must be at least 12 years old.</value></data>
+  <data name="RegisterAccount.InvalidEmail" xml:space="preserve"><value>Enter a valid email address.</value></data>
+  <data name="RegisterAccount.UnderageError" xml:space="preserve"><value>You must be at least 12 years old to sign up.</value></data>
+  <data name="MSG-REG-004" xml:space="preserve"><value>Your password must have at least 8 characters, one uppercase letter, one number and one special character.</value></data>
+  <data name="MSG-REG-005" xml:space="preserve"><value>Passwords don't match.</value></data>
+  <data name="MSG-REG-007" xml:space="preserve"><value>Enter a valid date that is not in the future.</value></data>
+  <data name="MSG-REG-011" xml:space="preserve"><value>Check the fields marked in red before continuing.</value></data>
+  <data name="RegisterAccount.ObligatoryField" xml:space="preserve"><value>Fill in this field.</value></data>
 </root>

@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pesedjet.Server.DataAccess"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pesedjet.Server.CrossCutting", "Pesedjet.Server.CrossCutting\Pesedjet.Server.CrossCutting.csproj", "{48674FDA-D81C-48AB-9E80-81BE62867DD5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pesedjet.Server.Host", "Pesedjet.Server.Host\Pesedjet.Server.Host.csproj", "{50C7E96C-9F84-4EC9-90FB-93614C64679D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{48674FDA-D81C-48AB-9E80-81BE62867DD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48674FDA-D81C-48AB-9E80-81BE62867DD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48674FDA-D81C-48AB-9E80-81BE62867DD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50C7E96C-9F84-4EC9-90FB-93614C64679D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50C7E96C-9F84-4EC9-90FB-93614C64679D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50C7E96C-9F84-4EC9-90FB-93614C64679D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50C7E96C-9F84-4EC9-90FB-93614C64679D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

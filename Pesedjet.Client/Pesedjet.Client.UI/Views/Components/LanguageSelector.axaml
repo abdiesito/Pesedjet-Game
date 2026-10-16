@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             x:Class="Pesedjet.Client.UI.Views.Components.LanguageSelector"
+             HorizontalAlignment="Right"
+             VerticalAlignment="Top">
+    <ComboBox Classes="language-selector"
+              ItemsSource="{x:Static loc:LocalizationManager.AvailableLanguages}"
+              SelectedItem="{Binding CurrentLanguage, Source={x:Static loc:LocalizationManager.Instance}, Mode=TwoWay}">
+        <ComboBox.ItemTemplate>
+            <DataTemplate x:DataType="loc:LanguageOption">
+                <TextBlock Text="{Binding DisplayName}"/>
+            </DataTemplate>
+        </ComboBox.ItemTemplate>
+    </ComboBox>
+</UserControl>

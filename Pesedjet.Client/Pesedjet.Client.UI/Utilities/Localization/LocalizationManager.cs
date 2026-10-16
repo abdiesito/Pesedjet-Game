@@ -41,8 +41,17 @@ public sealed class LocalizationManager : INotifyPropertyChanged
     public string this[string key] =>
         Strings.ResourceManager.GetString(key, _activeCulture) ?? $"[{key}]";
     
-    public LanguageOption CurrentLanguage =>
-        AvailableLanguages.First(language => language.CultureCode == _activeCulture.Name);
+    public LanguageOption CurrentLanguage
+    {
+        get => AvailableLanguages.First(language => language.CultureCode == _activeCulture.Name);
+        set
+        {
+            if (value is not null)
+            {
+                ChangeLanguage(value.CultureCode);
+            }
+        }
+    }
     
     public bool ChangeLanguage(string cultureCode)
     {
@@ -68,6 +77,14 @@ public sealed class LocalizationManager : INotifyPropertyChanged
         Task.Run(SaveActiveLanguagePreference);
         return true;
     }
+
+    /// <summary>
+    /// Every localized binding subscribes (weakly) to this singleton, one subscription per bound text. Avalonia only
+    /// drops the subscriptions of screens that are already gone when the singleton raises the event they listen to,
+    /// so without this they pile up with every navigation. Re-reading the few dozen texts of the visible screen is cheap.
+    /// </summary>
+    public void ReleaseDetachedBindings() =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(AllPropertiesChanged));
 
     private void SaveActiveLanguagePreference()
     {

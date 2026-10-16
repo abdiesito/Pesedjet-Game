@@ -1,16 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Pesedjet.Client.UI.Models;
-using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Navigation;
 
 namespace Pesedjet.Client.UI.ViewModels;
 
-public partial class AccessMenuViewModel : ViewModelBase
+public partial class AccessMenuViewModel : ViewModelBase, INavigable
 {
     private const int MaxFailedAttempts = 5;                                        
     private static readonly TimeSpan LoginTimeout = TimeSpan.FromSeconds(15);       
@@ -26,7 +24,6 @@ public partial class AccessMenuViewModel : ViewModelBase
     [ObservableProperty] private string _password = string.Empty;
     [ObservableProperty] private bool _rememberSession;
     [ObservableProperty] private bool _isPasswordVisible;
-    [ObservableProperty] private LanguageOption? _selectedLanguage;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasUsernameError), nameof(IsUsernameRequired), nameof(IsUsernameFormatInvalid))]
@@ -44,13 +41,14 @@ public partial class AccessMenuViewModel : ViewModelBase
     {
         _navigator = navigator;
         //_playerService = playerService;
-
-        SelectedLanguage = LocalizationManager.Instance.CurrentLanguage;
+    }
+    
+    public void OnNavigatedFrom()
+    {
+        Password = string.Empty;
+        IsPasswordVisible = false;
     }
 
-    public IReadOnlyList<LanguageOption> AvailableLanguages => LocalizationManager.AvailableLanguages;
-
-    
     public bool HasUsernameError => UsernameValidationError != FieldValidationError.None;
     public bool IsUsernameRequired => UsernameValidationError == FieldValidationError.Required;
     public bool IsUsernameFormatInvalid => UsernameValidationError == FieldValidationError.InvalidFormat;
@@ -73,15 +71,6 @@ public partial class AccessMenuViewModel : ViewModelBase
         PasswordValidationError = FieldValidationError.None;
         ClearStatus();
     }
-
-    partial void OnSelectedLanguageChanged(LanguageOption? value)
-    {
-        if (value is not null)
-        {
-            LocalizationManager.Instance.ChangeLanguage(value.CultureCode);
-        }
-    }
-    
 
     [RelayCommand]
     private async Task LoginAsync()
@@ -123,25 +112,20 @@ public partial class AccessMenuViewModel : ViewModelBase
     [RelayCommand]
     private void NavigateToForgotPassword()
     {
-        // Pendiente: registrar ForgotPasswordViewModel (GUI-012) en el contenedor.
         // _navigator.NavigateTo<ForgotPasswordViewModel>();
     }
 
     [RelayCommand]
     private void NavigateToRegisterAccount()
     {
-        // Pendiente: registrar RegisterViewModel (GUI-013) en el contenedor.
-        // _navigator.NavigateTo<RegisterAccountViewModel>();
+        _navigator.NavigateTo<RegisterAccountViewModel>();
     }
 
     [RelayCommand]
     private void PlayAsGuest()
     {
-        // DEC-005: el aviso de modo invitado (GUI-014) se abre con IDialogManager cuando exista.
         // await _dialogManager.ShowAsync<GuestModeNoticeViewModel>();
     }
-
-    // ------------------------------------------------------------------ Lógica interna
 
     private bool ValidateFields()
     {

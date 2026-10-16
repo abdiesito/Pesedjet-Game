@@ -25,10 +25,17 @@ public partial class Navigator : ObservableObject, INavigator
     
     public void NavigateTo<TViewModel>() where TViewModel : ViewModelBase
     {
-        var viewModel = _serviceProvider.GetRequiredService<TViewModel>();
-
         Dispatcher.UIThread.Post(() =>
         {
+            // A double click queues the same request twice. The second one finds its screen already shown and is
+            // dropped before anything is built, so no duplicate screen is stacked and no ViewModel is created for nothing.
+            if (IsShowing<TViewModel>())
+            {
+                return;
+            }
+
+            var viewModel = _serviceProvider.GetRequiredService<TViewModel>();
+
             if (CurrentViewModel is INavigable navigable)
             {
                 navigable.OnNavigatedFrom();
@@ -68,10 +75,16 @@ public partial class Navigator : ObservableObject, INavigator
     
     public void NavigateAndClear<TViewModel>() where TViewModel : ViewModelBase
     {
-        var viewModel = _serviceProvider.GetRequiredService<TViewModel>();
-
         Dispatcher.UIThread.Post(() =>
         {
+            // Already the only screen: rebuilding it would only dispose and recreate an identical one.
+            if (IsShowing<TViewModel>() && _navigationStack.Count == 0)
+            {
+                return;
+            }
+
+            var viewModel = _serviceProvider.GetRequiredService<TViewModel>();
+
             if (CurrentViewModel is INavigable currentNavigable)
             {
                 currentNavigable.OnNavigatedFrom();
@@ -94,6 +107,9 @@ public partial class Navigator : ObservableObject, INavigator
             OnPropertyChanged(nameof(CanGoBack));
         });
     }
+
+    private bool IsShowing<TViewModel>() where TViewModel : ViewModelBase =>
+        CurrentViewModel?.GetType() == typeof(TViewModel);
 
     private void SetCurrentViewModel(ViewModelBase viewModel)
     {

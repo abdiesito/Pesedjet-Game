@@ -24,6 +24,39 @@
   <data name="AccessMenu.ObligatoryField" xml:space="preserve"><value>Este campo es obligatorio.</value></data>
   <data name="AccessMenu.IncorrectCredentials" xml:space="preserve"><value>Nombre de usuario o contraseña incorrectos.</value></data>
   <data name="AccessMenu.TooManyAttempts" xml:space="preserve"><value>Demasiados intentos fallidos. Te llevaremos a la recuperación de contraseña.</value></data>
-  <data name="MSG-REG-010" xml:space="preserve"><value>El nombre de usuario debe tener de 3 a 50 caracteres, solo letras y números.</value></data>
+  <data name="MSG-REG-010" xml:space="preserve"><value>Usa de 3 a 50 letras o números, sin espacios.</value></data>
   <data name="AccessMenu.CouldntReachServer" xml:space="preserve"><value>No se pudo conectar con el servidor. Inténtalo de nuevo.</value></data>
+  <data name="RegisterAccount.Back" xml:space="preserve"><value>Volver</value></data>
+  <data name="RegisterAccount.Title" xml:space="preserve"><value>Crear cuenta</value></data>
+  <data name="RegisterAccount.RequiredFieldsNote" xml:space="preserve"><value>Los campos con * son obligatorios.</value></data>
+  <data name="RegisterAccount.FullName" xml:space="preserve"><value>Nombre completo</value></data>
+  <data name="RegisterAccount.FullNamePlaceholder" xml:space="preserve"><value>p. ej. Nefertari López</value></data>
+  <data name="RegisterAccount.Username" xml:space="preserve"><value>Nombre de usuario</value></data>
+  <data name="RegisterAccount.UsernamePlaceholder" xml:space="preserve"><value>p. ej. Nefer12</value></data>
+  <data name="RegisterAccount.UsernameHint" xml:space="preserve"><value>3 a 50 letras o números, sin espacios</value></data>
+  <data name="RegisterAccount.BirthDate" xml:space="preserve"><value>Fecha de nacimiento</value></data>
+  <data name="RegisterAccount.BirthDatePlaceholder" xml:space="preserve"><value>dd/mm/aaaa</value></data>
+  <data name="RegisterAccount.BirthDateFormat" xml:space="preserve"><value>dd/MM/yyyy</value></data>
+  <data name="RegisterAccount.Email" xml:space="preserve"><value>Correo electrónico</value></data>
+  <data name="RegisterAccount.EmailPlaceholder" xml:space="preserve"><value>tu@correo.com</value></data>
+  <data name="RegisterAccount.Password" xml:space="preserve"><value>Contraseña</value></data>
+  <data name="RegisterAccount.ConfirmPassword" xml:space="preserve"><value>Confirmar contraseña</value></data>
+  <data name="RegisterAccount.Cancel" xml:space="preserve"><value>Cancelar</value></data>
+  <data name="RegisterAccount.Register" xml:space="preserve"><value>Registrar</value></data>
+  <data name="RegisterAccount.Processing" xml:space="preserve"><value>Procesando registro…</value></data>
+  <data name="RegisterAccount.RequirementsTitle" xml:space="preserve"><value>REQUISITOS DE LA CONTRASEÑA</value></data>
+  <data name="RegisterAccount.RequirementMinLength" xml:space="preserve"><value>Mínimo 8 caracteres</value></data>
+  <data name="RegisterAccount.RequirementUppercase" xml:space="preserve"><value>Al menos una mayúscula</value></data>
+  <data name="RegisterAccount.RequirementNumber" xml:space="preserve"><value>Al menos un número</value></data>
+  <data name="RegisterAccount.RequirementSpecial" xml:space="preserve"><value>Al menos un carácter especial</value></data>
+  <data name="RegisterAccount.RequirementMet" xml:space="preserve"><value>LISTO</value></data>
+  <data name="RegisterAccount.CodeNotice" xml:space="preserve"><value>Te enviaremos un código de 6 dígitos a tu correo para confirmar que es tuyo.</value></data>
+  <data name="RegisterAccount.MinimumAgeNotice" xml:space="preserve"><value>Debes tener al menos 12 años.</value></data>
+  <data name="RegisterAccount.InvalidEmail" xml:space="preserve"><value>Escribe un correo electrónico válido.</value></data>
+  <data name="RegisterAccount.UnderageError" xml:space="preserve"><value>Debes tener al menos 12 años para registrarte.</value></data>
+  <data name="MSG-REG-004" xml:space="preserve"><value>La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial.</value></data>
+  <data name="MSG-REG-005" xml:space="preserve"><value>Las contraseñas no coinciden.</value></data>
+  <data name="MSG-REG-007" xml:space="preserve"><value>Escribe una fecha válida que no sea futura.</value></data>
+  <data name="MSG-REG-011" xml:space="preserve"><value>Revisa los campos marcados en rojo antes de continuar.</value></data>
+  <data name="RegisterAccount.ObligatoryField" xml:space="preserve"><value>Completa este campo.</value></data>
 </root>
