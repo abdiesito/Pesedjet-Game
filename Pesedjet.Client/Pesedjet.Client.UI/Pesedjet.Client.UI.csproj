@@ -31,4 +31,9 @@
         <DependentUpon>LanguageSelector.axaml</DependentUpon>
       </Compile>
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Pesedjet.Server\Pesedjet.Server.Contracts\Pesedjet.Server.Contracts.csproj" />
+      <ProjectReference Include="..\Pesedjet.Client.Networking\Pesedjet.Client.Networking.csproj" />
+    </ItemGroup>
 </Project>

@@ -130,6 +130,24 @@ public partial class RegisterAccountViewModel : ViewModelBase
 
         // Pendiente (CU-002): REGISTER_REQUEST comprueba correo y usuario (MSG-REG-002, MSG-REG-003) con IsBusy activo
         // y, si todo está libre, abre MOD-003 (verificar identidad) con IDialogManager; al verificar, GUI-002.
+        
+        IsBusy = true;
+
+        // Se instancia el proxy (o se inyecta por el constructor si lo registraste en DI)
+        var authProxy = new Pesedjet.Client.Networking.Proxies.AuthClient();
+
+        var registerDto = new Pesedjet.Server.Contracts.DTOs.UserRegisterDto 
+        { 
+            Username = this.Username, 
+            Password = this.Password
+            // Mapea el resto de propiedades (Email, BirthDate, etc.) según la estructura de tu DTO
+        };
+        
+        bool isSuccess = authProxy.Register(registerDto);
+        Console.WriteLine("¿Llegó al servidor?: " + isSuccess);
+
+        IsBusy = false;
+        
         return Task.CompletedTask;
     }
 
