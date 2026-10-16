@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pesedjet.Client.UI", "Pesedjet.Client.UI\Pesedjet.Client.UI.csproj", "{91264FB2-32D1-416B-9956-293DB93B6BDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pesedjet.Client.Core", "Pesedjet.Client.Core\Pesedjet.Client.Core.csproj", "{50E7E41F-3165-4E54-9364-42F737B17992}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pesedjet.Client.Networking", "Pesedjet.Client.Networking\Pesedjet.Client.Networking.csproj", "{1594FE9A-261D-4A7D-A925-C1201FA1134F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pesedjet.Server.Contracts", "..\Pesedjet.Server\Pesedjet.Server.Contracts\Pesedjet.Server.Contracts.csproj", "{C9ECEFF5-6199-437C-AD3D-FED36A2CA509}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{91264FB2-32D1-416B-9956-293DB93B6BDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91264FB2-32D1-416B-9956-293DB93B6BDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91264FB2-32D1-416B-9956-293DB93B6BDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91264FB2-32D1-416B-9956-293DB93B6BDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50E7E41F-3165-4E54-9364-42F737B17992}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50E7E41F-3165-4E54-9364-42F737B17992}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50E7E41F-3165-4E54-9364-42F737B17992}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50E7E41F-3165-4E54-9364-42F737B17992}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1594FE9A-261D-4A7D-A925-C1201FA1134F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1594FE9A-261D-4A7D-A925-C1201FA1134F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1594FE9A-261D-4A7D-A925-C1201FA1134F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1594FE9A-261D-4A7D-A925-C1201FA1134F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9ECEFF5-6199-437C-AD3D-FED36A2CA509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9ECEFF5-6199-437C-AD3D-FED36A2CA509}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9ECEFF5-6199-437C-AD3D-FED36A2CA509}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9ECEFF5-6199-437C-AD3D-FED36A2CA509}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
