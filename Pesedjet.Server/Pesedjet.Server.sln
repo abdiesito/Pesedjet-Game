@@ -10,6 +10,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pesedjet.Server.Host", "Pes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pesedjet.Server.Identity", "Pesedjet.Server.Identity\Pesedjet.Server.Identity.csproj", "{181D176C-F4B9-43A4-98D0-43963A1E4C58}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pesedjet.Server.Game", "Pesedjet.Server.Game\Pesedjet.Server.Game.csproj", "{63716B89-5E79-46E9-A1CC-9CA2C0CE3A6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pesedjet.Server.Matchmaking", "Pesedjet.Server.Matchmaking\Pesedjet.Server.Matchmaking.csproj", "{DA29C67D-21B3-4B68-BD60-8823FC1BEA7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +40,13 @@ Global
 		{181D176C-F4B9-43A4-98D0-43963A1E4C58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{181D176C-F4B9-43A4-98D0-43963A1E4C58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{181D176C-F4B9-43A4-98D0-43963A1E4C58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63716B89-5E79-46E9-A1CC-9CA2C0CE3A6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63716B89-5E79-46E9-A1CC-9CA2C0CE3A6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63716B89-5E79-46E9-A1CC-9CA2C0CE3A6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63716B89-5E79-46E9-A1CC-9CA2C0CE3A6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA29C67D-21B3-4B68-BD60-8823FC1BEA7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA29C67D-21B3-4B68-BD60-8823FC1BEA7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA29C67D-21B3-4B68-BD60-8823FC1BEA7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA29C67D-21B3-4B68-BD60-8823FC1BEA7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
