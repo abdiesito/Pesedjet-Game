@@ -1,0 +1,393 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.ScoreboardView"
+             x:DataType="vm:ScoreboardViewModel"
+             x:CompileBindings="True">
+
+    <Viewbox Classes="fit-down">
+        <Border Classes="dialog-card screen-panel">
+            <Grid RowDefinitions="Auto,*">
+
+                <Border Classes="panel-header">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Classes="panel-header-content">
+                            <Button Classes="header-btn" Command="{Binding GoBackCommand}">
+                                <StackPanel Classes="inline-icon-text">
+                                    <Path Classes="icon" Data="{DynamicResource IconBack}"/>
+                                    <TextBlock
+                                               Text="{Binding [Scoreboard.Back],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                            </Button>
+                            <TextBlock Classes="panel-title"
+                                       Text="{Binding [Scoreboard.Title],
+                                                      Source={x:Static
+                                                          loc:LocalizationManager.Instance}}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Classes="panel-header-actions">
+                            <TextBlock Classes="panel-header-note" Text="{Binding UpdatedText}"/>
+                            <Button Classes="header-btn" Command="{Binding RefreshCommand}">
+                                <StackPanel Classes="inline-icon-text">
+                                    <Path Classes="icon" Data="{DynamicResource IconRefresh}"/>
+                                    <TextBlock
+                                               Text="{Binding [Scoreboard.Refresh],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" Classes="panel-body">
+                    <Grid RowDefinitions="Auto,Auto,*,Auto">
+
+                        <Grid Classes="filter-row"
+                              ColumnDefinitions="Auto,Auto,Auto,*"
+                              IsEnabled="{Binding HasAnyGames}">
+                            <TextBox Classes="input-field search-field"
+                                     Text="{Binding SearchText}"
+                                     Watermark="{Binding [Scoreboard.SearchPlaceholder],
+                                                         Source={x:Static
+                                                             loc:LocalizationManager.Instance}}">
+                                <TextBox.KeyBindings>
+                                    <KeyBinding Gesture="Enter" Command="{Binding SearchNowCommand}"/>
+                                </TextBox.KeyBindings>
+                                <TextBox.InnerLeftContent>
+                                    <Path Classes="icon field-icon" Data="{DynamicResource IconSearch}"/>
+                                </TextBox.InnerLeftContent>
+                            </TextBox>
+                            <ComboBox Grid.Column="1" Classes="select-field"
+                                      ItemsSource="{Binding Periods}"
+                                      SelectedItem="{Binding SelectedPeriod}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate x:DataType="models:ScoreboardPeriodOption">
+                                        <TextBlock Text="{Binding DisplayName}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                                <ComboBox.SelectionBoxItemTemplate>
+                                    <DataTemplate x:DataType="models:ScoreboardPeriodOption">
+                                        <StackPanel Classes="tab-content">
+                                            <TextBlock
+                                                       Text="{Binding [Scoreboard.PeriodLabel],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                                            <TextBlock Text="{Binding DisplayName}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.SelectionBoxItemTemplate>
+                            </ComboBox>
+                            <ToggleSwitch Grid.Column="2" Classes="switch-standard"
+                                          IsChecked="{Binding FriendsOnly}"
+                                          OnContent="{Binding [Scoreboard.FriendsOnly],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"
+                                          OffContent="{Binding [Scoreboard.FriendsOnly],
+                                                               Source={x:Static
+                                                                   loc:LocalizationManager.Instance}}"/>
+                            <Button Grid.Column="3" Classes="secondary-btn compact clear-filters"
+                                    Command="{Binding ClearFiltersCommand}">
+                                <StackPanel Classes="inline-icon-text">
+                                    <Path Classes="icon" Data="{DynamicResource IconClose}"/>
+                                    <TextBlock
+                                               Text="{Binding [Scoreboard.ClearFilters],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                        <HeaderedContentControl Grid.Row="1" Classes="alert error"
+                                                IsVisible="{Binding HasLoadError}"
+                                                Header="{Binding [Scoreboard.LoadError],
+                                                                 Source={x:Static
+                                                                     loc:LocalizationManager.Instance}}">
+                            <Button Classes="alert-action" Command="{Binding RefreshCommand}">
+                                <StackPanel Classes="inline-icon-text">
+                                    <Path Classes="icon" Data="{DynamicResource IconRefresh}"/>
+                                    <TextBlock
+                                               Text="{Binding [Common.Retry],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                            </Button>
+                        </HeaderedContentControl>
+
+                        <Border Grid.Row="2" Classes="list-frame">
+                            <Grid RowDefinitions="Auto,*">
+
+                                <Border Classes="score-header">
+                                    <Grid ColumnDefinitions="72,56,*,100,100,110,170,140">
+                                        <TextBlock Classes="score-header-cell"
+                                                   Text="{Binding [Scoreboard.ColumnRank],
+                                                                  Source={x:Static
+                                                                      loc:LocalizationManager.Instance}}"/>
+                                        <Button Grid.Column="2" Classes="sort-header"
+                                                Classes.sorted="{Binding IsUsernameSorted}"
+                                                Command="{Binding SortByCommand}"
+                                                CommandParameter="{x:Static models:ScoreboardSortColumn.Username}">
+                                            <StackPanel Classes="sort-content">
+                                                <TextBlock Text="{Binding [Scoreboard.ColumnPlayer],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                                                <Panel IsVisible="{Binding IsUsernameSorted}">
+                                                    <Path Classes="sort-glyph"
+                                                          IsVisible="{Binding IsSortDescending}"
+                                                          Data="{DynamicResource IconSortDown}"/>
+                                                    <Path Classes="sort-glyph"
+                                                          IsVisible="{Binding !IsSortDescending}"
+                                                          Data="{DynamicResource IconSortUp}"/>
+                                                </Panel>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Grid.Column="3" Classes="sort-header numeric"
+                                                Classes.sorted="{Binding IsPointsSorted}"
+                                                Command="{Binding SortByCommand}"
+                                                CommandParameter="{x:Static models:ScoreboardSortColumn.Points}">
+                                            <StackPanel Classes="sort-content">
+                                                <TextBlock Text="{Binding [Scoreboard.ColumnPoints],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                                                <Panel IsVisible="{Binding IsPointsSorted}">
+                                                    <Path Classes="sort-glyph"
+                                                          IsVisible="{Binding IsSortDescending}"
+                                                          Data="{DynamicResource IconSortDown}"/>
+                                                    <Path Classes="sort-glyph"
+                                                          IsVisible="{Binding !IsSortDescending}"
+                                                          Data="{DynamicResource IconSortUp}"/>
+                                                </Panel>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Grid.Column="4" Classes="sort-header numeric"
+                                                Classes.sorted="{Binding IsGamesPlayedSorted}"
+                                                Command="{Binding SortByCommand}"
+                                                CommandParameter="{x:Static models:ScoreboardSortColumn.GamesPlayed}">
+                                            <StackPanel Classes="sort-content">
+                                                <TextBlock Text="{Binding [Scoreboard.ColumnGames],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                                                <Panel IsVisible="{Binding IsGamesPlayedSorted}">
+                                                    <Path Classes="sort-glyph"
+                                                          IsVisible="{Binding IsSortDescending}"
+                                                          Data="{DynamicResource IconSortDown}"/>
+                                                    <Path Classes="sort-glyph"
+                                                          IsVisible="{Binding !IsSortDescending}"
+                                                          Data="{DynamicResource IconSortUp}"/>
+                                                </Panel>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Grid.Column="5" Classes="sort-header numeric"
+                                                Classes.sorted="{Binding IsVictoriesSorted}"
+                                                Command="{Binding SortByCommand}"
+                                                CommandParameter="{x:Static models:ScoreboardSortColumn.Victories}">
+                                            <StackPanel Classes="sort-content">
+                                                <TextBlock Text="{Binding [Scoreboard.ColumnWins],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                                                <Panel IsVisible="{Binding IsVictoriesSorted}">
+                                                    <Path Classes="sort-glyph"
+                                                          IsVisible="{Binding IsSortDescending}"
+                                                          Data="{DynamicResource IconSortDown}"/>
+                                                    <Path Classes="sort-glyph"
+                                                          IsVisible="{Binding !IsSortDescending}"
+                                                          Data="{DynamicResource IconSortUp}"/>
+                                                </Panel>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Grid.Column="6" Classes="sort-header numeric"
+                                                Classes.sorted="{Binding IsAveragePerGameSorted}"
+                                                Command="{Binding SortByCommand}"
+                                                CommandParameter="{x:Static
+                                                                  models:ScoreboardSortColumn.AveragePerGame}">
+                                            <StackPanel Classes="sort-content">
+                                                <TextBlock Text="{Binding [Scoreboard.ColumnAverage],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                                                <Panel IsVisible="{Binding IsAveragePerGameSorted}">
+                                                    <Path Classes="sort-glyph"
+                                                          IsVisible="{Binding IsSortDescending}"
+                                                          Data="{DynamicResource IconSortDown}"/>
+                                                    <Path Classes="sort-glyph"
+                                                          IsVisible="{Binding !IsSortDescending}"
+                                                          Data="{DynamicResource IconSortUp}"/>
+                                                </Panel>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Grid.Column="7" Classes="sort-header numeric"
+                                                Classes.sorted="{Binding IsLastGameAtSorted}"
+                                                Command="{Binding SortByCommand}"
+                                                CommandParameter="{x:Static models:ScoreboardSortColumn.LastGameAt}">
+                                            <StackPanel Classes="sort-content">
+                                                <TextBlock Text="{Binding [Scoreboard.ColumnLastGame],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                                                <Panel IsVisible="{Binding IsLastGameAtSorted}">
+                                                    <Path Classes="sort-glyph"
+                                                          IsVisible="{Binding IsSortDescending}"
+                                                          Data="{DynamicResource IconSortDown}"/>
+                                                    <Path Classes="sort-glyph"
+                                                          IsVisible="{Binding !IsSortDescending}"
+                                                          Data="{DynamicResource IconSortUp}"/>
+                                                </Panel>
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+
+                                <ScrollViewer Grid.Row="1" Classes="notifications-scroll"
+                                              IsVisible="{Binding ShowsRows}">
+                                    <ItemsControl ItemsSource="{Binding Entries}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="models:ScoreboardEntry">
+                                                <Border Classes="score-row" Classes.own="{Binding IsCurrentPlayer}">
+                                                    <Grid ColumnDefinitions="72,56,*,100,100,110,170,140">
+                                                        <TextBlock Classes="score-cell position"
+                                                                   Text="{Binding Position}"/>
+                                                        <Border Grid.Column="1" Classes="avatar score-avatar">
+                                                            <Panel>
+                                                                <TextBlock Classes="avatar-initials"
+                                                                           IsVisible="{Binding !HasAvatar}"
+                                                                           Text="{Binding Initials}"/>
+                                                                <Path Classes="icon avatar-icon"
+                                                                      IsVisible="{Binding HasAvatar}"
+                                                                      Data="{Binding AvatarIconData}"/>
+                                                            </Panel>
+                                                        </Border>
+                                                        <Grid Grid.Column="2" ColumnDefinitions="Auto,Auto">
+                                                            <TextBlock Classes="score-cell name"
+                                                                       Margin="12,0,0,0"
+                                                                       Text="{Binding Username}"
+                                                                       ToolTip.Tip="{Binding Username}"/>
+                                                            <Border Grid.Column="1" Classes="own-badge"
+                                                                    IsVisible="{Binding IsCurrentPlayer}">
+                                                                <TextBlock Classes="own-badge-text"
+                                                                           Text="{Binding [Scoreboard.You],
+                                                                                          Source={x:Static
+                                                                                loc:LocalizationManager.Instance}}"/>
+                                                            </Border>
+                                                        </Grid>
+                                                        <TextBlock Grid.Column="3" Classes="score-cell numeric"
+                                                                   Text="{Binding Points}"/>
+                                                        <TextBlock Grid.Column="4" Classes="score-cell numeric"
+                                                                   Text="{Binding GamesPlayed}"/>
+                                                        <TextBlock Grid.Column="5" Classes="score-cell numeric"
+                                                                   Text="{Binding Victories}"/>
+                                                        <TextBlock Grid.Column="6" Classes="score-cell numeric"
+                                                                   Text="{Binding AveragePerGame,
+                                                                                  StringFormat={}{0:0.0}}"/>
+                                                        <TextBlock Grid.Column="7" Classes="score-cell numeric"
+                                                                   Text="{Binding LastGameAt, StringFormat={}{0:d}}"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+
+                                <StackPanel Grid.Row="1" Classes="skeleton-list" IsVisible="{Binding IsLoading}">
+                                    <Border Classes="skeleton-row"/>
+                                    <Border Classes="skeleton-row"/>
+                                    <Border Classes="skeleton-row"/>
+                                    <Border Classes="skeleton-row"/>
+                                    <Border Classes="skeleton-row"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="1" Classes="empty-state" IsVisible="{Binding ShowsNoGames}">
+                                    <Path Classes="empty-icon" Data="{DynamicResource IconTrophy}"/>
+                                    <TextBlock Classes="empty-title"
+                                               Text="{Binding [Scoreboard.NoGamesTitle],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                    <TextBlock Classes="empty-hint"
+                                               Text="{Binding [Scoreboard.NoGamesHint],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                    <Button Classes="primary-btn compact"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding PlayCommand}">
+                                        <StackPanel Classes="inline-icon-text">
+                                            <Path Classes="icon" Data="{DynamicResource IconPlay}"/>
+                                            <TextBlock
+                                                       Text="{Binding [MainMenu.Play],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="1" Classes="empty-state" IsVisible="{Binding ShowsNoMatches}">
+                                    <TextBlock Classes="empty-title"
+                                               Text="{Binding [Scoreboard.NoMatchesTitle],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                    <TextBlock Classes="empty-hint"
+                                               Text="{Binding [Scoreboard.NoMatchesHint],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                    <Button Classes="secondary-btn compact"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding ClearFiltersCommand}">
+                                        <StackPanel Classes="inline-icon-text">
+                                            <Path Classes="icon" Data="{DynamicResource IconClose}"/>
+                                            <TextBlock
+                                                       Text="{Binding [Scoreboard.ClearFilters],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+
+                            </Grid>
+                        </Border>
+
+                        <Grid Grid.Row="3" Classes="score-footer" ColumnDefinitions="*,Auto,Auto">
+                            <TextBlock Classes="footer-text" Text="{Binding ShowingText}"/>
+                            <StackPanel Grid.Column="1" Classes="pagination">
+                                <Button Classes="secondary-btn compact" Command="{Binding PreviousPageCommand}">
+                                    <StackPanel Classes="inline-icon-text">
+                                        <Path Classes="icon" Data="{DynamicResource IconBack}"/>
+                                        <TextBlock
+                                                   Text="{Binding [Scoreboard.Previous],
+                                                                  Source={x:Static
+                                                                      loc:LocalizationManager.Instance}}"/>
+                                    </StackPanel>
+                                </Button>
+                                <TextBlock Classes="page-text" Text="{Binding PageText}"/>
+                                <Button Classes="secondary-btn compact" Command="{Binding NextPageCommand}">
+                                    <TextBlock
+                                               Text="{Binding [Scoreboard.Next],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                </Button>
+                            </StackPanel>
+                            <Button Grid.Column="2" Classes="primary-btn compact"
+                                    ToolTip.ShowOnDisabled="True"
+                                    ToolTip.Tip="{Binding [Scoreboard.NoRankHint],
+                                                          Source={x:Static
+                                                              loc:LocalizationManager.Instance}}"
+                                    Command="{Binding GoToMyPositionCommand}">
+                                <StackPanel Classes="inline-icon-text">
+                                    <Path Classes="icon" Data="{DynamicResource IconUser}"/>
+                                    <TextBlock
+                                               Text="{Binding [Scoreboard.GoToMyPosition],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                    </Grid>
+                </Border>
+
+            </Grid>
+        </Border>
+    </Viewbox>
+</UserControl>
