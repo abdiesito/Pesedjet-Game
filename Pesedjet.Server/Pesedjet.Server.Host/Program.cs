@@ -1,23 +1,40 @@
-﻿using CoreWCF;
+using CoreWCF;
 using CoreWCF.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Pesedjet.Server.Contracts.Endpoints;
 using Pesedjet.Server.Contracts.Interfaces;
-using Pesedjet.Server.Identity.Authentication;
+using Pesedjet.Server.CrossCutting.Security;
+using Pesedjet.Server.DataAccess.Contexts;
+using Pesedjet.Server.DataAccess.Repositories.Implementations;
+using Pesedjet.Server.DataAccess.Repositories.Interfaces;
+using Pesedjet.Server.PlayerManagement.Registration;
 
-var builder = WebApplication.CreateBuilder(args);
+const string ConnectionStringName = "DefaultConnection";
+const string MissingConnectionStringMessage = "ConnectionStrings:DefaultConnection was not found in the configuration.";
 
-builder.WebHost.UseNetTcp(8081);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddUserSecrets<Program>();
+
+string connectionString = builder.Configuration.GetConnectionString(ConnectionStringName)
+                          ?? throw new InvalidOperationException(MissingConnectionStringMessage);
+
+builder.WebHost.UseNetTcp(ServiceEndpoints.TcpPort);
 builder.Services.AddServiceModelServices();
-builder.Services.AddTransient<AuthManagerService>();
+builder.Services.AddDbContext<PesedjetDatabaseContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddTransient<AccountService>();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 ((IApplicationBuilder)app).UseServiceModel(serviceBuilder =>
 {
     var tcpBinding = new NetTcpBinding(SecurityMode.None);
 
-    serviceBuilder.AddService<AuthManagerService>()
-        .AddServiceEndpoint<AuthManagerService, IAuthManager>
-            (tcpBinding, "net.tcp://localhost:8081/AuthService");
+    serviceBuilder.AddService<AccountService>()
+        .AddServiceEndpoint<AccountService, IAccountService>
+            (tcpBinding, ServiceEndpoints.AccountServiceAddress);
 });
 
 app.Run();

@@ -1,10 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <UserSecretsId>3d4d641a-16eb-4226-8901-25bedd24d0e6</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Pesedjet.Server.Identity\Pesedjet.Server.Identity.csproj" />
+      <ProjectReference Include="..\Pesedjet.Server.PlayerManagement\Pesedjet.Server.PlayerManagement.csproj" />
     </ItemGroup>
 
 </Project>
