@@ -1,0 +1,57 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.HamburgerMenuView"
+             x:DataType="vm:HamburgerMenuViewModel"
+             x:CompileBindings="True">
+
+    <ThemeVariantScope RequestedThemeVariant="Light">
+        <Grid>
+            <Button Classes="scrim-dismiss" Command="{Binding CloseCommand}"/>
+
+            <Border Classes="popover-panel narrow">
+                <StackPanel>
+                    <Border Classes="notifications-header">
+                        <TextBlock Classes="notifications-title"
+                                   Text="{Binding [HamburgerMenu.Title],
+                                           Source={x:Static
+                                               loc:LocalizationManager.Instance}}"/>
+                    </Border>
+                    <Border Classes="menu-section">
+                        <StackPanel Classes="menu-section-content">
+                            <TextBlock Classes="field-label"
+                                       Text="{Binding [HamburgerMenu.Language],
+                                               Source={x:Static
+                                                   loc:LocalizationManager.Instance}}"/>
+                            <ComboBox Classes="select-field"
+                                      HorizontalAlignment="Stretch"
+                                      ItemsSource="{Binding Language.AvailableLanguages}"
+                                      SelectedItem="{Binding Language.CurrentLanguage}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate x:DataType="loc:LanguageOption">
+                                        <TextBlock Text="{Binding DisplayName}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                    </Border>
+                    <Border Classes="menu-section">
+                        <Button Classes="secondary-btn" Command="{Binding OpenSettingsCommand}">
+                            <StackPanel Classes="inline-icon-text">
+                                <Path Classes="icon" Data="{DynamicResource IconSettings}"/>
+                                <TextBlock
+                                           Text="{Binding [MainMenu.Settings],
+                                                   Source={x:Static
+                                                       loc:LocalizationManager.Instance}}"/>
+                            </StackPanel>
+                        </Button>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </ThemeVariantScope>
+</UserControl>

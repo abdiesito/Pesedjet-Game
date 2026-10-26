@@ -1,0 +1,144 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
+             xmlns:components="using:Pesedjet.Client.UI.Views.Components"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.GuestNoticeView"
+             x:DataType="vm:GuestNoticeViewModel"
+             x:CompileBindings="True">
+
+    <ThemeVariantScope RequestedThemeVariant="Dark">
+        <Grid Classes="dialog-scrim">
+            <Viewbox Classes="dialog-fit">
+                <Border Classes="modal-card wide">
+                    <StackPanel Classes="modal-stack">
+                        <StackPanel Classes="modal-header">
+                            <Border Classes="modal-icon">
+                                <Path Classes="icon" Data="{DynamicResource IconUser}"/>
+                            </Border>
+                            <TextBlock Classes="modal-title"
+                                       Text="{Binding [Guest.NoticeTitle],
+                                               Source={x:Static
+                                                   loc:LocalizationManager.Instance}}"/>
+                        </StackPanel>
+                        <Border Classes="modal-divider"/>
+                        <Grid ColumnDefinitions="*,*">
+                            <StackPanel Classes="capability-list">
+                                <TextBlock Classes="capability-title"
+                                           Text="{Binding [Guest.CanDoTitle],
+                                                   Source={x:Static
+                                                       loc:LocalizationManager.Instance}}"/>
+                                <StackPanel Classes="capability">
+                                    <Path Classes="icon" Data="{DynamicResource IconCheck}"/>
+                                    <TextBlock
+                                               Text="{Binding [Guest.CanCreateRoom],
+                                                       Source={x:Static
+                                                           loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Classes="capability">
+                                    <Path Classes="icon" Data="{DynamicResource IconCheck}"/>
+                                    <TextBlock
+                                               Text="{Binding [Guest.CanJoinRoom],
+                                                       Source={x:Static
+                                                           loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Classes="capability">
+                                    <Path Classes="icon" Data="{DynamicResource IconCheck}"/>
+                                    <TextBlock
+                                               Text="{Binding [Guest.CanPlayFull],
+                                                       Source={x:Static
+                                                           loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Classes="capability-list">
+                                <TextBlock Classes="capability-title muted"
+                                           Text="{Binding [Guest.CannotTitle],
+                                                   Source={x:Static
+                                                       loc:LocalizationManager.Instance}}"/>
+                                <StackPanel Classes="capability no">
+                                    <Path Classes="icon" Data="{DynamicResource IconClose}"/>
+                                    <TextBlock
+                                               Text="{Binding [Guest.CannotProfile],
+                                                       Source={x:Static
+                                                           loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Classes="capability no">
+                                    <Path Classes="icon" Data="{DynamicResource IconClose}"/>
+                                    <TextBlock
+                                               Text="{Binding [Guest.CannotScoreboard],
+                                                       Source={x:Static
+                                                           loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Classes="capability no">
+                                    <Path Classes="icon" Data="{DynamicResource IconClose}"/>
+                                    <TextBlock
+                                               Text="{Binding [Guest.CannotChat],
+                                                       Source={x:Static
+                                                           loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                        <HeaderedContentControl Classes="alert warning"
+                                                Header="{Binding [Guest.ProgressWarning],
+                                                               Source={x:Static
+                                                                   loc:LocalizationManager.Instance}}"/>
+                        <HeaderedContentControl Classes="alert error"
+                                                IsVisible="{Binding HasConnectionError}"
+                                                Header="{Binding [Common.ConnectionError],
+                                                               Source={x:Static
+                                                                   loc:LocalizationManager.Instance}}">
+                            <Button Classes="alert-action" Command="{Binding ContinueCommand}">
+                                <StackPanel Classes="inline-icon-text">
+                                    <Path Classes="icon" Data="{DynamicResource IconRefresh}"/>
+                                    <TextBlock
+                                               Text="{Binding [Common.Retry],
+                                                       Source={x:Static
+                                                           loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                            </Button>
+                        </HeaderedContentControl>
+                        <UniformGrid Classes="button-row" IsVisible="{Binding IsEntry}">
+                            <Button Classes="modal-secondary" Command="{Binding BackCommand}">
+                                <StackPanel Classes="inline-icon-text">
+                                    <Path Classes="icon" Data="{DynamicResource IconBack}"/>
+                                    <TextBlock
+                                               Text="{Binding [Guest.Back],
+                                                       Source={x:Static
+                                                           loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Classes="modal-primary"
+                                    Classes.loading="{Binding IsBusy}"
+                                    behaviors:InitialFocus.IsEnabled="True"
+                                    Command="{Binding ContinueCommand}">
+                                <StackPanel Classes="inline-icon-text">
+                                    <Path Classes="spinner" IsVisible="{Binding IsBusy}"/>
+                                    <TextBlock IsVisible="{Binding !IsBusy}"
+                                               Text="{Binding [Guest.Continue],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                    <TextBlock IsVisible="{Binding IsBusy}"
+                                               Text="{Binding [Guest.Entering],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                            </Button>
+                        </UniformGrid>
+                        <Button Classes="modal-primary"
+                                IsVisible="{Binding !IsEntry}"
+                                behaviors:InitialFocus.IsEnabled="True"
+                                Command="{Binding BackCommand}"
+                                Content="{Binding [Guest.Close],
+                                                       Source={x:Static
+                                                           loc:LocalizationManager.Instance}}"/>
+                    </StackPanel>
+                </Border>
+            </Viewbox>
+            <components:LanguageSelector IsVisible="{Binding IsEntry}"/>
+        </Grid>
+    </ThemeVariantScope>
+</UserControl>
