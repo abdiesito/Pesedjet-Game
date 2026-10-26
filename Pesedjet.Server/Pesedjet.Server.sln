@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pesedjet.Server.CrossCuttin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pesedjet.Server.Host", "Pesedjet.Server.Host\Pesedjet.Server.Host.csproj", "{50C7E96C-9F84-4EC9-90FB-93614C64679D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pesedjet.Server.Identity", "Pesedjet.Server.Identity\Pesedjet.Server.Identity.csproj", "{181D176C-F4B9-43A4-98D0-43963A1E4C58}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pesedjet.Server.PlayerManagement", "Pesedjet.Server.PlayerManagement\Pesedjet.Server.PlayerManagement.csproj", "{181D176C-F4B9-43A4-98D0-43963A1E4C58}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pesedjet.Server.Game", "Pesedjet.Server.Game\Pesedjet.Server.Game.csproj", "{63716B89-5E79-46E9-A1CC-9CA2C0CE3A6C}"
 EndProject
