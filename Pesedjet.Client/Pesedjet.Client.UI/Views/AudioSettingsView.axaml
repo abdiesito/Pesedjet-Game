@@ -1,0 +1,116 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="Pesedjet.Client.UI.Views.AudioSettingsView"
+             x:DataType="vm:AudioSettingsViewModel"
+             x:CompileBindings="True">
+
+    <StackPanel Classes="settings-section">
+        <StackPanel Classes="heading-group">
+            <TextBlock Classes="section-title"
+                       Text="{Binding [AudioSettings.Title],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+            <TextBlock Classes="field-hint"
+                       Text="{Binding [AudioSettings.Subtitle],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+        </StackPanel>
+
+        <StackPanel Classes="settings-list">
+            <Border Classes="setting-row">
+                <Grid ColumnDefinitions="260,*,80">
+                    <StackPanel Classes="setting-label">
+                        <TextBlock Classes="field-label"
+                                   Text="{Binding [AudioSettings.MasterVolume],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                    </StackPanel>
+                    <Slider Grid.Column="1" Classes="volume-slider"
+                            Classes.muted="{Binding IsMuted}"
+                            Value="{Binding MasterVolume}"/>
+                    <TextBlock Grid.Column="2" Classes="setting-value"
+                               Text="{Binding MasterVolume, StringFormat={}{0:0} %}"
+                               IsVisible="{Binding !IsMuted}"/>
+                    <TextBlock Grid.Column="2" Classes="setting-value"
+                               IsVisible="{Binding IsMuted}"
+                               Text="{Binding [AudioSettings.Muted],
+                                              Source={x:Static loc:LocalizationManager.Instance}}"/>
+                </Grid>
+            </Border>
+            <Border Classes="setting-row">
+                <Grid ColumnDefinitions="260,*,80">
+                    <StackPanel Classes="setting-label">
+                        <TextBlock Classes="field-label"
+                                   Text="{Binding [AudioSettings.Music],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                        <TextBlock Classes="field-hint"
+                                   Text="{Binding [AudioSettings.MusicHint],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                    </StackPanel>
+                    <Slider Grid.Column="1" Classes="volume-slider"
+                            Classes.muted="{Binding IsMuted}"
+                            Value="{Binding MusicVolume}"/>
+                    <TextBlock Grid.Column="2" Classes="setting-value"
+                               Text="{Binding MusicVolume, StringFormat={}{0:0} %}"
+                               IsVisible="{Binding !IsMuted}"/>
+                    <TextBlock Grid.Column="2" Classes="setting-value"
+                               IsVisible="{Binding IsMuted}"
+                               Text="{Binding [AudioSettings.Muted],
+                                              Source={x:Static loc:LocalizationManager.Instance}}"/>
+                </Grid>
+            </Border>
+            <Border Classes="setting-row">
+                <Grid ColumnDefinitions="260,*,80">
+                    <StackPanel Classes="setting-label">
+                        <TextBlock Classes="field-label"
+                                   Text="{Binding [AudioSettings.Effects],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                        <TextBlock Classes="field-hint"
+                                   Text="{Binding [AudioSettings.EffectsHint],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                    </StackPanel>
+                    <Slider Grid.Column="1" Classes="volume-slider"
+                            Classes.muted="{Binding IsMuted}"
+                            Value="{Binding EffectsVolume}"/>
+                    <TextBlock Grid.Column="2" Classes="setting-value"
+                               Text="{Binding EffectsVolume, StringFormat={}{0:0} %}"
+                               IsVisible="{Binding !IsMuted}"/>
+                    <TextBlock Grid.Column="2" Classes="setting-value"
+                               IsVisible="{Binding IsMuted}"
+                               Text="{Binding [AudioSettings.Muted],
+                                              Source={x:Static loc:LocalizationManager.Instance}}"/>
+                </Grid>
+            </Border>
+            <Border Classes="setting-row">
+                <Grid ColumnDefinitions="260,*,80">
+                    <StackPanel Classes="setting-label">
+                        <TextBlock Classes="field-label"
+                                   Text="{Binding [AudioSettings.MuteAll],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                        <TextBlock Classes="field-hint"
+                                   Text="{Binding [AudioSettings.MuteHint],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1" Classes="switch-standard"
+                                  IsChecked="{Binding IsMuted}"
+                                  OnContent="{Binding [Common.Yes],
+                                                      Source={x:Static loc:LocalizationManager.Instance}}"
+                                  OffContent="{Binding [Common.No],
+                                                       Source={x:Static loc:LocalizationManager.Instance}}"/>
+                </Grid>
+            </Border>
+        </StackPanel>
+
+        <Border Classes="saved-notice">
+            <StackPanel Classes="inline-icon-text">
+                <Path Classes="icon" Data="{DynamicResource IconCheck}"/>
+                <TextBlock Text="{Binding [Common.SavedOnDevice],
+                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                <Path Classes="icon" Data="{DynamicResource IconDisplay}"/>
+            </StackPanel>
+        </Border>
+
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,56 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="Pesedjet.Client.UI.Views.LanguageSettingsView"
+             x:DataType="vm:LanguageSettingsViewModel"
+             x:CompileBindings="True">
+
+    <StackPanel Classes="settings-section">
+        <StackPanel Classes="heading-group">
+            <TextBlock Classes="section-title"
+                       Text="{Binding [LanguageSettings.Title],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+            <TextBlock Classes="field-hint"
+                       Text="{Binding [LanguageSettings.Subtitle],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+        </StackPanel>
+
+        <StackPanel Classes="settings-list">
+            <Border Classes="setting-row">
+                <Grid ColumnDefinitions="260,*,80">
+                    <StackPanel Classes="setting-label">
+                        <TextBlock Classes="field-label"
+                                   Text="{Binding [LanguageSettings.InterfaceLanguage],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                        <TextBlock Classes="field-hint"
+                                   Text="{Binding [LanguageSettings.InterfaceLanguageHint],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                    </StackPanel>
+                    <ComboBox Grid.Column="1" Classes="select-field"
+                              ItemsSource="{Binding AvailableLanguages}"
+                              SelectedItem="{Binding CurrentLanguage}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="loc:LanguageOption">
+                                <TextBlock Text="{Binding DisplayName}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Grid>
+            </Border>
+        </StackPanel>
+
+        <Border Classes="saved-notice">
+            <StackPanel Classes="inline-icon-text">
+                <Path Classes="icon" Data="{DynamicResource IconCheck}"/>
+                <TextBlock Text="{Binding [Common.SavedOnAccountAndDevice],
+                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                <Path Classes="icon" Data="{DynamicResource IconDisplay}"/>
+            </StackPanel>
+        </Border>
+
+    </StackPanel>
+</UserControl>

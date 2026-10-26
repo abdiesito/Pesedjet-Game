@@ -1,0 +1,209 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="Pesedjet.Client.UI.Views.AccountSettingsView"
+             x:DataType="vm:AccountSettingsViewModel"
+             x:CompileBindings="True">
+
+    <StackPanel Classes="settings-section">
+        <StackPanel Classes="heading-group">
+            <TextBlock Classes="section-title"
+                       Text="{Binding [AccountSettings.Title],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+            <TextBlock Classes="field-hint"
+                       Text="{Binding [AccountSettings.Subtitle],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+        </StackPanel>
+
+        <StackPanel Classes="settings-fields">
+            <StackPanel Classes="field">
+                <TextBlock Classes="field-label" Classes.error="{Binding HasCurrentPasswordError}">
+                    <Run Text="{Binding [AccountSettings.CurrentPassword],
+                                        Source={x:Static loc:LocalizationManager.Instance}}"/>
+                    <Run Classes="required"/>
+                </TextBlock>
+                <TextBox Classes="input-field password"
+                         Classes.error="{Binding HasCurrentPasswordError}"
+                         Text="{Binding CurrentPassword}"
+                         RevealPassword="{Binding IsCurrentPasswordVisible}">
+                    <TextBox.InnerLeftContent>
+                        <Path Classes="icon field-icon" Data="{DynamicResource IconLock}"/>
+                    </TextBox.InnerLeftContent>
+                    <TextBox.InnerRightContent>
+                        <ToggleButton Classes="reveal-toggle" IsChecked="{Binding IsCurrentPasswordVisible}">
+                            <Panel>
+                                <TextBlock IsVisible="{Binding !IsCurrentPasswordVisible}"
+                                           Text="{Binding [AccessMenu.ShowPassword],
+                                                          Source={x:Static
+                                                              loc:LocalizationManager.Instance}}"/>
+                                <TextBlock IsVisible="{Binding IsCurrentPasswordVisible}"
+                                           Text="{Binding [AccessMenu.HidePassword],
+                                                          Source={x:Static
+                                                              loc:LocalizationManager.Instance}}"/>
+                            </Panel>
+                        </ToggleButton>
+                    </TextBox.InnerRightContent>
+                </TextBox>
+                <ContentControl Classes="field-message"
+                                Content="{Binding [RegisterAccount.ObligatoryField],
+                                                  Source={x:Static
+                                                      loc:LocalizationManager.Instance}}"
+                                IsVisible="{Binding IsCurrentPasswordRequired}"/>
+            </StackPanel>
+            <StackPanel Classes="field">
+                <TextBlock Classes="field-label" Classes.error="{Binding HasNewPasswordError}">
+                    <Run Text="{Binding [AccountSettings.NewPassword],
+                                        Source={x:Static loc:LocalizationManager.Instance}}"/>
+                    <Run Classes="required"/>
+                </TextBlock>
+                <TextBox Classes="input-field password"
+                         Classes.error="{Binding HasNewPasswordError}"
+                         Text="{Binding NewPassword}"
+                         RevealPassword="{Binding IsNewPasswordVisible}">
+                    <TextBox.InnerLeftContent>
+                        <Path Classes="icon field-icon" Data="{DynamicResource IconLock}"/>
+                    </TextBox.InnerLeftContent>
+                    <TextBox.InnerRightContent>
+                        <ToggleButton Classes="reveal-toggle" IsChecked="{Binding IsNewPasswordVisible}">
+                            <Panel>
+                                <TextBlock IsVisible="{Binding !IsNewPasswordVisible}"
+                                           Text="{Binding [AccessMenu.ShowPassword],
+                                                          Source={x:Static
+                                                              loc:LocalizationManager.Instance}}"/>
+                                <TextBlock IsVisible="{Binding IsNewPasswordVisible}"
+                                           Text="{Binding [AccessMenu.HidePassword],
+                                                          Source={x:Static
+                                                              loc:LocalizationManager.Instance}}"/>
+                            </Panel>
+                        </ToggleButton>
+                    </TextBox.InnerRightContent>
+                </TextBox>
+                <ContentControl Classes="field-message"
+                                Content="{Binding [RegisterAccount.ObligatoryField],
+                                                  Source={x:Static
+                                                      loc:LocalizationManager.Instance}}"
+                                IsVisible="{Binding IsNewPasswordRequired}"/>
+                <ContentControl Classes="field-message"
+                                Content="{Binding [RegisterAccount.PasswordRequirementsUnmet],
+                                                  Source={x:Static
+                                                      loc:LocalizationManager.Instance}}"
+                                IsVisible="{Binding ArePasswordRequirementsUnmet}"/>
+                <ContentControl Classes="field-message"
+                                Content="{Binding [AccountSettings.PasswordUnchanged],
+                                                  Source={x:Static
+                                                      loc:LocalizationManager.Instance}}"
+                                IsVisible="{Binding IsNewPasswordUnchanged}"/>
+            </StackPanel>
+            <Border Classes="requirements-box">
+                <StackPanel Classes="brand-list">
+                    <TextBlock Classes="brand-section-title"
+                               Text="{Binding [RegisterAccount.RequirementsTitle],
+                                              Source={x:Static loc:LocalizationManager.Instance}}"/>
+                    <HeaderedContentControl Classes="requirement"
+                                            Classes.met="{Binding HasMinimumLength}"
+                                            Header="{Binding [RegisterAccount.RequirementMinLength],
+                                                             Source={x:Static
+                                                                 loc:LocalizationManager.Instance}}"
+                                            Content="{Binding [RegisterAccount.RequirementMet],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                    <HeaderedContentControl Classes="requirement"
+                                            Classes.met="{Binding HasUppercase}"
+                                            Header="{Binding [RegisterAccount.RequirementUppercase],
+                                                             Source={x:Static
+                                                                 loc:LocalizationManager.Instance}}"
+                                            Content="{Binding [RegisterAccount.RequirementMet],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                    <HeaderedContentControl Classes="requirement"
+                                            Classes.met="{Binding HasNumber}"
+                                            Header="{Binding [RegisterAccount.RequirementNumber],
+                                                             Source={x:Static
+                                                                 loc:LocalizationManager.Instance}}"
+                                            Content="{Binding [RegisterAccount.RequirementMet],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                    <HeaderedContentControl Classes="requirement"
+                                            Classes.met="{Binding HasSpecialCharacter}"
+                                            Header="{Binding [RegisterAccount.RequirementSpecial],
+                                                             Source={x:Static
+                                                                 loc:LocalizationManager.Instance}}"
+                                            Content="{Binding [RegisterAccount.RequirementMet],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                </StackPanel>
+            </Border>
+            <StackPanel Classes="field">
+                <TextBlock Classes="field-label" Classes.error="{Binding HasConfirmPasswordError}">
+                    <Run Text="{Binding [AccountSettings.ConfirmPassword],
+                                        Source={x:Static loc:LocalizationManager.Instance}}"/>
+                    <Run Classes="required"/>
+                </TextBlock>
+                <TextBox Classes="input-field password"
+                         Classes.error="{Binding HasConfirmPasswordError}"
+                         Text="{Binding ConfirmPassword}"
+                         RevealPassword="{Binding IsConfirmPasswordVisible}">
+                    <TextBox.InnerLeftContent>
+                        <Path Classes="icon field-icon" Data="{DynamicResource IconLock}"/>
+                    </TextBox.InnerLeftContent>
+                    <TextBox.InnerRightContent>
+                        <ToggleButton Classes="reveal-toggle" IsChecked="{Binding IsConfirmPasswordVisible}">
+                            <Panel>
+                                <TextBlock IsVisible="{Binding !IsConfirmPasswordVisible}"
+                                           Text="{Binding [AccessMenu.ShowPassword],
+                                                          Source={x:Static
+                                                              loc:LocalizationManager.Instance}}"/>
+                                <TextBlock IsVisible="{Binding IsConfirmPasswordVisible}"
+                                           Text="{Binding [AccessMenu.HidePassword],
+                                                          Source={x:Static
+                                                              loc:LocalizationManager.Instance}}"/>
+                            </Panel>
+                        </ToggleButton>
+                    </TextBox.InnerRightContent>
+                </TextBox>
+                <ContentControl Classes="field-message"
+                                Content="{Binding [RegisterAccount.ObligatoryField],
+                                                  Source={x:Static
+                                                      loc:LocalizationManager.Instance}}"
+                                IsVisible="{Binding IsConfirmPasswordRequired}"/>
+                <ContentControl Classes="field-message"
+                                Content="{Binding [RegisterAccount.PasswordsMismatch],
+                                                  Source={x:Static
+                                                      loc:LocalizationManager.Instance}}"
+                                IsVisible="{Binding IsConfirmPasswordMismatch}"/>
+            </StackPanel>
+            <UniformGrid Classes="button-row">
+                <Button Classes="secondary-btn"
+                        Command="{Binding CancelPasswordChangeCommand}"
+                        Content="{Binding [Common.Cancel],
+                                          Source={x:Static loc:LocalizationManager.Instance}}"/>
+                <Button Classes="primary-btn"
+                        Command="{Binding ChangePasswordCommand}"
+                        Content="{Binding [AccountSettings.ChangePassword],
+                                          Source={x:Static loc:LocalizationManager.Instance}}"/>
+            </UniformGrid>
+        </StackPanel>
+
+        <Border Classes="danger-zone">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Classes="setting-label">
+                    <TextBlock Classes="danger-title"
+                               Text="{Binding [AccountSettings.DangerTitle],
+                                              Source={x:Static loc:LocalizationManager.Instance}}"/>
+                    <TextBlock Classes="field-hint"
+                               Text="{Binding [AccountSettings.DangerHint],
+                                              Source={x:Static loc:LocalizationManager.Instance}}"/>
+                </StackPanel>
+                <Button Grid.Column="1" Classes="alert-action"
+                        Command="{Binding DeleteAccountCommand}"
+                        Content="{Binding [AccountSettings.DeleteAccount],
+                                          Source={x:Static loc:LocalizationManager.Instance}}"/>
+            </Grid>
+        </Border>
+
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,98 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="Pesedjet.Client.UI.Views.DisplaySettingsView"
+             x:DataType="vm:DisplaySettingsViewModel"
+             x:CompileBindings="True">
+
+    <StackPanel Classes="settings-section">
+        <StackPanel Classes="heading-group">
+            <TextBlock Classes="section-title"
+                       Text="{Binding [DisplaySettings.Title],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+            <TextBlock Classes="field-hint"
+                       Text="{Binding [DisplaySettings.Subtitle],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+        </StackPanel>
+
+        <StackPanel Classes="settings-list">
+            <Border Classes="setting-row">
+                <Grid ColumnDefinitions="260,*,80">
+                    <StackPanel Classes="setting-label">
+                        <TextBlock Classes="field-label"
+                                   Text="{Binding [DisplaySettings.Mode],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Classes="choice-group">
+                        <Button Classes="secondary-btn choice-btn"
+                                Classes.selected="{Binding IsWindowed}"
+                                Command="{Binding SelectWindowedCommand}">
+                            <StackPanel Classes="inline-icon-text">
+                                <Path Classes="icon" Data="{DynamicResource IconCircle}"/>
+                                <TextBlock Text="{Binding [DisplaySettings.Windowed],
+                                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Classes="secondary-btn choice-btn"
+                                Classes.selected="{Binding IsFullScreen}"
+                                Command="{Binding SelectFullScreenCommand}">
+                            <StackPanel Classes="inline-icon-text">
+                                <Path Classes="icon" Data="{DynamicResource IconCircle}"/>
+                                <TextBlock Text="{Binding [DisplaySettings.FullScreen],
+                                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Border Classes="setting-row">
+                <Grid ColumnDefinitions="260,*,80">
+                    <StackPanel Classes="setting-label">
+                        <TextBlock Classes="field-label"
+                                   Text="{Binding [DisplaySettings.WindowSize],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                        <TextBlock Classes="field-hint"
+                                   Text="{Binding [DisplaySettings.WindowSizeHint],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                    </StackPanel>
+                    <ComboBox Grid.Column="1" Classes="select-field"
+                              ItemsSource="{Binding WindowSizes}"
+                              SelectedItem="{Binding SelectedWindowSize}"
+                              IsEnabled="{Binding IsWindowed}"/>
+                </Grid>
+            </Border>
+            <Border Classes="setting-row">
+                <Grid ColumnDefinitions="260,*,80">
+                    <StackPanel Classes="setting-label">
+                        <TextBlock Classes="field-label"
+                                   Text="{Binding [DisplaySettings.ReduceMotion],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                        <TextBlock Classes="field-hint"
+                                   Text="{Binding [DisplaySettings.ReduceMotionHint],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1" Classes="switch-standard"
+                                  IsChecked="{Binding ReduceMotion}"
+                                  OnContent="{Binding [Common.Yes],
+                                                      Source={x:Static loc:LocalizationManager.Instance}}"
+                                  OffContent="{Binding [Common.No],
+                                                       Source={x:Static loc:LocalizationManager.Instance}}"/>
+                </Grid>
+            </Border>
+        </StackPanel>
+
+        <Border Classes="saved-notice">
+            <StackPanel Classes="inline-icon-text">
+                <Path Classes="icon" Data="{DynamicResource IconCheck}"/>
+                <TextBlock Text="{Binding [Common.SavedOnDevice],
+                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                <Path Classes="icon" Data="{DynamicResource IconDisplay}"/>
+            </StackPanel>
+        </Border>
+
+    </StackPanel>
+</UserControl>

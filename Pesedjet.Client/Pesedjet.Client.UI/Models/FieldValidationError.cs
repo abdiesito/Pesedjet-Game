@@ -7,5 +7,7 @@ public enum FieldValidationError
     InvalidFormat,
     Underage,
     PasswordRequirementsNotMet,
-    PasswordsDoNotMatch
+    PasswordsDoNotMatch,
+    AlreadyRegistered,
+    PasswordUnchanged
 }
