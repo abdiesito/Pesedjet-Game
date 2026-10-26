@@ -1,0 +1,67 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.InviteFriendsView"
+             x:DataType="vm:InviteFriendsViewModel"
+             x:CompileBindings="True">
+
+    <ThemeVariantScope RequestedThemeVariant="Dark">
+        <Grid Classes="dialog-scrim">
+            <Viewbox Classes="dialog-fit">
+                <Border Classes="modal-card">
+                    <StackPanel Classes="modal-stack">
+                        <StackPanel Classes="modal-header">
+                            <Border Classes="modal-icon">
+                                <Path Classes="icon" Data="{DynamicResource IconFriends}"/>
+                            </Border>
+                            <TextBlock Classes="modal-title"
+                                       Text="{Binding [InviteFriends.Title],
+                                                      Source={x:Static
+                                                          loc:LocalizationManager.Instance}}"/>
+                        </StackPanel>
+                        <Border Classes="modal-divider"/>
+                        <TextBlock Classes="modal-text" Text="{Binding FreeSlotsText}"/>
+                        <TextBlock Classes="modal-text"
+                                   IsVisible="{Binding !HasCandidates}"
+                                   Text="{Binding [InviteFriends.None],
+                                                  Source={x:Static
+                                                      loc:LocalizationManager.Instance}}"/>
+                        <ScrollViewer Classes="invite-scroll">
+                            <ItemsControl ItemsSource="{Binding Candidates}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="models:InviteCandidate">
+                                        <Border Classes="invite-row">
+                                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                                <CheckBox Classes="invite-check"
+                                                          IsEnabled="{Binding IsAvailable}"
+                                                          IsChecked="{Binding IsSelected}"/>
+                                                <TextBlock Grid.Column="1" Classes="invite-name"
+                                                           Text="{Binding Username}"/>
+                                                <TextBlock Grid.Column="2" Classes="invite-status"
+                                                           Text="{Binding StatusText}"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                        <UniformGrid Classes="button-row">
+                            <Button Classes="modal-secondary"
+                                    Command="{Binding CancelCommand}"
+                                    Content="{Binding [Common.Cancel],
+                                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+                            <Button Classes="modal-primary"
+                                    Command="{Binding SendCommand}"
+                                    Content="{Binding SendLabel}"/>
+                        </UniformGrid>
+                    </StackPanel>
+                </Border>
+            </Viewbox>
+        </Grid>
+    </ThemeVariantScope>
+</UserControl>

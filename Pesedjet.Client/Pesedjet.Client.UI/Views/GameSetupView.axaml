@@ -1,0 +1,191 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:rules="using:Pesedjet.Client.UI.Utilities.Validation"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.GameSetupView"
+             x:DataType="vm:GameSetupViewModel"
+             x:CompileBindings="True">
+
+    <Viewbox Classes="fit-down">
+        <Border Classes="dialog-card screen-panel">
+            <Grid RowDefinitions="Auto,*">
+
+                <Border Classes="panel-header">
+                    <StackPanel Classes="panel-header-content">
+                        <Button Classes="header-btn" Command="{Binding CancelCommand}">
+                            <StackPanel Classes="inline-icon-text">
+                                <Path Classes="icon" Data="{DynamicResource IconBack}"/>
+                                <TextBlock
+                                           Text="{Binding [GameSetup.Back],
+                                                   Source={x:Static
+                                                       loc:LocalizationManager.Instance}}"/>
+                            </StackPanel>
+                        </Button>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Classes="panel-title"
+                                       Text="{Binding [GameSetup.Title],
+                                               Source={x:Static
+                                                   loc:LocalizationManager.Instance}}"/>
+                            <TextBlock Classes="panel-subtitle"
+                                       Text="{Binding [GameSetup.Subtitle],
+                                               Source={x:Static
+                                                   loc:LocalizationManager.Instance}}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="1" Classes="panel-body">
+                    <Grid RowDefinitions="*,Auto">
+                        <Grid Classes="setup-grid" ColumnDefinitions="*,*">
+
+                            <StackPanel Classes="setup-column" Margin="0,0,16,0">
+                                <TextBlock Classes="field-label">
+                                    <Run Text="{Binding [GameSetup.CapacityLabel],
+                                                       Source={x:Static
+                                                           loc:LocalizationManager.Instance}}"/>
+                                    <Run Classes="required"/>
+                                </TextBlock>
+                                <ItemsControl ItemsSource="{Binding Capacities}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Classes="capacity-list"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="models:CapacityOption">
+                                            <Button Classes="secondary-btn capacity-btn"
+                                                    Classes.selected="{Binding IsSelected}"
+                                                    Command="{Binding SelectCommand}"
+                                                    CommandParameter="{Binding}"
+                                                    Content="{Binding Value}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <Border Classes="goal-box">
+                                    <StackPanel Classes="inline-icon-text" HorizontalAlignment="Left">
+                                        <ItemsControl ItemsSource="{Binding AmuletSlots}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Classes="amulet-row"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="x:Boolean">
+                                                    <Path Classes="amulet"
+                                                          Classes.filled="{Binding}"
+                                                          Data="{DynamicResource IconDiamond}"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <TextBlock Classes="body-secondary"
+                                                   MaxWidth="320"
+                                                   Text="{Binding GoalInfo}"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Classes="setup-column" Margin="16,0,0,0">
+                                <TextBlock Classes="field-label">
+                                    <Run Text="{Binding [GameSetup.VisibilityLabel],
+                                                       Source={x:Static
+                                                           loc:LocalizationManager.Instance}}"/>
+                                    <Run Classes="required"/>
+                                </TextBlock>
+                                <Button Classes="radio-card"
+                                        Classes.selected="{Binding IsPublicSelected}"
+                                        Command="{Binding SelectPublicCommand}">
+                                    <Grid ColumnDefinitions="Auto,*">
+                                        <Path Classes="radio-dot" Data="{DynamicResource IconCircle}"/>
+                                        <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                                            <TextBlock Classes="radio-title"
+                                                       Text="{Binding [GameSetup.Public],
+                                                               Source={x:Static
+                                                                   loc:LocalizationManager.Instance}}"/>
+                                            <TextBlock Classes="radio-hint"
+                                                       Text="{Binding [GameSetup.PublicHint],
+                                                               Source={x:Static
+                                                                   loc:LocalizationManager.Instance}}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Button>
+                                <Button Classes="radio-card"
+                                        Classes.selected="{Binding IsPrivateSelected}"
+                                        IsEnabled="{Binding IsPrivateAvailable}"
+                                        Command="{Binding SelectPrivateCommand}">
+                                    <Grid ColumnDefinitions="Auto,*,Auto">
+                                        <Path Classes="radio-dot" Data="{DynamicResource IconCircle}"/>
+                                        <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                                            <TextBlock Classes="radio-title"
+                                                       Text="{Binding [GameSetup.Private],
+                                                               Source={x:Static
+                                                                   loc:LocalizationManager.Instance}}"/>
+                                            <TextBlock Classes="radio-hint"
+                                                       IsVisible="{Binding IsPrivateAvailable}"
+                                                       Text="{Binding [GameSetup.PrivateHint],
+                                                               Source={x:Static
+                                                                   loc:LocalizationManager.Instance}}"/>
+                                            <TextBlock Classes="radio-hint"
+                                                       IsVisible="{Binding !IsPrivateAvailable}"
+                                                       Text="{Binding [GameSetup.PrivateGuestHint],
+                                                               Source={x:Static
+                                                                   loc:LocalizationManager.Instance}}"/>
+                                        </StackPanel>
+                                        <Path Grid.Column="2" Classes="icon"
+                                              IsVisible="{Binding !IsPrivateAvailable}"
+                                              Data="{DynamicResource IconLock}"/>
+                                    </Grid>
+                                </Button>
+                                <HeaderedContentControl Classes="alert error"
+                                                        IsVisible="{Binding HasConnectionError}"
+                                                        Header="{Binding [Common.ConnectionError],
+                                                                       Source={x:Static
+                                                                           loc:LocalizationManager.Instance}}">
+                                    <Button Classes="alert-action" Command="{Binding CreateRoomCommand}">
+                                        <StackPanel Classes="inline-icon-text">
+                                            <Path Classes="icon" Data="{DynamicResource IconRefresh}"/>
+                                                <TextBlock
+                                                           Text="{Binding [Common.Retry],
+                                                                   Source={x:Static
+                                                                       loc:LocalizationManager.Instance}}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </HeaderedContentControl>
+                            </StackPanel>
+
+                        </Grid>
+
+                        <StackPanel Grid.Row="1" Classes="footer-actions">
+                            <Button Classes="secondary-btn compact"
+                                    Command="{Binding CancelCommand}"
+                                    Content="{Binding [Common.Cancel],
+                                                       Source={x:Static
+                                                           loc:LocalizationManager.Instance}}"/>
+                            <Button Classes="primary-btn compact"
+                                    Classes.loading="{Binding IsBusy}"
+                                    Command="{Binding CreateRoomCommand}">
+                                <StackPanel Classes="inline-icon-text">
+                                    <Path Classes="spinner" IsVisible="{Binding IsBusy}"/>
+                                    <TextBlock IsVisible="{Binding !IsBusy}"
+                                               Text="{Binding [GameMenu.CreateRoomTitle],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                    <TextBlock IsVisible="{Binding IsBusy}"
+                                               Text="{Binding [GameSetup.Creating],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+            </Grid>
+        </Border>
+    </Viewbox>
+</UserControl>

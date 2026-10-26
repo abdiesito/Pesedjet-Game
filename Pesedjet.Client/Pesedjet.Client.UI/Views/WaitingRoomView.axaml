@@ -1,0 +1,344 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.WaitingRoomView"
+             x:DataType="vm:WaitingRoomViewModel"
+             x:CompileBindings="True">
+
+    <Viewbox Classes="fit-down">
+        <Border Classes="dialog-card screen-panel">
+            <Grid RowDefinitions="Auto,*">
+
+                <Border Classes="panel-header">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Classes="panel-title"
+                                       Text="{Binding [WaitingRoom.Title],
+                                                      Source={x:Static
+                                                          loc:LocalizationManager.Instance}}"/>
+                            <TextBlock Classes="panel-subtitle" Text="{Binding Subtitle}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Classes="panel-header-actions">
+                            <TextBlock Classes="panel-header-note"
+                                       Text="{Binding [WaitingRoom.CodeLabel],
+                                                      Source={x:Static
+                                                          loc:LocalizationManager.Instance}}"/>
+                            <Border Classes="code-box">
+                                <TextBlock Classes="code-text" Text="{Binding Code}"/>
+                            </Border>
+                            <Button Classes="header-btn" Command="{Binding CopyCodeCommand}">
+                                <Panel>
+                                    <StackPanel Classes="inline-icon-text" IsVisible="{Binding !IsCodeCopied}">
+                                        <Path Classes="icon" Data="{DynamicResource IconCopy}"/>
+                                        <TextBlock
+                                                   Text="{Binding [WaitingRoom.Copy],
+                                                                  Source={x:Static
+                                                                      loc:LocalizationManager.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Classes="inline-icon-text" IsVisible="{Binding IsCodeCopied}">
+                                        <Path Classes="icon" Data="{DynamicResource IconCheck}"/>
+                                        <TextBlock
+                                                   Text="{Binding [WaitingRoom.Copied],
+                                                                  Source={x:Static
+                                                                      loc:LocalizationManager.Instance}}"/>
+                                    </StackPanel>
+                                </Panel>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" Classes="panel-body">
+                    <Grid RowDefinitions="Auto,*,Auto">
+
+                        <Border Classes="settings-strip">
+                            <Grid ColumnDefinitions="Auto,Auto,*,Auto">
+                                <StackPanel Classes="strip-group" IsVisible="{Binding IsHost}">
+                                    <TextBlock Classes="field-label"
+                                               Text="{Binding [WaitingRoom.MaxPlayers],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                    <ItemsControl ItemsSource="{Binding Capacities}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Classes="capacity-list"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="models:CapacityOption">
+                                                <Button Classes="secondary-btn capacity-btn small struck"
+                                                        Classes.selected="{Binding IsSelected}"
+                                                        IsEnabled="{Binding IsAvailable}"
+                                                        Command="{Binding SelectCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        Content="{Binding Value}"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Classes="strip-group"
+                                            Margin="24,0,0,0"
+                                            IsVisible="{Binding IsHost}">
+                                    <TextBlock Classes="field-label"
+                                               Text="{Binding [WaitingRoom.Visibility],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                    <Border Classes="visibility-toggle">
+                                        <StackPanel Classes="capacity-list" Spacing="2">
+                                            <Button Classes="segment-btn"
+                                                    Classes.selected="{Binding IsPublicSelected}"
+                                                    Command="{Binding SelectPublicCommand}">
+                                                <TextBlock
+                                                           Text="{Binding [GameSetup.Public],
+                                                                          Source={x:Static
+                                                                              loc:LocalizationManager.Instance}}"/>
+                                            </Button>
+                                            <Button Classes="segment-btn"
+                                                    Classes.selected="{Binding IsPrivateSelected}"
+                                                    IsEnabled="{Binding IsPrivateAvailable}"
+                                                    Command="{Binding SelectPrivateCommand}">
+                                                <TextBlock
+                                                           Text="{Binding [GameSetup.Private],
+                                                                          Source={x:Static
+                                                                              loc:LocalizationManager.Instance}}"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                                <StackPanel Classes="strip-group" IsVisible="{Binding IsParticipant}">
+                                    <Path Classes="icon" Data="{DynamicResource IconLock}"/>
+                                    <TextBlock Classes="field-hint"
+                                               Text="{Binding [WaitingRoom.HostOnlyNotice],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                    <TextBlock Classes="field-label" Text="{Binding ReadOnlySettings}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="3" Classes="strip-group">
+                                    <TextBlock Classes="field-label"
+                                               Text="{Binding [WaitingRoom.Goal],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                    <ItemsControl ItemsSource="{Binding AmuletSlots}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Classes="amulet-row"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="x:Boolean">
+                                                <Path Classes="amulet"
+                                                      Classes.filled="{Binding}"
+                                                      Data="{DynamicResource IconDiamond}"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <TextBlock Classes="field-label" Text="{Binding GoalText}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <Grid Grid.Row="1" Margin="0,16,0,0" ColumnDefinitions="*,*">
+
+                            <Grid Margin="0,0,10,0" RowDefinitions="Auto,*">
+                                <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
+                                    <TextBlock Classes="section-heading"
+                                               Text="{Binding [WaitingRoom.Participants],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                    <TextBlock Grid.Column="1" Classes="field-hint"
+                                               Text="{Binding ParticipantsText}"/>
+                                </Grid>
+                                <ScrollViewer Grid.Row="1" Classes="notifications-scroll">
+                                    <StackPanel>
+                                        <ItemsControl ItemsSource="{Binding Participants}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="models:RoomParticipantItem">
+                                                    <Border Classes="room-row" Classes.own="{Binding IsCurrentPlayer}">
+                                                        <Grid ColumnDefinitions="Auto,*,Auto">
+                                                            <Border Classes="avatar score-avatar">
+                                                                <Panel>
+                                                                    <TextBlock Classes="avatar-initials"
+                                                                               IsVisible="{Binding !HasAvatar}"
+                                                                               Text="{Binding Initials}"/>
+                                                                    <Path Classes="icon avatar-icon"
+                                                                          IsVisible="{Binding HasAvatar}"
+                                                                          Data="{Binding AvatarIconData}"/>
+                                                                </Panel>
+                                                            </Border>
+                                                            <StackPanel Grid.Column="1" Classes="strip-group"
+                                                                        Margin="12,0">
+                                                                <TextBlock Classes="person-name"
+                                                                           MaxWidth="180"
+                                                                           Text="{Binding Username}"
+                                                                           ToolTip.Tip="{Binding Username}"/>
+                                                                <Border Classes="tag"
+                                                                        IsVisible="{Binding IsHost}">
+                                                                    <TextBlock Classes="tag-text"
+                                                                               Text="{Binding [WaitingRoom.HostBadge],
+                                                                                              Source={x:Static
+                                                                                                    loc:LocalizationManager.Instance}}"/>
+                                                                </Border>
+                                                                <Border Classes="tag light"
+                                                                        IsVisible="{Binding IsCurrentPlayer}">
+                                                                    <TextBlock Classes="tag-text"
+                                                                               Text="{Binding [WaitingRoom.You],
+                                                                                              Source={x:Static
+                                                                                                    loc:LocalizationManager.Instance}}"/>
+                                                                </Border>
+                                                            </StackPanel>
+                                                            <Button Grid.Column="2" Classes="danger-outline compact"
+                                                                    IsVisible="{Binding CanKick}"
+                                                                    Command="{Binding KickCommand}"
+                                                                    CommandParameter="{Binding}">
+                                                                <StackPanel Classes="inline-icon-text">
+                                                                    <Path Classes="icon"
+                                                                          Data="{DynamicResource IconClose}"/>
+                                                                    <TextBlock
+                                                                               Text="{Binding [WaitingRoom.Kick],
+                                                                                              Source={x:Static
+                                                                                                    loc:LocalizationManager.Instance}}"/>
+                                                                </StackPanel>
+                                                            </Button>
+                                                            <Button Grid.Column="2" Classes="secondary-btn compact"
+                                                                    IsVisible="{Binding CanProposeKick}"
+                                                                    Command="{Binding ProposeKickCommand}"
+                                                                    CommandParameter="{Binding}">
+                                                                    <TextBlock
+                                                                               Text="{Binding [WaitingRoom.ProposeKick],
+                                                                                              Source={x:Static
+                                                                                                    loc:LocalizationManager.Instance}}"/>
+                                                            </Button>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <ItemsControl ItemsSource="{Binding EmptySlots}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="x:Int32">
+                                                    <Border Classes="room-row empty">
+                                                        <StackPanel Classes="inline-icon-text">
+                                                            <Path Classes="spinner field-icon-spin"/>
+                                                            <TextBlock Classes="empty-slot-text"
+                                                                       Text="{Binding [WaitingRoom.WaitingPlayer],
+                                                                                      Source={x:Static
+                                                                                                    loc:LocalizationManager.Instance}}"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Grid>
+
+                            <Grid Grid.Column="1" Margin="10,0,0,0" RowDefinitions="Auto,*,Auto">
+                                <TextBlock Classes="section-heading"
+                                           Margin="0,0,0,8"
+                                           Text="{Binding [WaitingRoom.Chat],
+                                                          Source={x:Static
+                                                              loc:LocalizationManager.Instance}}"/>
+                                <Border Grid.Row="1" Classes="chat-box">
+                                    <ScrollViewer Classes="notifications-scroll">
+                                        <ItemsControl ItemsSource="{Binding Messages}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="models:RoomChatEntry">
+                                                    <StackPanel Classes="chat-line">
+                                                        <StackPanel Classes="strip-group"
+                                                                    IsVisible="{Binding IsSystem}">
+                                                            <Path Classes="icon" Data="{DynamicResource IconInfo}"/>
+                                                            <TextBlock Classes="chat-system" Text="{Binding Text}"/>
+                                                        </StackPanel>
+                                                        <StackPanel Classes="strip-group"
+                                                                    IsVisible="{Binding !IsSystem}">
+                                                            <TextBlock Classes="chat-author"
+                                                                       Classes.own="{Binding IsOwn}"
+                                                                       Text="{Binding Author, StringFormat={}{0}:}"/>
+                                                            <TextBlock Classes="chat-text"
+                                                                       TextWrapping="Wrap"
+                                                                       Text="{Binding Text}"/>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                </Border>
+                                <Grid Grid.Row="2" Margin="0,10,0,0" ColumnDefinitions="*,Auto">
+                                    <TextBox Classes="input-field"
+                                             Height="38"
+                                             MaxLength="200"
+                                             Text="{Binding ChatText}"
+                                             Watermark="{Binding [WaitingRoom.ChatPlaceholder],
+                                                                 Source={x:Static
+                                                                     loc:LocalizationManager.Instance}}">
+                                        <TextBox.KeyBindings>
+                                            <KeyBinding Gesture="Enter" Command="{Binding SendMessageCommand}"/>
+                                        </TextBox.KeyBindings>
+                                    </TextBox>
+                                    <Button Grid.Column="1" Classes="secondary-btn compact"
+                                            Margin="8,0,0,0"
+                                            Command="{Binding SendMessageCommand}">
+                                        <StackPanel Classes="inline-icon-text">
+                                            <Path Classes="icon" Data="{DynamicResource IconSend}"/>
+                                            <TextBlock
+                                                       Text="{Binding [WaitingRoom.Send],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </Grid>
+                            </Grid>
+
+                        </Grid>
+
+                        <Grid Grid.Row="2" Classes="footer-bar" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+                            <Button Classes="secondary-btn compact"
+                                    Command="{Binding LeaveRoomCommand}">
+                                <StackPanel Classes="inline-icon-text">
+                                    <Path Classes="icon" Data="{DynamicResource IconDoor}"/>
+                                    <TextBlock
+                                               Text="{Binding [WaitingRoom.Leave],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                            </Button>
+                            <TextBlock Grid.Column="1" Classes="footer-note"
+                                       HorizontalAlignment="Right"
+                                       IsVisible="{Binding HasFooterNote}"
+                                       Text="{Binding FooterNote}"/>
+                            <Button Classes="secondary-btn compact"
+                                    Grid.Column="2" Margin="0,0,10,0"
+                                    Command="{Binding InviteFriendsCommand}">
+                                <StackPanel Classes="inline-icon-text">
+                                    <Path Classes="icon" Data="{DynamicResource IconFriends}"/>
+                                    <TextBlock
+                                               Text="{Binding [WaitingRoom.InviteFriends],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Column="3" Classes="primary-btn compact"
+                                    IsVisible="{Binding IsHost}"
+                                    behaviors:InitialFocus.IsEnabled="True"
+                                    Command="{Binding StartMatchCommand}">
+                                    <TextBlock
+                                               Text="{Binding [WaitingRoom.StartMatch],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                            </Button>
+                        </Grid>
+
+                    </Grid>
+                </Border>
+
+            </Grid>
+        </Border>
+    </Viewbox>
+</UserControl>
