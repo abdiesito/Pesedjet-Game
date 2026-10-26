@@ -504,3 +504,7 @@ $RECYCLE.BIN/
 
 # Directorio oculto de Visual Studio (Prevención por si abren el .sln fuera de Rider)
 .vs/
+
+# Directorio de documentación en máquina local
+
+/doc/
