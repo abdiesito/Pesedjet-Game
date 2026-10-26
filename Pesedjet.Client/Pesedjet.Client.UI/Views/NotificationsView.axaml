@@ -1,0 +1,93 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.NotificationsView"
+             x:DataType="vm:NotificationsViewModel"
+             x:CompileBindings="True">
+
+    <Grid>
+        <Button Classes="scrim-dismiss" Command="{Binding CloseCommand}"/>
+
+        <Border Classes="popover-panel">
+            <Grid RowDefinitions="Auto,*">
+
+                <Border Classes="notifications-header">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Classes="notifications-title"
+                                   Text="{Binding [Notifications.Title],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                        <TextBlock Grid.Column="1" Classes="notifications-count" Text="{Binding PendingText}"/>
+                    </Grid>
+                </Border>
+
+                <ScrollViewer Grid.Row="1" Classes="notifications-scroll">
+                    <StackPanel>
+                        <TextBlock Classes="notifications-empty"
+                                   IsVisible="{Binding IsEmpty}"
+                                   Text="{Binding [Notifications.UpToDate],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                        <ItemsControl ItemsSource="{Binding Items}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:NotificationItem">
+                                    <Border Classes="notification-item" Classes.new="{Binding IsNew}">
+                                        <Grid ColumnDefinitions="Auto,*">
+                                            <Border Classes="avatar notification-avatar">
+                                                <TextBlock Classes="avatar-initials"
+                                                           Text="{Binding SenderInitials}"/>
+                                            </Border>
+                                            <StackPanel Grid.Column="1" Classes="notification-body">
+                                                <TextBlock Classes="notification-name" Text="{Binding SenderName}"/>
+                                                <TextBlock Classes="notification-text" Text="{Binding Message}"/>
+                                                <StackPanel Classes="notification-meta">
+                                                    <Path Classes="icon"
+                                                          IsVisible="{Binding IsFriendRequest}"
+                                                          Data="{DynamicResource IconFriends}"/>
+                                                    <Path Classes="icon"
+                                                          IsVisible="{Binding IsRoomInvitation}"
+                                                          Data="{DynamicResource IconPlay}"/>
+                                                    <TextBlock Classes="notification-time"
+                                                               Text="{Binding TimeAgoText}"/>
+                                                </StackPanel>
+                                                <TextBlock Classes="notification-expired"
+                                                           IsVisible="{Binding IsExpired}"
+                                                           Text="{Binding [Notifications.Expired],
+                                                                          Source={x:Static
+                                                                              loc:LocalizationManager.Instance}}"/>
+                                                <StackPanel Classes="notification-actions"
+                                                            IsVisible="{Binding HasActions}">
+                                                    <Button Classes="primary-btn compact"
+                                                            Classes.loading="{Binding IsProcessing}"
+                                                            IsEnabled="{Binding !IsProcessing}"
+                                                            Command="{Binding AcceptCommand}"
+                                                            CommandParameter="{Binding}">
+                                                        <StackPanel Classes="inline-icon-text">
+                                                            <Path Classes="spinner" IsVisible="{Binding IsProcessing}"/>
+                                                            <TextBlock Text="{Binding DisplayLabel}"/>
+                                                        </StackPanel>
+                                                    </Button>
+                                                    <Button Classes="secondary-btn compact"
+                                                            IsEnabled="{Binding !IsProcessing}"
+                                                            Command="{Binding RejectCommand}"
+                                                            CommandParameter="{Binding}"
+                                                            Content="{Binding [Notifications.Reject],
+                                                                              Source={x:Static
+                                                                                  loc:LocalizationManager.Instance}}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
