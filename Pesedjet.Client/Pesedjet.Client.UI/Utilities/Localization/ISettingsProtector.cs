@@ -1,4 +1,5 @@
 namespace Pesedjet.Client.UI.Utilities.Localization;
+
 public interface ISettingsProtector
 {
     byte[] Protect(byte[] plainData);

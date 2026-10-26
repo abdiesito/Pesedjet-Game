@@ -4,11 +4,9 @@ using System.Text.Json;
 
 namespace Pesedjet.Client.UI.Utilities.Localization;
 
-public sealed record UserSettings(string Language);
-
 public sealed class UserSettingsStore
 {
-    private const int MaxSettingsFileSizeInBytes = 4096; 
+    private const int MaxSettingsFileSizeInBytes = 4096;
     private const string SettingsFolderName = "Pesedjet";
     private const string SettingsFileName = "user.settings";
     private const string TemporaryFileExtension = ".tmp";
@@ -24,35 +22,41 @@ public sealed class UserSettingsStore
             SettingsFolderName,
             SettingsFileName);
     }
-    
+
     public UserSettings? Load()
     {
+        UserSettings? settings = null;
+
         try
         {
             var fileInfo = new FileInfo(_settingsFilePath);
-            if (!fileInfo.Exists || fileInfo.Length is 0 or > MaxSettingsFileSizeInBytes)
-            {
-                return null;
-            }
 
-            var protectedData = File.ReadAllBytes(_settingsFilePath);
-            return _protector.TryUnprotect(protectedData, out var plainData)
-                ? JsonSerializer.Deserialize<UserSettings>(plainData)
-                : null;
+            if (fileInfo.Exists && fileInfo.Length > 0 && fileInfo.Length <= MaxSettingsFileSizeInBytes)
+            {
+                byte[] protectedData = File.ReadAllBytes(_settingsFilePath);
+
+                if (_protector.TryUnprotect(protectedData, out byte[] plainData))
+                {
+                    settings = JsonSerializer.Deserialize<UserSettings>(plainData);
+                }
+            }
         }
-        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or JsonException)
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException)
         {
-            return null;
+            settings = null;
         }
+
+        return settings;
     }
 
     public void Save(UserSettings settings)
     {
-        Directory.CreateDirectory(Path.GetDirectoryName(_settingsFilePath)!);
+        string settingsDirectory = Path.GetDirectoryName(_settingsFilePath) ?? string.Empty;
+        Directory.CreateDirectory(settingsDirectory);
 
-        var protectedData = _protector.Protect(JsonSerializer.SerializeToUtf8Bytes(settings));
-        
-        var temporaryFilePath = _settingsFilePath + TemporaryFileExtension;
+        byte[] protectedData = _protector.Protect(JsonSerializer.SerializeToUtf8Bytes(settings));
+
+        string temporaryFilePath = _settingsFilePath + TemporaryFileExtension;
         File.WriteAllBytes(temporaryFilePath, protectedData);
         File.Move(temporaryFilePath, _settingsFilePath, overwrite: true);
     }

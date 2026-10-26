@@ -21,47 +21,51 @@ public sealed class AesGcmSettingsProtector : ISettingsProtector
     public byte[] Protect(byte[] plainData)
     {
         var protectedPayload = new byte[NonceSizeInBytes + TagSizeInBytes + plainData.Length];
-        var nonce = protectedPayload.AsSpan(0, NonceSizeInBytes);
-        var authenticationTag = protectedPayload.AsSpan(NonceSizeInBytes, TagSizeInBytes);
-        var cipherText = protectedPayload.AsSpan(NonceSizeInBytes + TagSizeInBytes);
+        Span<byte> nonce = protectedPayload.AsSpan(0, NonceSizeInBytes);
+        Span<byte> authenticationTag = protectedPayload.AsSpan(NonceSizeInBytes, TagSizeInBytes);
+        Span<byte> cipherText = protectedPayload.AsSpan(NonceSizeInBytes + TagSizeInBytes);
 
         RandomNumberGenerator.Fill(nonce);
         using var aes = new AesGcm(_encryptionKey, TagSizeInBytes);
         aes.Encrypt(nonce, plainData, cipherText, authenticationTag, AuthenticatedContext);
+
         return protectedPayload;
     }
 
     public bool TryUnprotect(byte[] protectedData, out byte[] plainData)
     {
+        bool isUnprotected = false;
         plainData = [];
-        if (protectedData.Length < NonceSizeInBytes + TagSizeInBytes)
+
+        if (protectedData.Length >= NonceSizeInBytes + TagSizeInBytes)
         {
-            return false;
+            try
+            {
+                Span<byte> payload = protectedData.AsSpan();
+                Span<byte> nonce = payload[..NonceSizeInBytes];
+                Span<byte> authenticationTag = payload.Slice(NonceSizeInBytes, TagSizeInBytes);
+                Span<byte> cipherText = payload[(NonceSizeInBytes + TagSizeInBytes)..];
+                var decryptedData = new byte[cipherText.Length];
+
+                using var aes = new AesGcm(_encryptionKey, TagSizeInBytes);
+                aes.Decrypt(nonce, cipherText, authenticationTag, decryptedData, AuthenticatedContext);
+                plainData = decryptedData;
+                isUnprotected = true;
+            }
+            catch (CryptographicException)
+            {
+                isUnprotected = false;
+            }
         }
 
-        try
-        {
-            var payload = protectedData.AsSpan();
-            var nonce = payload[..NonceSizeInBytes];
-            var authenticationTag = payload.Slice(NonceSizeInBytes, TagSizeInBytes);
-            var cipherText = payload[(NonceSizeInBytes + TagSizeInBytes)..];
-            var decryptedData = new byte[cipherText.Length];
-
-            using var aes = new AesGcm(_encryptionKey, TagSizeInBytes);
-            aes.Decrypt(nonce, cipherText, authenticationTag, decryptedData, AuthenticatedContext);
-            plainData = decryptedData;
-            return true;
-        }
-        catch (CryptographicException)
-        {
-            return false;
-        }
+        return isUnprotected;
     }
 
     private static byte[] DeriveEncryptionKey()
     {
-        var keyMaterial = Encoding.UTF8.GetBytes(
+        byte[] keyMaterial = Encoding.UTF8.GetBytes(
             $"{Environment.UserName}{KeyMaterialSeparator}{Environment.MachineName}");
+
         return HKDF.DeriveKey(
             HashAlgorithmName.SHA256, keyMaterial, KeySizeInBytes, salt: AuthenticatedContext, info: KeyDerivationInfo);
     }

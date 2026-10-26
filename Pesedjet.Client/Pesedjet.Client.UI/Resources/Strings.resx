@@ -24,7 +24,7 @@
   <data name="AccessMenu.ObligatoryField" xml:space="preserve"><value>Este campo es obligatorio.</value></data>
   <data name="AccessMenu.IncorrectCredentials" xml:space="preserve"><value>Nombre de usuario o contraseña incorrectos.</value></data>
   <data name="AccessMenu.TooManyAttempts" xml:space="preserve"><value>Demasiados intentos fallidos. Te llevaremos a la recuperación de contraseña.</value></data>
-  <data name="MSG-REG-010" xml:space="preserve"><value>Usa de 3 a 50 letras o números, sin espacios.</value></data>
+  <data name="Common.UsernameFormatInvalid" xml:space="preserve"><value>Usa de 3 a 50 letras o números, sin espacios.</value></data>
   <data name="AccessMenu.CouldntReachServer" xml:space="preserve"><value>No se pudo conectar con el servidor. Inténtalo de nuevo.</value></data>
   <data name="RegisterAccount.Back" xml:space="preserve"><value>Volver</value></data>
   <data name="RegisterAccount.Title" xml:space="preserve"><value>Crear cuenta</value></data>
@@ -54,9 +54,405 @@
   <data name="RegisterAccount.MinimumAgeNotice" xml:space="preserve"><value>Debes tener al menos 12 años.</value></data>
   <data name="RegisterAccount.InvalidEmail" xml:space="preserve"><value>Escribe un correo electrónico válido.</value></data>
   <data name="RegisterAccount.UnderageError" xml:space="preserve"><value>Debes tener al menos 12 años para registrarte.</value></data>
-  <data name="MSG-REG-004" xml:space="preserve"><value>La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial.</value></data>
-  <data name="MSG-REG-005" xml:space="preserve"><value>Las contraseñas no coinciden.</value></data>
-  <data name="MSG-REG-007" xml:space="preserve"><value>Escribe una fecha válida que no sea futura.</value></data>
-  <data name="MSG-REG-011" xml:space="preserve"><value>Revisa los campos marcados en rojo antes de continuar.</value></data>
+  <data name="RegisterAccount.PasswordRequirementsUnmet" xml:space="preserve"><value>La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial.</value></data>
+  <data name="RegisterAccount.PasswordsMismatch" xml:space="preserve"><value>Las contraseñas no coinciden.</value></data>
+  <data name="RegisterAccount.BirthDateInvalid" xml:space="preserve"><value>Escribe una fecha válida que no sea futura.</value></data>
+  <data name="RegisterAccount.ValidationSummary" xml:space="preserve"><value>Revisa los campos marcados en rojo antes de continuar.</value></data>
   <data name="RegisterAccount.ObligatoryField" xml:space="preserve"><value>Completa este campo.</value></data>
+  <data name="RegisterAccount.UsernameAlreadyRegistered" xml:space="preserve"><value>Este nombre de usuario ya está en uso.</value></data>
+  <data name="RegisterAccount.EmailAlreadyRegistered" xml:space="preserve"><value>Este correo ya está registrado.</value></data>
+  <data name="RegisterAccount.CouldntReachServer" xml:space="preserve"><value>No se pudo conectar con el servidor. Inténtalo de nuevo.</value></data>
+  <data name="RegisterAccount.RegistrationFailed" xml:space="preserve"><value>No se pudo crear la cuenta. Inténtalo de nuevo.</value></data>
+  <data name="MainMenu.Title" xml:space="preserve"><value>Menú principal</value></data>
+  <data name="MainMenu.Subtitle" xml:space="preserve"><value>Elige a dónde ir.</value></data>
+  <data name="MainMenu.Play" xml:space="preserve"><value>Jugar</value></data>
+  <data name="MainMenu.Scoreboard" xml:space="preserve"><value>Puntuaciones</value></data>
+  <data name="MainMenu.Friends" xml:space="preserve"><value>Amigos</value></data>
+  <data name="MainMenu.Settings" xml:space="preserve"><value>Configuración</value></data>
+  <data name="MainMenu.LogOut" xml:space="preserve"><value>Cerrar sesión</value></data>
+  <data name="MainMenu.Notifications" xml:space="preserve"><value>Notificaciones</value></data>
+  <data name="MainMenu.CustomizeProfile" xml:space="preserve"><value>Personalizar perfil</value></data>
+  <data name="MainMenu.ProfileStats" xml:space="preserve"><value>{0} pts · {1} victorias</value></data>
+  <data name="MainMenu.WelcomeBack" xml:space="preserve"><value>¡Bienvenido de nuevo, {0}!</value></data>
+  <data name="Common.Yes" xml:space="preserve"><value>Sí</value></data>
+  <data name="Common.No" xml:space="preserve"><value>No</value></data>
+  <data name="Common.Cancel" xml:space="preserve"><value>Cancelar</value></data>
+  <data name="Common.SavedOnDevice" xml:space="preserve"><value>Guardado en este equipo</value></data>
+  <data name="Common.SavedOnAccountAndDevice" xml:space="preserve"><value>Guardado en tu cuenta y en este equipo</value></data>
+  <data name="Settings.Title" xml:space="preserve"><value>Configuración</value></data>
+  <data name="Settings.Back" xml:space="preserve"><value>Menú</value></data>
+  <data name="Settings.Audio" xml:space="preserve"><value>Audio</value></data>
+  <data name="Settings.Display" xml:space="preserve"><value>Pantalla</value></data>
+  <data name="Settings.Language" xml:space="preserve"><value>Idioma</value></data>
+  <data name="Settings.Account" xml:space="preserve"><value>Cuenta</value></data>
+  <data name="AudioSettings.Title" xml:space="preserve"><value>Audio</value></data>
+  <data name="AudioSettings.Subtitle" xml:space="preserve"><value>Los cambios se aplican al instante.</value></data>
+  <data name="AudioSettings.MasterVolume" xml:space="preserve"><value>Volumen general</value></data>
+  <data name="AudioSettings.Music" xml:space="preserve"><value>Música</value></data>
+  <data name="AudioSettings.MusicHint" xml:space="preserve"><value>Fondo del desierto y menús.</value></data>
+  <data name="AudioSettings.Effects" xml:space="preserve"><value>Efectos</value></data>
+  <data name="AudioSettings.EffectsHint" xml:space="preserve"><value>Cartas, turnos y avisos.</value></data>
+  <data name="AudioSettings.MuteAll" xml:space="preserve"><value>Silenciar todo</value></data>
+  <data name="AudioSettings.MuteHint" xml:space="preserve"><value>Atajo: M.</value></data>
+  <data name="AudioSettings.Muted" xml:space="preserve"><value>Mudo</value></data>
+  <data name="DisplaySettings.Title" xml:space="preserve"><value>Pantalla</value></data>
+  <data name="DisplaySettings.Subtitle" xml:space="preserve"><value>Se guarda en este equipo.</value></data>
+  <data name="DisplaySettings.Mode" xml:space="preserve"><value>Modo</value></data>
+  <data name="DisplaySettings.Windowed" xml:space="preserve"><value>Ventana</value></data>
+  <data name="DisplaySettings.FullScreen" xml:space="preserve"><value>Pantalla completa</value></data>
+  <data name="DisplaySettings.WindowSize" xml:space="preserve"><value>Tamaño de ventana</value></data>
+  <data name="DisplaySettings.WindowSizeHint" xml:space="preserve"><value>Mínimo 1024 × 640.</value></data>
+  <data name="DisplaySettings.ReduceMotion" xml:space="preserve"><value>Reducir movimiento</value></data>
+  <data name="DisplaySettings.ReduceMotionHint" xml:space="preserve"><value>Quita el viento y las partículas del fondo y las animaciones de cartas.</value></data>
+  <data name="LanguageSettings.Title" xml:space="preserve"><value>Idioma</value></data>
+  <data name="LanguageSettings.Subtitle" xml:space="preserve"><value>Se guarda en tu cuenta y en este equipo.</value></data>
+  <data name="LanguageSettings.InterfaceLanguage" xml:space="preserve"><value>Idioma de la interfaz</value></data>
+  <data name="LanguageSettings.InterfaceLanguageHint" xml:space="preserve"><value>Cada idioma se muestra con su propio nombre.</value></data>
+  <data name="AccountSettings.Title" xml:space="preserve"><value>Cuenta</value></data>
+  <data name="AccountSettings.Subtitle" xml:space="preserve"><value>Cambiar la contraseña cierra tu sesión en los demás equipos.</value></data>
+  <data name="AccountSettings.CurrentPassword" xml:space="preserve"><value>Contraseña actual</value></data>
+  <data name="AccountSettings.NewPassword" xml:space="preserve"><value>Nueva contraseña</value></data>
+  <data name="AccountSettings.ConfirmPassword" xml:space="preserve"><value>Confirmar contraseña</value></data>
+  <data name="AccountSettings.ChangePassword" xml:space="preserve"><value>Cambiar contraseña</value></data>
+  <data name="AccountSettings.PasswordUnchanged" xml:space="preserve"><value>La nueva contraseña debe ser distinta de la actual.</value></data>
+  <data name="AccountSettings.DangerTitle" xml:space="preserve"><value>Eliminar cuenta</value></data>
+  <data name="AccountSettings.DangerHint" xml:space="preserve"><value>Borra tu perfil, amigos y acceso. No se puede deshacer.</value></data>
+  <data name="AccountSettings.DeleteAccount" xml:space="preserve"><value>Eliminar cuenta…</value></data>
+  <data name="LogOut.Title" xml:space="preserve"><value>¿Cerrar sesión?</value></data>
+  <data name="LogOut.Message" xml:space="preserve"><value>Este equipo dejará de recordar tu cuenta. Para volver necesitarás tu contraseña y un código.</value></data>
+  <data name="ProfileEditor.Title" xml:space="preserve"><value>Personalizar perfil</value></data>
+  <data name="ProfileEditor.Avatar" xml:space="preserve"><value>AVATAR</value></data>
+  <data name="ProfileEditor.Username" xml:space="preserve"><value>Nombre de usuario</value></data>
+  <data name="ProfileEditor.Description" xml:space="preserve"><value>Descripción</value></data>
+  <data name="ProfileEditor.Save" xml:space="preserve"><value>Guardar</value></data>
+  <data name="ProfileEditor.ConfirmTitle" xml:space="preserve"><value>¿Guardar los cambios?</value></data>
+  <data name="ProfileEditor.ConfirmUsernameChange" xml:space="preserve"><value>Tu nombre de usuario cambiará de {0} a {1}. Los demás lo verán en salas, amigos y puntuaciones.</value></data>
+  <data name="ProfileEditor.ConfirmGeneric" xml:space="preserve"><value>Se actualizarán los datos de tu perfil.</value></data>
+  <data name="ProfileEditor.KeepEditing" xml:space="preserve"><value>Seguir editando</value></data>
+  <data name="LogOut.LoggingOut" xml:space="preserve"><value>Cerrando sesión…</value></data>
+  <data name="Notifications.Title" xml:space="preserve"><value>Notificaciones</value></data>
+  <data name="Notifications.PendingOne" xml:space="preserve"><value>1 pendiente</value></data>
+  <data name="Notifications.PendingMany" xml:space="preserve"><value>{0} pendientes</value></data>
+  <data name="Notifications.FriendRequest" xml:space="preserve"><value>te envió una solicitud de amistad.</value></data>
+  <data name="Notifications.RoomInvitation" xml:space="preserve"><value>te invita a la sala {0} · {1}/{2} jugadores.</value></data>
+  <data name="Notifications.Accept" xml:space="preserve"><value>Aceptar</value></data>
+  <data name="Notifications.Accepting" xml:space="preserve"><value>Aceptando…</value></data>
+  <data name="Notifications.Join" xml:space="preserve"><value>Unirme</value></data>
+  <data name="Notifications.Joining" xml:space="preserve"><value>Uniéndote…</value></data>
+  <data name="Notifications.Reject" xml:space="preserve"><value>Rechazar</value></data>
+  <data name="Common.MinutesAgo" xml:space="preserve"><value>hace {0} min</value></data>
+  <data name="Common.HoursAgo" xml:space="preserve"><value>hace {0} h</value></data>
+  <data name="Common.Yesterday" xml:space="preserve"><value>ayer</value></data>
+  <data name="Common.DaysAgo" xml:space="preserve"><value>hace {0} d</value></data>
+  <data name="Notifications.Expired" xml:space="preserve"><value>La sala ya empezó; la invitación expiró.</value></data>
+  <data name="Notifications.UpToDate" xml:space="preserve"><value>Estás al día</value></data>
+  <data name="Common.MonthAgo" xml:space="preserve"><value>hace 1 mes</value></data>
+  <data name="Common.MonthsAgo" xml:space="preserve"><value>hace {0} meses</value></data>
+  <data name="Presence.Online" xml:space="preserve"><value>En línea</value></data>
+  <data name="Presence.InMatch" xml:space="preserve"><value>En partida</value></data>
+  <data name="Presence.Offline" xml:space="preserve"><value>Desconectado</value></data>
+  <data name="Presence.OfflineSince" xml:space="preserve"><value>Desconectado · {0}</value></data>
+  <data name="Friends.Title" xml:space="preserve"><value>Amigos</value></data>
+  <data name="Friends.Back" xml:space="preserve"><value>Menú</value></data>
+  <data name="Friends.TabFriends" xml:space="preserve"><value>Amigos</value></data>
+  <data name="Friends.TabSearch" xml:space="preserve"><value>Buscar jugador</value></data>
+  <data name="Friends.TabBlocked" xml:space="preserve"><value>Bloqueados</value></data>
+  <data name="Friends.Summary" xml:space="preserve"><value>{0} conectados · {1} en total</value></data>
+  <data name="Friends.SummaryWithMatches" xml:space="preserve"><value>{0} conectados · {1} en partida · {2} en total</value></data>
+  <data name="Friends.Remove" xml:space="preserve"><value>Eliminar</value></data>
+  <data name="Friends.Block" xml:space="preserve"><value>Bloquear</value></data>
+  <data name="Friends.EmptyTitle" xml:space="preserve"><value>Todavía no tienes amigos</value></data>
+  <data name="Friends.EmptyHint" xml:space="preserve"><value>Busca a otros jugadores por su nombre de usuario y envíales una solicitud.</value></data>
+  <data name="Friends.LoadError" xml:space="preserve"><value>No pudimos cargar tus amigos. Inténtalo de nuevo.</value></data>
+  <data name="Friends.SearchPlaceholder" xml:space="preserve"><value>Escribe un nombre de usuario…</value></data>
+  <data name="Friends.SearchHint" xml:space="preserve"><value>Busca a partir de 3 letras · sin distinguir mayúsculas</value></data>
+  <data name="Friends.SearchPromptTitle" xml:space="preserve"><value>Busca a otros jugadores</value></data>
+  <data name="Friends.SearchTooShortTitle" xml:space="preserve"><value>Sigue escribiendo</value></data>
+  <data name="Friends.SearchMinimumHint" xml:space="preserve"><value>Escribe al menos 3 letras de su nombre de usuario.</value></data>
+  <data name="Friends.NoMatchesTitle" xml:space="preserve"><value>Nadie coincide con «{0}»</value></data>
+  <data name="Friends.NoMatchesHint" xml:space="preserve"><value>Revisa cómo se escribe. Los invitados no aparecen: no tienen cuenta.</value></data>
+  <data name="Friends.SendRequest" xml:space="preserve"><value>Enviar solicitud</value></data>
+  <data name="Friends.Sending" xml:space="preserve"><value>Enviando…</value></data>
+  <data name="Friends.RequestSent" xml:space="preserve"><value>Solicitud enviada</value></data>
+  <data name="Friends.AlreadyFriends" xml:space="preserve"><value>Ya son amigos</value></data>
+  <data name="Friends.BlockedByYou" xml:space="preserve"><value>Lo bloqueaste · desbloquéalo para invitarlo</value></data>
+  <data name="Friends.RemovedToast" xml:space="preserve"><value>Eliminaste a {0} de tus amigos.</value></data>
+  <data name="Friends.BlockedToast" xml:space="preserve"><value>Bloqueaste a {0}.</value></data>
+  <data name="Friends.RequestSentToast" xml:space="preserve"><value>Solicitud enviada a {0}.</value></data>
+  <data name="Blocked.Notice" xml:space="preserve"><value>Quien está bloqueado no puede enviarte solicitudes ni invitarte a salas. Desbloquear no lo vuelve tu amigo.</value></data>
+  <data name="Blocked.CountOne" xml:space="preserve"><value>1 bloqueado</value></data>
+  <data name="Blocked.CountMany" xml:space="preserve"><value>{0} bloqueados</value></data>
+  <data name="Blocked.BlockedOn" xml:space="preserve"><value>Bloqueado el {0}</value></data>
+  <data name="Blocked.Unblock" xml:space="preserve"><value>Desbloquear</value></data>
+  <data name="Blocked.EmptyTitle" xml:space="preserve"><value>No has bloqueado a nadie</value></data>
+  <data name="Blocked.EmptyHint" xml:space="preserve"><value>Quien bloquees no podrá enviarte solicitudes ni invitaciones.</value></data>
+  <data name="Blocked.UnblockedToast" xml:space="preserve"><value>Desbloqueaste a {0}.</value></data>
+  <data name="PlayerAction.RemoveTitle" xml:space="preserve"><value>¿Eliminar a {0} de tus amigos?</value></data>
+  <data name="PlayerAction.RemoveMessage" xml:space="preserve"><value>Ya no verás su estado ni podrá invitarte directamente. Puedes enviarle otra solicitud cuando quieras.</value></data>
+  <data name="PlayerAction.RemoveConfirm" xml:space="preserve"><value>Eliminar</value></data>
+  <data name="PlayerAction.BlockTitle" xml:space="preserve"><value>¿Bloquear a {0}?</value></data>
+  <data name="PlayerAction.BlockMessage" xml:space="preserve"><value>Dejará de ser tu amigo, no podrá enviarte solicitudes ni invitarte a salas y no verá si estás conectado.</value></data>
+  <data name="PlayerAction.BlockConfirm" xml:space="preserve"><value>Bloquear</value></data>
+  <data name="PlayerAction.UnblockTitle" xml:space="preserve"><value>¿Desbloquear a {0}?</value></data>
+  <data name="PlayerAction.UnblockMessage" xml:space="preserve"><value>Podrá volver a enviarte solicitudes. No se vuelve tu amigo automáticamente.</value></data>
+  <data name="PlayerAction.UnblockConfirm" xml:space="preserve"><value>Desbloquear</value></data>
+  <data name="Scoreboard.Title" xml:space="preserve"><value>Tabla de puntuaciones</value></data>
+  <data name="Scoreboard.Back" xml:space="preserve"><value>Menú</value></data>
+  <data name="Scoreboard.UpdatedAt" xml:space="preserve"><value>Actualizado: {0}</value></data>
+  <data name="Scoreboard.Refresh" xml:space="preserve"><value>Actualizar</value></data>
+  <data name="Scoreboard.SearchPlaceholder" xml:space="preserve"><value>Buscar jugador…</value></data>
+  <data name="Scoreboard.PeriodLabel" xml:space="preserve"><value>Periodo:</value></data>
+  <data name="Scoreboard.PeriodAllTime" xml:space="preserve"><value>Histórico</value></data>
+  <data name="Scoreboard.PeriodThirtyDays" xml:space="preserve"><value>Últimos 30 días</value></data>
+  <data name="Scoreboard.PeriodSevenDays" xml:space="preserve"><value>Últimos 7 días</value></data>
+  <data name="Scoreboard.FriendsOnly" xml:space="preserve"><value>Solo amigos</value></data>
+  <data name="Scoreboard.ClearFilters" xml:space="preserve"><value>Limpiar filtros</value></data>
+  <data name="Scoreboard.ColumnRank" xml:space="preserve"><value>Pos.</value></data>
+  <data name="Scoreboard.ColumnPlayer" xml:space="preserve"><value>Jugador</value></data>
+  <data name="Scoreboard.ColumnPoints" xml:space="preserve"><value>Puntos</value></data>
+  <data name="Scoreboard.ColumnGames" xml:space="preserve"><value>Partidas</value></data>
+  <data name="Scoreboard.ColumnWins" xml:space="preserve"><value>Victorias</value></data>
+  <data name="Scoreboard.ColumnAverage" xml:space="preserve"><value>Promedio por partida</value></data>
+  <data name="Scoreboard.ColumnLastGame" xml:space="preserve"><value>Última partida</value></data>
+  <data name="Scoreboard.You" xml:space="preserve"><value>Tú</value></data>
+  <data name="Scoreboard.Showing" xml:space="preserve"><value>Mostrando {0}–{1} de {2} jugadores</value></data>
+  <data name="Scoreboard.ShowingOne" xml:space="preserve"><value>Mostrando {0}–{1} de {2} jugador</value></data>
+  <data name="Scoreboard.Previous" xml:space="preserve"><value>Ant.</value></data>
+  <data name="Scoreboard.Next" xml:space="preserve"><value>Sig.</value></data>
+  <data name="Scoreboard.GoToMyPosition" xml:space="preserve"><value>Ir a mi posición</value></data>
+  <data name="Scoreboard.NoRankHint" xml:space="preserve"><value>Aparecerás en la tabla al terminar tu primera partida.</value></data>
+  <data name="Scoreboard.NoGamesTitle" xml:space="preserve"><value>Aún no hay partidas registradas</value></data>
+  <data name="Scoreboard.NoGamesHint" xml:space="preserve"><value>¡Juega la primera!</value></data>
+  <data name="Scoreboard.NoMatchesTitle" xml:space="preserve"><value>Ningún jugador coincide con los filtros</value></data>
+  <data name="Scoreboard.NoMatchesHint" xml:space="preserve"><value>Prueba con otro nombre o periodo.</value></data>
+  <data name="Scoreboard.LoadError" xml:space="preserve"><value>No pudimos cargar las puntuaciones. Inténtalo de nuevo.</value></data>
+  <data name="Common.ConnectionError" xml:space="preserve"><value>No fue posible comunicarse con el servidor. Revisa tu conexión e inténtalo de nuevo.</value></data>
+  <data name="Guest.NoticeTitle" xml:space="preserve"><value>Jugar como invitado</value></data>
+  <data name="Guest.CanDoTitle" xml:space="preserve"><value>LO QUE PUEDES HACER</value></data>
+  <data name="Guest.CanCreateRoom" xml:space="preserve"><value>Crear una sala de juego</value></data>
+  <data name="Guest.CanJoinRoom" xml:space="preserve"><value>Unirte a una sala con su código</value></data>
+  <data name="Guest.CanPlayFull" xml:space="preserve"><value>Jugar partidas completas</value></data>
+  <data name="Guest.CannotTitle" xml:space="preserve"><value>NO DISPONIBLE COMO INVITADO</value></data>
+  <data name="Guest.CannotProfile" xml:space="preserve"><value>Perfil, amigos y notificaciones</value></data>
+  <data name="Guest.CannotScoreboard" xml:space="preserve"><value>Tabla de puntuaciones</value></data>
+  <data name="Guest.CannotChat" xml:space="preserve"><value>Chat general</value></data>
+  <data name="Guest.ProgressWarning" xml:space="preserve"><value>Tu progreso no se guarda. Regístrate para conservar tus puntos.</value></data>
+  <data name="Guest.Back" xml:space="preserve"><value>Regresar</value></data>
+  <data name="Guest.Continue" xml:space="preserve"><value>Continuar</value></data>
+  <data name="Guest.Entering" xml:space="preserve"><value>Entrando…</value></data>
+  <data name="Guest.Close" xml:space="preserve"><value>Cerrar</value></data>
+  <data name="Guest.Indicator" xml:space="preserve"><value>Modo invitado · {0}</value></data>
+  <data name="Guest.WhatIsThis" xml:space="preserve"><value>¿Qué es esto?</value></data>
+  <data name="Guest.LeaveMode" xml:space="preserve"><value>Salir del modo invitado</value></data>
+  <data name="GuestExit.Title" xml:space="preserve"><value>¿Salir del modo invitado?</value></data>
+  <data name="GuestExit.Message" xml:space="preserve"><value>Puedes volver a jugar como invitado cuando quieras. Tu progreso no se guarda a menos que te registres.</value></data>
+  <data name="GuestExit.AliasNotice" xml:space="preserve"><value>Se descartará el alias {0}; si vuelves, recibirás uno nuevo.</value></data>
+  <data name="GuestExit.Stay" xml:space="preserve"><value>Quedarme</value></data>
+  <data name="GuestExit.SignUp" xml:space="preserve"><value>Crear cuenta</value></data>
+  <data name="GuestExit.Leave" xml:space="preserve"><value>Salir</value></data>
+  <data name="HamburgerMenu.Open" xml:space="preserve"><value>Menú</value></data>
+  <data name="HamburgerMenu.Title" xml:space="preserve"><value>Menú</value></data>
+  <data name="HamburgerMenu.Language" xml:space="preserve"><value>Idioma</value></data>
+  <data name="GameMenu.Title" xml:space="preserve"><value>Menú de juego</value></data>
+  <data name="GameMenu.Back" xml:space="preserve"><value>Menú</value></data>
+  <data name="GameMenu.Question" xml:space="preserve"><value>¿Cómo quieres jugar?</value></data>
+  <data name="GameMenu.GuestIntro" xml:space="preserve"><value>Como invitado puedes crear una sala o unirte a una con su código.</value></data>
+  <data name="GameMenu.CreateRoomTitle" xml:space="preserve"><value>Crear sala</value></data>
+  <data name="GameMenu.CreateRoomDescription" xml:space="preserve"><value>Elige cuántos jugarán y si la sala es pública o privada. Serás el anfitrión y compartirás el código.</value></data>
+  <data name="GameMenu.Step1" xml:space="preserve"><value>Elige de 2 a 6 jugadores y la visibilidad.</value></data>
+  <data name="GameMenu.Step2" xml:space="preserve"><value>Comparte el código que te daremos.</value></data>
+  <data name="GameMenu.Step3" xml:space="preserve"><value>Inicia cuando haya al menos 2.</value></data>
+  <data name="GameMenu.JoinTitle" xml:space="preserve"><value>Unirse con código</value></data>
+  <data name="GameMenu.JoinDescription" xml:space="preserve"><value>Escribe el código de 6 caracteres que te compartieron para entrar a su sala de espera.</value></data>
+  <data name="GameMenu.CodeLabel" xml:space="preserve"><value>Código de la sala</value></data>
+  <data name="GameMenu.CodeHint" xml:space="preserve"><value>6 letras o números; te lo da el anfitrión.</value></data>
+  <data name="GameMenu.Join" xml:space="preserve"><value>Unirse</value></data>
+  <data name="GameMenu.Joining" xml:space="preserve"><value>Uniéndote…</value></data>
+  <data name="GameMenu.CodeInvalidFormat" xml:space="preserve"><value>Usa solo letras y números: 6 en total.</value></data>
+  <data name="GameMenu.CodeNotFound" xml:space="preserve"><value>No hay ninguna sala con ese código. Revisa que esté bien escrito.</value></data>
+  <data name="GameMenu.CodeFull" xml:space="preserve"><value>Esa sala ya está llena ({0} de {1}).</value></data>
+  <data name="GameMenu.CodeStarted" xml:space="preserve"><value>Esa partida ya empezó; no admite más jugadores.</value></data>
+  <data name="GameSetup.Title" xml:space="preserve"><value>Configurar partida</value></data>
+  <data name="GameSetup.Subtitle" xml:space="preserve"><value>Crear sala · serás el anfitrión</value></data>
+  <data name="GameSetup.Back" xml:space="preserve"><value>Menú de juego</value></data>
+  <data name="GameSetup.CapacityLabel" xml:space="preserve"><value>Número máximo de jugadores</value></data>
+  <data name="GameSetup.GoalInfo" xml:space="preserve"><value>Con {0} jugadores se gana con {1} amuletos. La meta se fija al iniciar, según cuántos estén en la sala.</value></data>
+  <data name="GameSetup.VisibilityLabel" xml:space="preserve"><value>Visibilidad de la sala</value></data>
+  <data name="GameSetup.Public" xml:space="preserve"><value>Pública</value></data>
+  <data name="GameSetup.PublicHint" xml:space="preserve"><value>Cualquiera con el código puede entrar.</value></data>
+  <data name="GameSetup.Private" xml:space="preserve"><value>Privada</value></data>
+  <data name="GameSetup.PrivateHint" xml:space="preserve"><value>Solo entra quien invites; el código no basta.</value></data>
+  <data name="GameSetup.PrivateGuestHint" xml:space="preserve"><value>Como invitado no tienes amigos a quién invitar</value></data>
+  <data name="GameSetup.Creating" xml:space="preserve"><value>Creando sala…</value></data>
+  <data name="WaitingRoom.Title" xml:space="preserve"><value>Sala de espera</value></data>
+  <data name="WaitingRoom.Subtitle" xml:space="preserve"><value>{0} · {1} de {2} jugadores</value></data>
+  <data name="WaitingRoom.CodeLabel" xml:space="preserve"><value>Código</value></data>
+  <data name="WaitingRoom.Copy" xml:space="preserve"><value>Copiar</value></data>
+  <data name="WaitingRoom.Copied" xml:space="preserve"><value>Copiado</value></data>
+  <data name="WaitingRoom.MaxPlayers" xml:space="preserve"><value>Jugadores máx.</value></data>
+  <data name="WaitingRoom.Visibility" xml:space="preserve"><value>Visibilidad</value></data>
+  <data name="WaitingRoom.GoalAmulets" xml:space="preserve"><value>{0} amuletos</value></data>
+  <data name="WaitingRoom.Goal" xml:space="preserve"><value>Meta:</value></data>
+  <data name="WaitingRoom.ReadOnlyNotice" xml:space="preserve"><value>Jugadores máx.: {0} · {1}</value></data>
+  <data name="WaitingRoom.HostOnlyNotice" xml:space="preserve"><value>Solo el anfitrión cambia estos ajustes.</value></data>
+  <data name="WaitingRoom.Participants" xml:space="preserve"><value>Participantes</value></data>
+  <data name="WaitingRoom.ParticipantsCount" xml:space="preserve"><value>{0} de {1}</value></data>
+  <data name="WaitingRoom.HostBadge" xml:space="preserve"><value>Anfitrión</value></data>
+  <data name="WaitingRoom.You" xml:space="preserve"><value>Tú</value></data>
+  <data name="WaitingRoom.Kick" xml:space="preserve"><value>Expulsar</value></data>
+  <data name="WaitingRoom.ProposeKick" xml:space="preserve"><value>Proponer expulsión</value></data>
+  <data name="WaitingRoom.WaitingPlayer" xml:space="preserve"><value>Esperando jugador…</value></data>
+  <data name="WaitingRoom.Chat" xml:space="preserve"><value>Chat de la sala</value></data>
+  <data name="WaitingRoom.ChatPlaceholder" xml:space="preserve"><value>Escribe un mensaje…</value></data>
+  <data name="WaitingRoom.Send" xml:space="preserve"><value>Enviar</value></data>
+  <data name="WaitingRoom.Leave" xml:space="preserve"><value>Abandonar sala</value></data>
+  <data name="WaitingRoom.InviteFriends" xml:space="preserve"><value>Invitar amigos</value></data>
+  <data name="WaitingRoom.StartMatch" xml:space="preserve"><value>Iniciar partida</value></data>
+  <data name="WaitingRoom.NeedMorePlayers" xml:space="preserve"><value>Se necesitan al menos 2 jugadores para iniciar.</value></data>
+  <data name="WaitingRoom.WaitingForHost" xml:space="preserve"><value>Esperando a que {0} inicie la partida…</value></data>
+  <data name="WaitingRoom.GuestCannotInvite" xml:space="preserve"><value>Como invitado no tienes amigos a quién invitar.</value></data>
+  <data name="WaitingRoom.JoinedNotice" xml:space="preserve"><value>{0} se unió a la sala.</value></data>
+  <data name="WaitingRoom.SampleHostMessage" xml:space="preserve"><value>¿Listos? En cuanto llegue uno más empezamos.</value></data>
+  <data name="WaitingRoom.SampleJoinerMessage" xml:space="preserve"><value>¡Sí! Yo siempre empiezo con Osiris.</value></data>
+  <data name="WaitingRoom.SampleSecondJoinerMessage" xml:space="preserve"><value>Hola a todos</value></data>
+  <data name="PlayerAction.KickTitle" xml:space="preserve"><value>¿Expulsar a {0} de la sala?</value></data>
+  <data name="PlayerAction.KickMessage" xml:space="preserve"><value>Saldrá de inmediato y verá que el anfitrión lo retiró. Podrá volver a entrar con el código si la sala sigue abierta.</value></data>
+  <data name="PlayerAction.KickConfirm" xml:space="preserve"><value>Expulsar</value></data>
+  <data name="PlayerAction.LeaveTitle" xml:space="preserve"><value>¿Abandonar la sala?</value></data>
+  <data name="PlayerAction.LeaveMessage" xml:space="preserve"><value>Eres el anfitrión: el rol pasará a {0}, que lleva más tiempo en la sala.</value></data>
+  <data name="PlayerAction.LeaveMessagePlain" xml:space="preserve"><value>Perderás tu lugar en la sala. Podrás volver a entrar con el código si sigue abierta.</value></data>
+  <data name="PlayerAction.LeaveConfirm" xml:space="preserve"><value>Abandonar</value></data>
+  <data name="InviteFriends.Title" xml:space="preserve"><value>Invitar amigos</value></data>
+  <data name="InviteFriends.FreeSlotOne" xml:space="preserve"><value>Solo aparecen tus amigos conectados. Queda 1 lugar libre.</value></data>
+  <data name="InviteFriends.FreeSlotsMany" xml:space="preserve"><value>Solo aparecen tus amigos conectados. Quedan {0} lugares libres.</value></data>
+  <data name="InviteFriends.InMatchUnavailable" xml:space="preserve"><value>En partida · no disponible</value></data>
+  <data name="InviteFriends.None" xml:space="preserve"><value>No tienes amigos conectados para invitar.</value></data>
+  <data name="InviteFriends.Send" xml:space="preserve"><value>Enviar invitaciones</value></data>
+  <data name="InviteFriends.SendOne" xml:space="preserve"><value>Enviar 1 invitación</value></data>
+  <data name="InviteFriends.SendMany" xml:space="preserve"><value>Enviar {0} invitaciones</value></data>
+  <data name="Match.Round" xml:space="preserve"><value>Ronda {0}</value></data>
+  <data name="Match.YourTurn" xml:space="preserve"><value>Tu turno</value></data>
+  <data name="Match.TurnOf" xml:space="preserve"><value>Turno de {0}</value></data>
+  <data name="Match.Chat" xml:space="preserve"><value>Chat</value></data>
+  <data name="Match.Menu" xml:space="preserve"><value>Menú</value></data>
+  <data name="Match.Deck" xml:space="preserve"><value>Mazo · {0}</value></data>
+  <data name="Match.SetAside" xml:space="preserve"><value>Apartada</value></data>
+  <data name="Match.FaceUp" xml:space="preserve"><value>Boca arriba</value></data>
+  <data name="Match.FaceUpHint" xml:space="preserve"><value>Boca arriba: solo en partidas de 2 jugadores</value></data>
+  <data name="Match.Log" xml:space="preserve"><value>Bitácora de la ronda</value></data>
+  <data name="Match.Unseen" xml:space="preserve"><value>Deidades sin ver</value></data>
+  <data name="Match.UnseenColumns" xml:space="preserve"><value>restantes / total</value></data>
+  <data name="Match.You" xml:space="preserve"><value>Tú · {0}</value></data>
+  <data name="Match.AmuletsOf" xml:space="preserve"><value>{0} de {1} amuletos</value></data>
+  <data name="Match.GamePoints" xml:space="preserve"><value>Puntos de la partida: {0}</value></data>
+  <data name="Match.YourDiscards" xml:space="preserve"><value>TUS DESCARTES</value></data>
+  <data name="Match.YourHand" xml:space="preserve"><value>TU MANO</value></data>
+  <data name="Match.Scoreboard" xml:space="preserve"><value>Marcador · meta {0}</value></data>
+  <data name="Match.Points" xml:space="preserve"><value>{0} pts</value></data>
+  <data name="Match.NoDiscards" xml:space="preserve"><value>Sin descartes</value></data>
+  <data name="Match.HintChoose" xml:space="preserve"><value>Elige una de tus dos cartas (teclas 1 y 2).</value></data>
+  <data name="Match.HintWait" xml:space="preserve"><value>Cuando sea tu turno robarás una carta y elegirás cuál jugar.</value></data>
+  <data name="Match.HintOut" xml:space="preserve"><value>Quedaste fuera de esta ronda. Puedes seguir observando; volverás a jugar en la siguiente.</value></data>
+  <data name="Match.CardHelp" xml:space="preserve"><value>Ayuda de la carta</value></data>
+  <data name="Match.PlayCard" xml:space="preserve"><value>Jugar carta</value></data>
+  <data name="Match.Key" xml:space="preserve"><value>Tecla {0}</value></data>
+  <data name="Match.Playing" xml:space="preserve"><value>Jugando…</value></data>
+  <data name="Match.AtumRaWarning" xml:space="preserve"><value>Atum-Ra: si la juegas o descartas, quedas eliminado.</value></data>
+  <data name="Match.Status.Protected" xml:space="preserve"><value>Protegido</value></data>
+  <data name="Match.Status.ImmuneToNeftis" xml:space="preserve"><value>Inmune a Neftis · Shu</value></data>
+  <data name="Match.Status.OutOfRound" xml:space="preserve"><value>Fuera de la cámara</value></data>
+  <data name="Match.Status.NotResponding" xml:space="preserve"><value>No responde</value></data>
+  <data name="Match.Status.Expelled" xml:space="preserve"><value>Expulsado</value></data>
+  <data name="Match.Status.Disconnected" xml:space="preserve"><value>Desconectado · retirado</value></data>
+  <data name="Match.ChatTitle" xml:space="preserve"><value>Chat de la partida</value></data>
+  <data name="Match.ChatPlaceholder" xml:space="preserve"><value>Escribe un mensaje…</value></data>
+  <data name="Match.ChatSend" xml:space="preserve"><value>Enviar</value></data>
+  <data name="Match.ChatClose" xml:space="preserve"><value>Cerrar</value></data>
+  <data name="Match.Log.Start" xml:space="preserve"><value>Ronda {0} — comienza {1}.</value></data>
+  <data name="Match.Log.DrewCard" xml:space="preserve"><value>Tu turno: robaste una carta.</value></data>
+  <data name="Match.Log.Played" xml:space="preserve"><value>{0} jugó {1}.</value></data>
+  <data name="Match.Log.PlayedOn" xml:space="preserve"><value>{0} jugó {1} → {2}.</value></data>
+  <data name="Match.Log.PlayedNamed" xml:space="preserve"><value>{0} jugó Neftis → {1}: «{2}». {3}</value></data>
+  <data name="Match.Log.Hit" xml:space="preserve"><value>¡Acertó!</value></data>
+  <data name="Match.Log.Miss" xml:space="preserve"><value>Falló.</value></data>
+  <data name="Match.Log.Points" xml:space="preserve"><value>+{0} {1}: Neftis acertó.</value></data>
+  <data name="Match.Log.AtumRa" xml:space="preserve"><value>{0} jugó Atum-Ra y queda fuera de la cámara.</value></data>
+  <data name="Match.Notice.SethTitle" xml:space="preserve"><value>Miraste la mano de {0}</value></data>
+  <data name="Match.Notice.SethMessage" xml:space="preserve"><value>{0} tiene {1} ({2}). Él sabe que viste su carta.</value></data>
+  <data name="Match.Notice.IsisTitle" xml:space="preserve"><value>Duelo con {0}</value></data>
+  <data name="Match.Notice.IsisMessage" xml:space="preserve"><value>El rival tiene {0} ({1}). Solo lo ven los dos; los demás ven quién cayó y su carta.</value></data>
+  <data name="Match.Summary.OutOfRound" xml:space="preserve"><value>Fuera de la cámara</value></data>
+  <data name="Match.Summary.WinsRound" xml:space="preserve"><value>Gana la ronda · Amuleto de {0}</value></data>
+  <data name="Match.Summary.KeptHand" xml:space="preserve"><value>Mano conservada</value></data>
+  <data name="Match.Summary.OutAtTurn" xml:space="preserve"><value>Fuera de la cámara en el turno {0}</value></data>
+  <data name="Match.Summary.CauseDeckEmpty" xml:space="preserve"><value>El mazo se agotó</value></data>
+  <data name="Match.Summary.NextRound" xml:space="preserve"><value>Siguiente ronda: empieza {0}, que ganó esta.</value></data>
+  <data name="Match.Result.WithdrawnDisconnection" xml:space="preserve"><value>Retirado: desconexión</value></data>
+  <data name="RoundSummary.Title" xml:space="preserve"><value>Fin de la ronda {0}</value></data>
+  <data name="RoundSummary.Cause" xml:space="preserve"><value>CAUSA</value></data>
+  <data name="RoundSummary.ColPlayer" xml:space="preserve"><value>JUGADOR</value></data>
+  <data name="RoundSummary.ColHand" xml:space="preserve"><value>MANO</value></data>
+  <data name="RoundSummary.ColResult" xml:space="preserve"><value>RESULTADO DE LA RONDA</value></data>
+  <data name="RoundSummary.ColPoints" xml:space="preserve"><value>PUNTOS</value></data>
+  <data name="RoundSummary.ColScore" xml:space="preserve"><value>MARCADOR (META {0})</value></data>
+  <data name="RoundSummary.Ready" xml:space="preserve"><value>{0} de {1} listos</value></data>
+  <data name="RoundSummary.Continue" xml:space="preserve"><value>Continuar ({0} s)</value></data>
+  <data name="RoundSummary.You" xml:space="preserve"><value>(tú)</value></data>
+  <data name="MatchResult.Title" xml:space="preserve"><value>¡{0} obtiene el favor del panteón!</value></data>
+  <data name="MatchResult.Subtitle" xml:space="preserve"><value>Alcanzó {0} amuletos en la ronda {1}.</value></data>
+  <data name="MatchResult.Standings" xml:space="preserve"><value>CLASIFICACIÓN FINAL</value></data>
+  <data name="MatchResult.Amulets" xml:space="preserve"><value>{0} amuletos</value></data>
+  <data name="MatchResult.AmuletOne" xml:space="preserve"><value>{0} amuleto</value></data>
+  <data name="MatchResult.SavedNotice" xml:space="preserve"><value>Resultado registrado en la tabla de puntuaciones.</value></data>
+  <data name="MatchResult.GuestNotice" xml:space="preserve"><value>Juegas como invitado: este resultado no se guarda.</value></data>
+  <data name="MatchResult.MainMenu" xml:space="preserve"><value>Menú principal</value></data>
+  <data name="MatchResult.BackToRoom" xml:space="preserve"><value>Volver a la sala</value></data>
+  <data name="MatchResult.Scoreboard" xml:space="preserve"><value>Ver puntuaciones</value></data>
+  <data name="MatchResult.Continue" xml:space="preserve"><value>Continuar ({0} s)</value></data>
+  <data name="AreYouThere.Title" xml:space="preserve"><value>¿Sigues ahí?</value></data>
+  <data name="AreYouThere.Reason" xml:space="preserve"><value>Se agotaron los 3 minutos de tu turno.</value></data>
+  <data name="AreYouThere.ToAnswer" xml:space="preserve"><value>para responder</value></data>
+  <data name="AreYouThere.Consequence" xml:space="preserve"><value>Si no respondes, los demás podrán votar tu expulsión de la partida. Al responder recibes otros 3 minutos completos.</value></data>
+  <data name="AreYouThere.Confirm" xml:space="preserve"><value>Sigo aquí</value></data>
+  <data name="MatchMenu.Title" xml:space="preserve"><value>Menú</value></data>
+  <data name="MatchMenu.Settings" xml:space="preserve"><value>Configuración</value></data>
+  <data name="MatchMenu.Abandon" xml:space="preserve"><value>Abandonar partida</value></data>
+  <data name="CardHelp.Counts" xml:space="preserve"><value>Hay {0} en total · sin ver: {1}</value></data>
+  <data name="CardHelp.Close" xml:space="preserve"><value>Cerrar</value></data>
+  <data name="Notice.Understood" xml:space="preserve"><value>Entendido</value></data>
+  <data name="Objective.PlayTitle" xml:space="preserve"><value>Jugar {0} ({1})</value></data>
+  <data name="Objective.ChooseOpponent" xml:space="preserve"><value>1. Elige al oponente</value></data>
+  <data name="Objective.NameDeity" xml:space="preserve"><value>2. Nombra una deidad</value></data>
+  <data name="Objective.Protected" xml:space="preserve"><value>Protegido por Osiris</value></data>
+  <data name="Objective.OutOfRound" xml:space="preserve"><value>Fuera de la cámara</value></data>
+  <data name="Objective.ImmuneToNeftis" xml:space="preserve"><value>Inmune a Neftis</value></data>
+  <data name="Objective.Unavailable" xml:space="preserve"><value>No disponible</value></data>
+  <data name="Objective.NoTargets" xml:space="preserve"><value>Ningún oponente puede ser elegido; la carta se jugará sin efecto.</value></data>
+  <data name="Objective.NoNeftis" xml:space="preserve"><value>Neftis no puede nombrar a Neftis.</value></data>
+  <data name="Objective.ChooseAnother" xml:space="preserve"><value>Elegir otra carta</value></data>
+  <data name="Objective.Confirm" xml:space="preserve"><value>Confirmar jugada</value></data>
+  <data name="PlayerAction.AbandonMatchTitle" xml:space="preserve"><value>¿Abandonar la partida?</value></data>
+  <data name="PlayerAction.AbandonMatchMessage" xml:space="preserve"><value>Si abandonas, quedarás fuera de esta partida y no podrás volver; conservarás los puntos que ya obtuviste.</value></data>
+  <data name="PlayerAction.AbandonMatchConfirm" xml:space="preserve"><value>Abandonar</value></data>
+  <data name="PlayerAction.AbandonMatchCancel" xml:space="preserve"><value>Seguir jugando</value></data>
+  <data name="PlayerAction.PlayAtumRaTitle" xml:space="preserve"><value>¿Jugar {0}?</value></data>
+  <data name="PlayerAction.PlayAtumRaMessage" xml:space="preserve"><value>Jugar a {0} te eliminará de la ronda. ¿Continuar?</value></data>
+  <data name="PlayerAction.PlayAtumRaConfirm" xml:space="preserve"><value>Jugar y quedar fuera</value></data>
+  <data name="PlayerAction.PlayAtumRaCancel" xml:space="preserve"><value>Elegir otra carta</value></data>
+  <data name="Card.Metal.Silver" xml:space="preserve"><value>PLATA</value></data>
+  <data name="Card.Metal.Gold" xml:space="preserve"><value>ORO</value></data>
+  <data name="Card.Metal.Iron" xml:space="preserve"><value>HIERRO</value></data>
+  <data name="Card.Metal.Bronze" xml:space="preserve"><value>BRONCE</value></data>
+  <data name="Card.Metal.Copper" xml:space="preserve"><value>COBRE</value></data>
+  <data name="Card.Metal.Clay" xml:space="preserve"><value>ARCILLA</value></data>
+  <data name="Card.Effect.9" xml:space="preserve"><value>Si la juegas o descartas, quedas eliminado.</value></data>
+  <data name="Card.Effect.8" xml:space="preserve"><value>Quedas inmune a Neftis el resto de la ronda.</value></data>
+  <data name="Card.Effect.7" xml:space="preserve"><value>Intercambia tu mano con la de otro jugador.</value></data>
+  <data name="Card.Effect.6" xml:space="preserve"><value>Roba dos cartas, conserva una y devuelve las otras al mazo.</value></data>
+  <data name="Card.Effect.5" xml:space="preserve"><value>Elige a un jugador (puedes ser tú): descarta su mano y roba otra.</value></data>
+  <data name="Card.Effect.4" xml:space="preserve"><value>Quedas protegido hasta tu próximo turno.</value></data>
+  <data name="Card.Effect.3" xml:space="preserve"><value>Duelo secreto: compara tu carta con la de un rival; la menor queda fuera.</value></data>
+  <data name="Card.Effect.2" xml:space="preserve"><value>Mira en secreto la mano de otro jugador.</value></data>
+  <data name="Card.Effect.1" xml:space="preserve"><value>Nombra una deidad; si el rival la tiene, queda eliminado.</value></data>
+  <data name="Card.Effect.0" xml:space="preserve"><value>No hace nada al jugarla; puede darte un punto extra al final de la ronda.</value></data>
 </root>

@@ -1,16 +1,8 @@
-<!--
-    PesedjetTheme.axaml · Tema global del cliente Pesedjet (Avalonia 11 + FluentTheme)
-    DEC-006: todos los colores, métricas e iconos viven aquí; las vistas sólo consumen
-    {DynamicResource ...} y Classes="...".
-    Incluir en App.axaml DESPUÉS de <FluentTheme/> y de EgyptSandBackground.axaml.
-    Paleta tomada de los prototipos (lib_pesedjet.py): azul base, dorados egipcios y arena.
--->
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Styles.Resources>
 
-        <!-- ============================ TIPOGRAFÍA ============================ -->
         <FontFamily x:Key="FontTitleDisplay">avares://Pesedjet.Client.UI/Assets/Fonts/AlfaSlabOne-Regular.ttf#Alfa Slab One</FontFamily>
         <FontFamily x:Key="FontBody">avares://Pesedjet.Client.UI/Assets/Fonts#Cairo</FontFamily>
 
@@ -23,14 +15,11 @@
         <x:Double x:Key="FontSizeBody">14</x:Double>
         <x:Double x:Key="FontSizeSmall">13</x:Double>
 
-        <!-- ============================ COLORES ============================ -->
-        <!-- Azul base (paneles, botón principal) -->
         <SolidColorBrush x:Key="ColorPrimary" Color="#05192B"/>
         <SolidColorBrush x:Key="ColorPrimaryHover" Color="#020D17"/>
         <SolidColorBrush x:Key="ColorPrimaryPressed" Color="#03121F"/>
         <SolidColorBrush x:Key="ColorPrimaryLoading" Color="#2B4560"/>
 
-        <!-- Dorados y arena -->
         <SolidColorBrush x:Key="ColorAccent" Color="#C18F3C"/>
         <SolidColorBrush x:Key="ColorAccentHover" Color="#A87E3B"/>
         <SolidColorBrush x:Key="ColorAccentPressed" Color="#B4863B"/>
@@ -43,14 +32,12 @@
         <SolidColorBrush x:Key="ColorSandShadow" Color="#C9A054"/>
         <SolidColorBrush x:Key="ColorSandHighlight" Color="#F3DBA2"/>
 
-        <!-- Superficies -->
         <SolidColorBrush x:Key="ColorSurface" Color="#FFFFFF"/>
         <SolidColorBrush x:Key="ColorSurfaceDisabled" Color="#F1F3F5"/>
         <SolidColorBrush x:Key="ColorSecondaryHover" Color="#E3E8EE"/>
         <SolidColorBrush x:Key="ColorSecondaryPressed" Color="#D2DAE3"/>
         <SolidColorBrush x:Key="ColorOverlay" Color="#B305192B"/>
 
-        <!-- Texto -->
         <SolidColorBrush x:Key="ColorTextPrimary" Color="#05192B"/>
         <SolidColorBrush x:Key="ColorTextSecondary" Color="#3E5163"/>
         <SolidColorBrush x:Key="ColorTextMuted" Color="#5F6F80"/>
@@ -58,13 +45,11 @@
         <SolidColorBrush x:Key="ColorTextOnDark" Color="#F3DBA2"/>
         <SolidColorBrush x:Key="ColorTextDisabled" Color="#3E4C5A"/>
 
-        <!-- Bordes -->
         <SolidColorBrush x:Key="ColorBorderInput" Color="#8796A6"/>
         <SolidColorBrush x:Key="ColorBorderInputHover" Color="#3E5163"/>
         <SolidColorBrush x:Key="ColorBorderDisabled" Color="#C5CDD6"/>
         <SolidColorBrush x:Key="ColorDivider" Color="#D5DCE3"/>
 
-        <!-- Estados (siempre acompañados de icono + texto, RNF-07) -->
         <SolidColorBrush x:Key="ColorError" Color="#C62828"/>
         <SolidColorBrush x:Key="ColorErrorBackground" Color="#FDECEC"/>
         <SolidColorBrush x:Key="ColorWarningText" Color="#5E4210"/>
@@ -76,8 +61,24 @@
         <SolidColorBrush x:Key="ColorSuccess" Color="#1E6B3A"/>
         <SolidColorBrush x:Key="ColorSuccessBackground" Color="#E6F4EA"/>
         <SolidColorBrush x:Key="ColorOnDarkSuccess" Color="#9AE0B0"/>
+        <SolidColorBrush x:Key="ColorSurfaceRaised" Color="#0B2A45"/>
+        <SolidColorBrush x:Key="ColorTextOnDarkMuted" Color="#9FB0C0"/>
+        <SolidColorBrush x:Key="ColorSurfaceCard" Color="#FAFAFC"/>
+        <SolidColorBrush x:Key="ColorMetalSilver" Color="#9AA5B1"/>
+        <SolidColorBrush x:Key="ColorMetalGold" Color="#C18F3C"/>
+        <SolidColorBrush x:Key="ColorMetalIron" Color="#5E6B78"/>
+        <SolidColorBrush x:Key="ColorMetalBronze" Color="#A0682F"/>
+        <SolidColorBrush x:Key="ColorMetalCopper" Color="#B4632F"/>
+        <SolidColorBrush x:Key="ColorMetalClay" Color="#8A6A52"/>
+        <SolidColorBrush x:Key="ColorCardFace" Color="#F6E3B4"/>
+        <SolidColorBrush x:Key="ColorTimerBar" Color="#E6C280"/>
+        <SolidColorBrush x:Key="ColorTimerWarning" Color="#F4B6C2"/>
+        <SolidColorBrush x:Key="ColorDanger" Color="#B3261E"/>
+        <SolidColorBrush x:Key="ColorDangerHover" Color="#8E1E17"/>
+        <SolidColorBrush x:Key="ColorDangerPressed" Color="#7A1914"/>
+        <SolidColorBrush x:Key="ColorErrorOnDark" Color="#FFB4AB"/>
+        <SolidColorBrush x:Key="ColorErrorSurfaceOnDark" Color="#3A1A22"/>
 
-        <!-- ============================ MÉTRICAS ============================ -->
         <CornerRadius x:Key="RadiusCard">18</CornerRadius>
         <CornerRadius x:Key="RadiusCardLeft">16,0,0,16</CornerRadius>
         <CornerRadius x:Key="RadiusCardRight">0,16,16,0</CornerRadius>
@@ -93,8 +94,17 @@
         <Thickness x:Key="PaddingAlert">12,11</Thickness>
         <Thickness x:Key="MarginScreenSafeArea">24,96,24,24</Thickness>
         <Thickness x:Key="MarginCornerTopRight">0,28,32,0</Thickness>
+        <Thickness x:Key="MarginCornerTopLeft">32,28,0,0</Thickness>
+        <Thickness x:Key="MarginToast">0,28,0,0</Thickness>
+        <Thickness x:Key="PaddingProfileChip">6,6,20,6</Thickness>
 
         <x:Double x:Key="ControlHeight">48</x:Double>
+        <x:Double x:Key="ControlHeightPill">46</x:Double>
+        <x:Double x:Key="AvatarSize">34</x:Double>
+        <x:Double x:Key="BadgeSize">18</x:Double>
+        <x:Double x:Key="ProfileNameMaxWidth">260</x:Double>
+        <x:Double x:Key="ToastMaxWidth">480</x:Double>
+        <x:Double x:Key="SpacingMenu">12</x:Double>
         <x:Double x:Key="ControlHeightPrimary">50</x:Double>
         <x:Double x:Key="ControlHeightCompact">34</x:Double>
         <x:Double x:Key="CheckBoxSize">20</x:Double>
@@ -105,36 +115,94 @@
         <x:Double x:Key="ControlHeightField">42</x:Double>
         <x:Double x:Key="SpacingBrandList">10</x:Double>
 
-        <!-- Tarjeta de acceso (GUI-001, GUI-012, GUI-013): 900 px de ancho; el marco
-             reserva el alto del peor caso (690 px) para que los mensajes crezcan hacia abajo. -->
         <x:Double x:Key="CardWidth">900</x:Double>
         <x:Double x:Key="CardFrameHeight">690</x:Double>
         <x:Double x:Key="BrandPanelWidth">340</x:Double>
 
-        <!-- ============================ ICONOS (lienzo 24×24, trazo) ============================ -->
-        <StreamGeometry x:Key="IconUser">M 16,8 A 4,4 0 1 1 8,8 A 4,4 0 1 1 16,8 Z M 4,21 C 4,16.6 7.6,14 12,14 C 16.4,14 20,16.6 20,21</StreamGeometry>
-        <StreamGeometry x:Key="IconLock">M 7,11 H 17 A 2,2 0 0 1 19,13 V 19 A 2,2 0 0 1 17,21 H 7 A 2,2 0 0 1 5,19 V 13 A 2,2 0 0 1 7,11 Z M 8,11 V 7.5 A 4,4 0 0 1 16,7.5 V 11</StreamGeometry>
-        <StreamGeometry x:Key="IconEye">M 2,12 C 2,12 5.6,5.5 12,5.5 C 18.4,5.5 22,12 22,12 C 22,12 18.4,18.5 12,18.5 C 5.6,18.5 2,12 2,12 Z M 15,12 A 3,3 0 1 1 9,12 A 3,3 0 1 1 15,12 Z</StreamGeometry>
-        <StreamGeometry x:Key="IconEyeOff">M 3,3 L 21,21 M 10.6,5.6 A 10,10 0 0 1 12,5.5 C 18.4,5.5 22,12 22,12 A 17,17 0 0 1 18.8,16 M 6.4,6.5 A 17,17 0 0 0 2,12 C 2,12 5.6,18.5 12,18.5 A 9.6,9.6 0 0 0 16.3,17.5 M 9.9,9.9 A 3,3 0 0 0 14.1,14.1</StreamGeometry>
-        <StreamGeometry x:Key="IconAlert">M 21,12 A 9,9 0 1 1 3,12 A 9,9 0 1 1 21,12 Z M 12,7.5 V 13 M 12,16.5 V 17</StreamGeometry>
-        <StreamGeometry x:Key="IconWarning">M 12,3.5 L 21.5,20 L 2.5,20 Z M 12,10 V 14.5 M 12,17.5 V 17.8</StreamGeometry>
-        <StreamGeometry x:Key="IconInfo">M 21,12 A 9,9 0 1 1 3,12 A 9,9 0 1 1 21,12 Z M 12,11 V 16.5 M 12,7.5 V 7.8</StreamGeometry>
+        <StreamGeometry x:Key="IconUser">M 16,8 A 4,4 0 1 1 8,8 A 4,4 0 1 1 16,8 Z M 4,21 C 4,16.6
+            7.6,14 12,14 C 16.4,14 20,16.6 20,21</StreamGeometry>
+        <StreamGeometry x:Key="IconLock">M 7,11 H 17 A 2,2 0 0 1 19,13 V 19 A 2,2 0 0 1 17,21 H 7 A
+            2,2 0 0 1 5,19 V 13 A 2,2 0 0 1 7,11 Z M 8,11 V 7.5 A 4,4 0 0 1 16,7.5 V 11</StreamGeometry>
+        <StreamGeometry x:Key="IconEye">M 2,12 C 2,12 5.6,5.5 12,5.5 C 18.4,5.5 22,12 22,12 C 22,12
+            18.4,18.5 12,18.5 C 5.6,18.5 2,12 2,12 Z M 15,12 A 3,3 0 1 1 9,12 A 3,3 0 1 1 15,12 Z</StreamGeometry>
+        <StreamGeometry x:Key="IconEyeOff">M 3,3 L 21,21 M 10.6,5.6 A 10,10 0 0 1 12,5.5 C 18.4,5.5
+            22,12 22,12 A 17,17 0 0 1 18.8,16 M 6.4,6.5 A 17,17 0 0 0 2,12 C 2,12 5.6,18.5 12,18.5 A
+            9.6,9.6 0 0 0 16.3,17.5 M 9.9,9.9 A 3,3 0 0 0 14.1,14.1</StreamGeometry>
+        <StreamGeometry x:Key="IconAlert">M 21,12 A 9,9 0 1 1 3,12 A 9,9 0 1 1 21,12 Z M 12,7.5 V 13
+            M 12,16.5 V 17</StreamGeometry>
+        <StreamGeometry x:Key="IconWarning">M 12,3.5 L 21.5,20 L 2.5,20 Z M 12,10 V 14.5 M 12,17.5 V
+            17.8</StreamGeometry>
+        <StreamGeometry x:Key="IconInfo">M 21,12 A 9,9 0 1 1 3,12 A 9,9 0 1 1 21,12 Z M 12,11 V 16.5
+            M 12,7.5 V 7.8</StreamGeometry>
         <StreamGeometry x:Key="IconCheck">M 5,12.5 L 9.5,17 L 19,7</StreamGeometry>
         <StreamGeometry x:Key="IconRefresh">M 20,11 A 8,8 0 1 0 17.7,16.7 M 20,4 V 11 H 13</StreamGeometry>
         <StreamGeometry x:Key="IconBack">M 15,6 L 9,12 L 15,18</StreamGeometry>
         <StreamGeometry x:Key="IconCircle">M 21,12 A 9,9 0 1 1 3,12 A 9,9 0 1 1 21,12 Z</StreamGeometry>
-        <StreamGeometry x:Key="IconPyramid">M 3,21 L 12,9 L 21,21 Z M 14.5,4.5 A 2.5,2.5 0 1 1 9.5,4.5 A 2.5,2.5 0 1 1 14.5,4.5 Z</StreamGeometry>
+        <StreamGeometry x:Key="IconPyramid">M 3,21 L 12,9 L 21,21 Z M 14.5,4.5 A 2.5,2.5 0 1 1
+            9.5,4.5 A 2.5,2.5 0 1 1 14.5,4.5 Z</StreamGeometry>
         <StreamGeometry x:Key="GeometrySpinner">M 21,12 A 9,9 0 0 0 12,3</StreamGeometry>
+        <StreamGeometry x:Key="IconPlay">M 8,5 L 19,12 L 8,19 Z</StreamGeometry>
+        <StreamGeometry x:Key="IconTrophy">M 8,4 H 16 V 10 A 4,4 0 0 1 8,10 Z M 8,6 H 5 V 8 A 3,3 0 0 0 8,11 M 16,6
+            H 19 V 8 A 3,3 0 0 1 16,11 M 12,14 V 18 M 8,20 H 16 M 9,18 H 15</StreamGeometry>
+        <StreamGeometry x:Key="IconFriends">M 12,8 A 3,3 0 1 1 6,8 A 3,3 0 1 1 12,8 Z M 3,20 C 3,16.5 5.5,14.5 9,14.5
+            C 12.5,14.5 15,16.5 15,20 M 15.5,5.2 A 3,3 0 0 1 15.5,11 M 17,14.8 C 19.6,15.4 21,17.3 21,20</StreamGeometry>
+        <StreamGeometry x:Key="IconSettings">M 15,12 A 3,3 0 1 1 9,12 A 3,3 0 1 1 15,12 Z M 12,3 V 5.5 M 12,18.5 V 21
+            M 3,12 H 5.5 M 18.5,12 H 21 M 5.6,5.6 L 7.4,7.4 M 16.6,16.6 L 18.4,18.4 M 5.6,18.4 L 7.4,16.6 M 16.6,7.4
+            L 18.4,5.6</StreamGeometry>
+        <StreamGeometry x:Key="IconLogout">M 10,4 H 6 A 2,2 0 0 0 4,6 V 18 A 2,2 0 0 0 6,20 H 10 M 15,8 L 19,12 L 15,16
+            M 19,12 H 9</StreamGeometry>
+        <StreamGeometry x:Key="IconBell">M 6,17 V 11 A 6,6 0 0 1 18,11 V 17 L 20,19 H 4 Z M 10,21.5 H 14</StreamGeometry>
+        <StreamGeometry x:Key="IconSearch">M 11,4 A 7,7 0 1 1 11,18 A 7,7 0 1 1 11,4 Z M 16,16 L 21,21</StreamGeometry>
+        <StreamGeometry x:Key="IconClose">M 6,6 L 18,18 M 18,6 L 6,18</StreamGeometry>
+        <StreamGeometry x:Key="IconDiamond">M 12,3 L 21,12 L 12,21 L 3,12 Z</StreamGeometry>
+        <StreamGeometry x:Key="IconSortDown">M 5,8 L 12,17 L 19,8 Z</StreamGeometry>
+        <StreamGeometry x:Key="IconSortUp">M 5,16 L 12,7 L 19,16 Z</StreamGeometry>
+        <StreamGeometry x:Key="IconMenu">M 4,7 H 20 M 4,12 H 20 M 4,17 H 20</StreamGeometry>
+        <StreamGeometry x:Key="IconCrown">M 4,18 H 20 M 5,18 L 4,8 L 9,12 L 12,6 L 15,12 L 20,8 L 19,18</StreamGeometry>
+        <StreamGeometry x:Key="IconDoor">M 6,4 H 14 V 20 H 6 Z M 14,6 L 18,8 V 18 L 14,20 M 11,12 V 12.5</StreamGeometry>
+        <StreamGeometry x:Key="IconCopy">M 8,8 H 19 V 20 H 8 Z M 5,16 V 4 H 16</StreamGeometry>
+        <StreamGeometry x:Key="IconSend">M 3,12 L 21,4 L 15,21 L 11,13 Z M 11,13 L 21,4</StreamGeometry>
+        <StreamGeometry x:Key="IconChat">M 4,5 H 20 V 16 H 11 L 6,20 V 16 H 4 Z</StreamGeometry>
+        <StreamGeometry x:Key="IconAudio">M 4,9 H 8 L 13,5 V 19 L 8,15 H 4 Z M 16,9 C 17.5,10.5 17.5,13.5 16,15 M 18.5,6.5
+            C 21.5,9.5 21.5,14.5 18.5,17.5</StreamGeometry>
+        <StreamGeometry x:Key="IconDisplay">M 4,5 H 20 V 16 H 4 Z M 9,20 H 15 M 12,16 V 20</StreamGeometry>
+        <StreamGeometry x:Key="IconLanguage">M 21,12 A 9,9 0 1 1 3,12 A 9,9 0 1 1 21,12 Z M 3,12 H 21 M 12,3 C 15,6 15,18
+            12,21 M 12,3 C 9,6 9,18 12,21</StreamGeometry>
+        <StreamGeometry x:Key="IconKey">M 14,10 A 4,4 0 1 1 6,10 A 4,4 0 1 1 14,10 Z M 13,13 L 20,20 M 17,17 L 19,15
+            </StreamGeometry>
+
+        <x:Double x:Key="ScreenPanelWidth">1100</x:Double>
+        <x:Double x:Key="ScreenPanelHeight">680</x:Double>
+        <x:Double x:Key="SearchFieldWidth">340</x:Double>
+        <x:Double x:Key="PersonAvatarSize">40</x:Double>
+        <x:Double x:Key="ModalWidth">520</x:Double>
+        <x:Double x:Key="ModalWidthWide">680</x:Double>
+        <x:Double x:Key="MenuPanelWidth">320</x:Double>
+        <x:Double x:Key="CodeFieldHeight">68</x:Double>
+        <FontFamily x:Key="FontMono">Menlo, Consolas, Courier New, monospace</FontFamily>
+        <x:Double x:Key="ScoreNameMaxWidth">300</x:Double>
+        <x:Double x:Key="NotificationsPanelWidth">400</x:Double>
+        <Thickness x:Key="MarginNotificationsPanel">0,82,32,24</Thickness>
+        <x:Double x:Key="AvatarChoiceSize">46</x:Double>
+        <x:Double x:Key="ControlHeightTextArea">96</x:Double>
+        <x:Double x:Key="SettingsWindowWidth">1100</x:Double>
+        <x:Double x:Key="SettingsWindowHeight">680</x:Double>
+        <x:Double x:Key="SettingsNavWidth">260</x:Double>
+        <x:Double x:Key="SettingsFieldMaxWidth">560</x:Double>
+        <Thickness x:Key="MarginDialogSafeArea">24</Thickness>
+        <Thickness x:Key="PaddingSettingsHeader">20,14</Thickness>
+        <Thickness x:Key="PaddingSettingsContent">36,32</Thickness>
     </Styles.Resources>
 
-
-    <!-- =====================================================================
-         BASE
-         ===================================================================== -->
     <!-- Default font for the whole UI: every control inherits it unless a style sets its own (e.g. FontTitleDisplay).
-         Needed because the "TextBlock" selector below does not match derived types such as AccessText. -->
+        Needed because the "TextBlock" selector below does not match derived types such as AccessText. -->
     <Style Selector="Window">
         <Setter Property="FontFamily" Value="{DynamicResource FontBody}"/>
+    </Style>
+
+    <!-- Buttons clip to their bounds by default, which cuts the focus ring and leaves its corners square. -->
+    <Style Selector="Button">
+        <Setter Property="ClipToBounds" Value="False"/>
     </Style>
 
     <Style Selector="TextBlock">
@@ -170,13 +238,17 @@
         </Setter>
     </Style>
     <!-- Every animation instance stays subscribed to the global animation clock after its control is gone, and a style
-         animation creates its instance as soon as the control exists, even if it is hidden. The spinner lives hidden
-         inside every login/register button, so it only gets its animation while the button is .loading (IsBusy). -->
+        animation creates its instance as soon as the control exists, even if it is hidden. The spinner lives hidden
+        inside every login/register button, so it only gets its animation while the button is .loading (IsBusy). -->
     <Style Selector="Button.loading Path.spinner">
         <Style.Animations>
             <Animation Duration="0:0:0.9" IterationCount="Infinite">
-                <KeyFrame Cue="0%"><Setter Property="RotateTransform.Angle" Value="0"/></KeyFrame>
-                <KeyFrame Cue="100%"><Setter Property="RotateTransform.Angle" Value="360"/></KeyFrame>
+                <KeyFrame Cue="0%">
+                    <Setter Property="RotateTransform.Angle" Value="0"/>
+                </KeyFrame>
+                <KeyFrame Cue="100%">
+                    <Setter Property="RotateTransform.Angle" Value="360"/>
+                </KeyFrame>
             </Animation>
         </Style.Animations>
     </Style>
@@ -188,26 +260,29 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
-
-    <!-- =====================================================================
-         ESTRUCTURA DE PANTALLA
-         ===================================================================== -->
-
     <!-- Icons use Stretch=Uniform, which ignores the stroke: half of it lands outside the icon box. Templated
-         controls (ContentControl, Button, CheckBox...) clip to their bounds by default and cut that half off
-         (flat left/bottom edges). Every component that hosts an icon or a border-sized part opts out here. -->
-    <Style Selector="ContentControl.field-message, HeaderedContentControl.alert, Button.alert-action, ToggleButton.reveal-toggle, CheckBox.check-standard, HeaderedContentControl.requirement, ContentControl.brand-note, Button.back-btn">
+        controls (ContentControl, Button, CheckBox...) clip to their bounds by default and cut that half off
+        (flat left/bottom edges). Every component that hosts an icon or a border-sized part opts out here. -->
+    <Style Selector="ContentControl.field-message,
+                     HeaderedContentControl.alert,
+                     Button.alert-action,
+                     ToggleButton.reveal-toggle,
+                     CheckBox.check-standard,
+                     HeaderedContentControl.requirement,
+                     ContentControl.brand-note,
+                     Button.back-btn,
+                     Button.menu-btn,
+                     Button.corner-btn,
+                     Button.profile-chip">
         <Setter Property="ClipToBounds" Value="False"/>
     </Style>
 
-    <!-- Escala DownOnly (propuesta D-07): 1:1 si cabe; si la ventana es más baja, se reduce todo por igual -->
     <Style Selector="Viewbox.fit-down">
         <Setter Property="Stretch" Value="Uniform"/>
         <Setter Property="StretchDirection" Value="DownOnly"/>
         <Setter Property="Margin" Value="{DynamicResource MarginScreenSafeArea}"/>
     </Style>
 
-    <!-- Marco del alto del peor caso: la tarjeta se ancla arriba y crece hacia abajo -->
     <Style Selector="Panel.card-frame">
         <Setter Property="Width" Value="{DynamicResource CardWidth}"/>
         <Setter Property="Height" Value="{DynamicResource CardFrameHeight}"/>
@@ -222,14 +297,13 @@
     </Style>
 
     <!-- Screens taller than the login card (GUI-013...): 1:1 card anchored under the language selector. It never
-         shrinks; when the window is short, the form column scrolls instead (see ScrollViewer.form-scroll). -->
+        shrinks; when the window is short, the form column scrolls instead (see ScrollViewer.form-scroll). -->
     <Style Selector="Border.card.card-top">
         <Setter Property="Width" Value="{DynamicResource CardWidth}"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="Margin" Value="{DynamicResource MarginScreenSafeArea}"/>
     </Style>
 
-    <!-- Columna de marca (azul) -->
     <Style Selector="Border.brand-panel">
         <Setter Property="Width" Value="{DynamicResource BrandPanelWidth}"/>
         <Setter Property="Padding" Value="{DynamicResource PaddingBrand}"/>
@@ -267,7 +341,7 @@
     <Style Selector="TextBlock.brand-subtitle">
         <Setter Property="FontSize" Value="{DynamicResource FontSizeBrandSubtitle}"/>
         <!-- Cairo has no italic design: asking for FontStyle=Italic makes Avalonia build a synthetic typeface on every
-             text layout and never release it. A slant transform gives the same look without touching the font. -->
+            text layout and never release it. A slant transform gives the same look without touching the font. -->
         <Setter Property="RenderTransformOrigin" Value="50%,100%"/>
         <Setter Property="RenderTransform" Value="skew(-10deg, 0deg)"/>
         <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
@@ -275,7 +349,6 @@
         <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
 
-    <!-- Brand column of the longer screens: header on top, content below instead of a centered emblem -->
     <Style Selector="StackPanel.brand-stack-top">
         <Setter Property="Spacing" Value="{DynamicResource SpacingForm}"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
@@ -308,7 +381,6 @@
         <Setter Property="Background" Value="{DynamicResource ColorAccentLightTintStrong}"/>
     </Style>
 
-    <!-- Checklist row on the dark column: Header = requirement, Content = status word (only shown once .met) -->
     <Style Selector="HeaderedContentControl.requirement">
         <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
         <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
@@ -344,7 +416,6 @@
         <Setter Property="IsVisible" Value="True"/>
     </Style>
 
-    <!-- Note on the dark column: icon + wrapped text (.info | .age choose the icon) -->
     <Style Selector="ContentControl.brand-note">
         <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
         <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
@@ -370,7 +441,6 @@
         <Setter Property="Data" Value="{DynamicResource IconUser}"/>
     </Style>
 
-    <!-- Emblema: pirámide con el sol -->
     <Style Selector="ContentControl.pyramid-emblem">
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="Template">
@@ -390,7 +460,6 @@
         </Setter>
     </Style>
 
-    <!-- Columna del formulario (blanca) -->
     <Style Selector="Border.form-panel">
         <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
         <Setter Property="Padding" Value="{DynamicResource PaddingForm}"/>
@@ -438,10 +507,6 @@
         <Setter Property="Margin" Value="7,0,0,0"/>
     </Style>
 
-
-    <!-- =====================================================================
-         TEXTOS
-         ===================================================================== -->
     <Style Selector="TextBlock.heading-1">
         <Setter Property="FontFamily" Value="{DynamicResource FontTitleDisplay}"/>
         <Setter Property="FontSize" Value="{DynamicResource FontSizeTitle}"/>
@@ -470,16 +535,11 @@
         <Setter Property="Foreground" Value="{DynamicResource ColorError}"/>
     </Style>
 
-    <!-- Marca de campo obligatorio (símbolo, no texto traducible) -->
     <Style Selector="Run.required">
         <Setter Property="Text" Value=" *"/>
         <Setter Property="Foreground" Value="{DynamicResource ColorError}"/>
     </Style>
 
-
-    <!-- =====================================================================
-         CAMPOS DE TEXTO
-         ===================================================================== -->
     <Style Selector="TextBox.input-field">
         <Setter Property="Height" Value="{DynamicResource ControlHeight}"/>
         <Setter Property="FontSize" Value="{DynamicResource FontSizeInput}"/>
@@ -527,7 +587,6 @@
         <Setter Property="StrokeThickness" Value="1.8"/>
     </Style>
 
-    <!-- Botón «Ver / Ocultar» dentro del campo de contraseña -->
     <Style Selector="ToggleButton.reveal-toggle">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}"/>
@@ -567,7 +626,6 @@
         <Setter Property="BoxShadow" Value="0 0 0 3 #C18F3C"/>
     </Style>
 
-    <!-- Mensaje junto a un campo: icono + texto (error por defecto, .warning para Bloq Mayús) -->
     <Style Selector="ContentControl.field-message">
         <Setter Property="Foreground" Value="{DynamicResource ColorError}"/>
         <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
@@ -596,11 +654,6 @@
         <Setter Property="Data" Value="{DynamicResource IconWarning}"/>
     </Style>
 
-
-    <!-- =====================================================================
-         ZONA DE MENSAJES (alert): Header = texto, Content = acción opcional
-         Clases: .error | .warning | .info (por defecto) | .success
-         ===================================================================== -->
     <Style Selector="HeaderedContentControl.alert">
         <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
         <Setter Property="FontWeight" Value="Bold"/>
@@ -665,7 +718,6 @@
         <Setter Property="Data" Value="{DynamicResource IconCheck}"/>
     </Style>
 
-    <!-- Acción dentro de un alert de error («Reintentar») -->
     <Style Selector="Button.alert-action">
         <Setter Property="Height" Value="{DynamicResource ControlHeightCompact}"/>
         <Setter Property="Padding" Value="12,0"/>
@@ -691,12 +743,6 @@
         <Setter Property="StrokeThickness" Value="2.2"/>
     </Style>
 
-
-    <!-- =====================================================================
-         BOTONES
-         ===================================================================== -->
-
-    <!-- Principal (azul base, texto arena) · .loading muestra el estado «Verificando…» -->
     <Style Selector="Button.primary-btn">
         <Setter Property="Height" Value="{DynamicResource ControlHeightPrimary}"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -741,7 +787,6 @@
         <Setter Property="Foreground" Value="{DynamicResource ColorTextOnPrimary}"/>
     </Style>
 
-    <!-- Secundario (contorno azul) -->
     <Style Selector="Button.secondary-btn">
         <Setter Property="Height" Value="{DynamicResource ControlHeight}"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -773,7 +818,6 @@
         <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
     </Style>
 
-    <!-- Acento (relleno arena, borde dorado) · flujos alternos como «Jugar como invitado» -->
     <Style Selector="Button.accent-btn">
         <Setter Property="Height" Value="{DynamicResource ControlHeight}"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -805,7 +849,6 @@
         <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
     </Style>
 
-    <!-- Estados deshabilitados comunes de secundario y acento: se conserva el color y baja la opacidad -->
     <Style Selector="Button.secondary-btn:disabled, Button.accent-btn:disabled">
         <Setter Property="Opacity" Value="0.45"/>
     </Style>
@@ -820,7 +863,6 @@
         <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
     </Style>
 
-    <!-- Enlace: texto azul con subrayado dorado (contraste legible; el contenido es un TextBlock.link-text) -->
     <Style Selector="Button.link-btn">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
@@ -832,7 +874,6 @@
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="FocusAdorner" Value="{x:Null}"/>
     </Style>
-    <!-- Back button: same states as the link button, pill padding offset on the left to stay flush with the form -->
     <Style Selector="Button.back-btn">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
@@ -848,16 +889,22 @@
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
     </Style>
-    <Style Selector="Button.link-btn /template/ ContentPresenter#PART_ContentPresenter, Button.link-btn:disabled /template/ ContentPresenter#PART_ContentPresenter, Button.back-btn /template/ ContentPresenter#PART_ContentPresenter, Button.back-btn:disabled /template/ ContentPresenter#PART_ContentPresenter">
+    <Style Selector="Button.link-btn /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.link-btn:disabled /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.back-btn /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.back-btn:disabled /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="Transparent"/>
     </Style>
-    <Style Selector="Button.link-btn:pointerover /template/ ContentPresenter#PART_ContentPresenter, Button.back-btn:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Style Selector="Button.link-btn:pointerover /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.back-btn:pointerover /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource ColorAccentTint}"/>
     </Style>
-    <Style Selector="Button.link-btn:pressed /template/ ContentPresenter#PART_ContentPresenter, Button.back-btn:pressed /template/ ContentPresenter#PART_ContentPresenter">
+    <Style Selector="Button.link-btn:pressed /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.back-btn:pressed /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource ColorAccentTintStrong}"/>
     </Style>
-    <Style Selector="Button.link-btn:focus-visible /template/ ContentPresenter#PART_ContentPresenter, Button.back-btn:focus-visible /template/ ContentPresenter#PART_ContentPresenter">
+    <Style Selector="Button.link-btn:focus-visible /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.back-btn:focus-visible /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="BoxShadow" Value="0 0 0 3 #C18F3C"/>
     </Style>
     <Style Selector="Button.link-btn:disabled, Button.back-btn:disabled">
@@ -881,7 +928,6 @@
         <Setter Property="Foreground" Value="{DynamicResource ColorPrimaryHover}"/>
     </Style>
 
-    <!-- Separador con texto («o») -->
     <Style Selector="ContentControl.divider-labeled">
         <Setter Property="Foreground" Value="{DynamicResource ColorTextMuted}"/>
         <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
@@ -890,16 +936,15 @@
                 <Grid ColumnDefinitions="*,Auto,*">
                     <Border Height="1" VerticalAlignment="Center" Background="{DynamicResource ColorDivider}"/>
                     <ContentPresenter Grid.Column="1" Margin="14,0" Content="{TemplateBinding Content}"/>
-                    <Border Grid.Column="2" Height="1" VerticalAlignment="Center" Background="{DynamicResource ColorDivider}"/>
+                    <Border Grid.Column="2"
+                            Height="1"
+                            VerticalAlignment="Center"
+                            Background="{DynamicResource ColorDivider}"/>
                 </Grid>
             </ControlTemplate>
         </Setter>
     </Style>
 
-
-    <!-- =====================================================================
-         CASILLA
-         ===================================================================== -->
     <Style Selector="CheckBox.check-standard">
         <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
         <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
@@ -933,7 +978,8 @@
         <Setter Property="Fill" Value="{DynamicResource ColorAccentLight}"/>
     </Style>
 
-    <!-- The tinted pill (hover/pressed) needs inner room; the negative margin keeps the box aligned with the fields. -->
+    <!-- The tinted pill (hover/pressed) needs inner room;
+        the negative margin keeps the box aligned with the fields. -->
     <Style Selector="CheckBox.check-standard">
         <Setter Property="Margin" Value="-6,0,0,0"/>
     </Style>
@@ -942,28 +988,24 @@
         <Setter Property="CornerRadius" Value="{DynamicResource RadiusSmall}"/>
     </Style>
     <!-- Text colour is set for every state: Fluent recolours it on hover/press (white in the system dark theme),
-         which made the label vanish on the white card. The part is PART_ContentPresenter, not ContentPresenter. -->
+        which made the label vanish on the white card. The part is PART_ContentPresenter, not ContentPresenter. -->
     <Style Selector="CheckBox.check-standard /template/ ContentPresenter#PART_ContentPresenter,
-                     CheckBox.check-standard:pointerover /template/ ContentPresenter#PART_ContentPresenter,
-                     CheckBox.check-standard:pressed /template/ ContentPresenter#PART_ContentPresenter,
-                     CheckBox.check-standard:checked /template/ ContentPresenter#PART_ContentPresenter,
-                     CheckBox.check-standard:checked:pointerover /template/ ContentPresenter#PART_ContentPresenter,
-                     CheckBox.check-standard:checked:pressed /template/ ContentPresenter#PART_ContentPresenter">
+           CheckBox.check-standard:pointerover /template/ ContentPresenter#PART_ContentPresenter,
+           CheckBox.check-standard:pressed /template/ ContentPresenter#PART_ContentPresenter,
+           CheckBox.check-standard:checked /template/ ContentPresenter#PART_ContentPresenter,
+           CheckBox.check-standard:checked:pointerover /template/ ContentPresenter#PART_ContentPresenter,
+           CheckBox.check-standard:checked:pressed /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
     </Style>
     <Style Selector="CheckBox.check-standard:pointerover /template/ Border#PART_Border,
-                     CheckBox.check-standard:checked:pointerover /template/ Border#PART_Border">
+           CheckBox.check-standard:checked:pointerover /template/ Border#PART_Border">
         <Setter Property="Background" Value="{DynamicResource ColorAccentTint}"/>
     </Style>
     <Style Selector="CheckBox.check-standard:pressed /template/ Border#PART_Border,
-                     CheckBox.check-standard:checked:pressed /template/ Border#PART_Border">
+           CheckBox.check-standard:checked:pressed /template/ Border#PART_Border">
         <Setter Property="Background" Value="{DynamicResource ColorAccentTintStrong}"/>
     </Style>
 
-
-    <!-- =====================================================================
-         SELECTOR DE IDIOMA (CU-020) · esquina superior derecha, fuera de la tarjeta
-         ===================================================================== -->
     <Style Selector="ComboBox.language-selector">
         <Setter Property="Width" Value="270"/>
         <Setter Property="Height" Value="46"/>
@@ -993,10 +1035,12 @@
     <Style Selector="ComboBox.language-selector:focus-visible /template/ Border#Background">
         <Setter Property="BoxShadow" Value="0 0 0 3 #F3DBA2, 0 0 0 6 #05192B"/>
     </Style>
-    <Style Selector="ComboBox.language-selector /template/ ContentControl#ContentPresenter, ComboBox.language-selector:pointerover /template/ ContentControl#ContentPresenter">
+    <Style Selector="ComboBox.language-selector /template/ ContentControl#ContentPresenter,
+                     ComboBox.language-selector:pointerover /template/ ContentControl#ContentPresenter">
         <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
     </Style>
-    <Style Selector="ComboBox.language-selector /template/ PathIcon#DropDownGlyph, ComboBox.language-selector:pointerover /template/ PathIcon#DropDownGlyph">
+    <Style Selector="ComboBox.language-selector /template/ PathIcon#DropDownGlyph,
+                     ComboBox.language-selector:pointerover /template/ PathIcon#DropDownGlyph">
         <Setter Property="Foreground" Value="{DynamicResource ColorAccentLight}"/>
     </Style>
     <Style Selector="ComboBox.language-selector /template/ Border#PopupBorder">
@@ -1020,6 +1064,2240 @@
     <Style Selector="ComboBox.language-selector ComboBoxItem:selected /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource ColorAccentLightTintStrong}"/>
         <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+    </Style>
+
+    <!-- Main menu (GUI-002): the card is centered in the same frame as the login card, so the menu opens in place -->
+    <Style Selector="Border.card.card-centered">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="StackPanel.menu-stack">
+        <Setter Property="Spacing" Value="{DynamicResource SpacingMenu}"/>
+    </Style>
+
+    <Style Selector="Border.menu-divider">
+        <Setter Property="Height" Value="1"/>
+        <Setter Property="Margin" Value="0,2"/>
+        <Setter Property="Background" Value="{DynamicResource ColorDivider}"/>
+    </Style>
+
+    <Style Selector="Button.primary-btn.menu-btn Path.icon">
+        <Setter Property="Stroke" Value="{DynamicResource ColorTextOnPrimary}"/>
+    </Style>
+
+    <Style Selector="Button.profile-chip">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="{DynamicResource MarginCornerTopLeft}"/>
+        <Setter Property="Padding" Value="{DynamicResource PaddingProfileChip}"/>
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPill}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    </Style>
+    <Style Selector="Button.profile-chip:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorPrimaryHover}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+    </Style>
+    <Style Selector="Button.profile-chip:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorPrimaryPressed}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+    </Style>
+    <Style Selector="Button.profile-chip:focus-visible /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorPrimaryHover}"/>
+        <Setter Property="BoxShadow" Value="0 0 0 3 #F3DBA2, 0 0 0 6 #05192B"/>
+    </Style>
+
+    <Style Selector="StackPanel.profile-content">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="12"/>
+    </Style>
+
+    <Style Selector="Border.avatar">
+        <Setter Property="Width" Value="{DynamicResource AvatarSize}"/>
+        <Setter Property="Height" Value="{DynamicResource AvatarSize}"/>
+        <Setter Property="Background" Value="{DynamicResource ColorPrimaryLoading}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPill}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="TextBlock.avatar-initials">
+        <Setter Property="FontFamily" Value="{DynamicResource FontTitleDisplay}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="TextBlock.profile-name">
+        <Setter Property="MaxWidth" Value="{DynamicResource ProfileNameMaxWidth}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+    <Style Selector="TextBlock.profile-stats">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+    </Style>
+
+    <Style Selector="Button.corner-btn">
+        <Setter Property="Width" Value="{DynamicResource ControlHeightPill}"/>
+        <Setter Property="Height" Value="{DynamicResource ControlHeightPill}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="{DynamicResource MarginCornerTopRight}"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPill}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    </Style>
+    <Style Selector="Button.corner-btn:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorPrimaryHover}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+    </Style>
+    <Style Selector="Button.corner-btn:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorPrimaryPressed}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+    </Style>
+    <Style Selector="Button.corner-btn:focus-visible /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorPrimaryHover}"/>
+        <Setter Property="BoxShadow" Value="0 0 0 3 #F3DBA2, 0 0 0 6 #05192B"/>
+    </Style>
+    <Style Selector="Button.corner-btn Path.icon">
+        <Setter Property="Stroke" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <!-- The count sits in a bordered circle, so it is told apart by shape and not only by colour -->
+    <Style Selector="Border.badge">
+        <Setter Property="MinWidth" Value="{DynamicResource BadgeSize}"/>
+        <Setter Property="Height" Value="{DynamicResource BadgeSize}"/>
+        <Setter Property="Padding" Value="4,0"/>
+        <Setter Property="Margin" Value="0,2,2,0"/>
+        <Setter Property="Background" Value="{DynamicResource ColorError}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPill}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+    </Style>
+    <Style Selector="TextBlock.badge-text">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="HeaderedContentControl.alert.toast">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Margin" Value="{DynamicResource MarginToast}"/>
+        <Setter Property="MaxWidth" Value="{DynamicResource ToastMaxWidth}"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+    </Style>
+
+
+    <!-- Settings window (GUI-010) -->
+    <!-- Dialogs (MOD-xxx) are a layer inside the main window: a scrim over the whole window with the dialog card
+        in the middle, so they read as part of the game and not as another operating system window. -->
+    <Style Selector="Grid.dialog-scrim">
+        <Setter Property="Background" Value="{DynamicResource ColorOverlay}"/>
+    </Style>
+    <Style Selector="Viewbox.dialog-fit">
+        <Setter Property="Stretch" Value="Uniform"/>
+        <Setter Property="StretchDirection" Value="DownOnly"/>
+        <Setter Property="Margin" Value="{DynamicResource MarginDialogSafeArea}"/>
+    </Style>
+    <Style Selector="Border.dialog-card">
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusCard}"/>
+        <Setter Property="BoxShadow" Value="0 24 60 0 #593C280A, 0 0 0 6 #59F3DBA2"/>
+        <Setter Property="ClipToBounds" Value="True"/>
+    </Style>
+    <Style Selector="Border.settings-card">
+        <Setter Property="Width" Value="{DynamicResource SettingsWindowWidth}"/>
+        <Setter Property="Height" Value="{DynamicResource SettingsWindowHeight}"/>
+    </Style>
+
+    <Style Selector="Border.panel-header">
+        <Setter Property="Padding" Value="{DynamicResource PaddingSettingsHeader}"/>
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="0,0,0,2"/>
+    </Style>
+    <Style Selector="StackPanel.panel-header-content">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="18"/>
+    </Style>
+    <Style Selector="TextBlock.panel-title">
+        <Setter Property="FontFamily" Value="{DynamicResource FontTitleDisplay}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeTitle}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="Button.header-btn">
+        <Setter Property="Padding" Value="12,7"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    </Style>
+    <Style Selector="Button.header-btn /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.header-btn:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+    </Style>
+    <Style Selector="Button.header-btn:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorAccentLightTint}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+    </Style>
+    <Style Selector="Button.header-btn:focus-visible /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="BoxShadow" Value="0 0 0 3 #F3DBA2"/>
+    </Style>
+    <Style Selector="Button.header-btn Path.icon">
+        <Setter Property="Width" Value="15"/>
+        <Setter Property="Height" Value="15"/>
+        <Setter Property="Stroke" Value="{DynamicResource ColorTextOnDark}"/>
+    </Style>
+
+    <Style Selector="Border.settings-nav">
+        <Setter Property="Width" Value="{DynamicResource SettingsNavWidth}"/>
+        <Setter Property="Padding" Value="18"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDivider}"/>
+        <Setter Property="BorderThickness" Value="0,0,1,0"/>
+    </Style>
+    <Style Selector="StackPanel.nav-stack">
+        <Setter Property="Spacing" Value="8"/>
+    </Style>
+
+    <Style Selector="Button.nav-item">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="14,12"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    </Style>
+    <Style Selector="Button.nav-item /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="Button.nav-item:pointerover /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.nav-item:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorSecondaryHover}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="Button.nav-item:focus-visible /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="BoxShadow" Value="0 0 0 3 #C18F3C"/>
+    </Style>
+    <Style Selector="Button.nav-item.selected /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.nav-item.selected:pointerover /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.nav-item.selected:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnPrimary}"/>
+    </Style>
+    <Style Selector="Button.nav-item.selected Path.icon">
+        <Setter Property="Stroke" Value="{DynamicResource ColorTextOnPrimary}"/>
+    </Style>
+
+    <Style Selector="ScrollViewer.section-scroll">
+        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="Padding" Value="{DynamicResource PaddingSettingsContent}"/>
+    </Style>
+
+    <Style Selector="StackPanel.settings-section">
+        <Setter Property="Spacing" Value="{DynamicResource SpacingForm}"/>
+    </Style>
+    <Style Selector="StackPanel.settings-list">
+        <Setter Property="Spacing" Value="0"/>
+    </Style>
+    <Style Selector="StackPanel.setting-label">
+        <Setter Property="Spacing" Value="2"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="StackPanel.settings-fields">
+        <Setter Property="Spacing" Value="{DynamicResource SpacingForm}"/>
+        <Setter Property="MaxWidth" Value="{DynamicResource SettingsFieldMaxWidth}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+    </Style>
+
+    <Style Selector="TextBlock.section-title">
+        <Setter Property="FontFamily" Value="{DynamicResource FontTitleDisplay}"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+
+    <Style Selector="Border.setting-row">
+        <Setter Property="Padding" Value="0,14"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDivider}"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+    </Style>
+    <Style Selector="StackPanel.choice-group">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="12"/>
+    </Style>
+    <Style Selector="TextBlock.setting-value">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="Button.choice-btn">
+        <Setter Property="Height" Value="{DynamicResource ControlHeightField}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="18,0"/>
+    </Style>
+    <Style Selector="Button.secondary-btn.selected /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.secondary-btn.selected:pointerover /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.secondary-btn.selected:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnPrimary}"/>
+    </Style>
+    <Style Selector="Button.secondary-btn.selected Path.icon">
+        <Setter Property="Stroke" Value="{DynamicResource ColorTextOnPrimary}"/>
+    </Style>
+
+    <Style Selector="ComboBox.select-field">
+        <Setter Property="Height" Value="{DynamicResource ControlHeightField}"/>
+        <Setter Property="MinWidth" Value="220"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="12,0"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorBorderInput}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusInput}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    </Style>
+    <Style Selector="ComboBox.select-field /template/ Border#Background">
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorBorderInput}"/>
+    </Style>
+    <Style Selector="ComboBox.select-field:pointerover /template/ Border#Background">
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorBorderInputHover}"/>
+    </Style>
+    <Style Selector="ComboBox.select-field:focus-visible /template/ Border#Background">
+        <Setter Property="BoxShadow" Value="0 0 0 3 #73C18F3C"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorPrimary}"/>
+    </Style>
+    <Style Selector="ComboBox.select-field /template/ ContentControl#ContentPresenter,
+                     ComboBox.select-field:pointerover /template/ ContentControl#ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="ComboBox.select-field /template/ Border#PopupBorder">
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorBorderInput}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPopup}"/>
+    </Style>
+    <Style Selector="ComboBox.select-field ComboBoxItem">
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="ComboBox.select-field ComboBoxItem:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorSecondaryHover}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="ComboBox.select-field ComboBoxItem:selected /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorAccentTintStrong}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+
+    <!-- Fluent reads these keys for the track, thumb and switch colours; they are set to the palette values
+        (ColorPrimary #05192B, ColorAccentLight #F5D28E, ColorBorderDisabled #C5CDD6, ColorBorderInput #8796A6). -->
+    <Style Selector="Slider.volume-slider">
+        <Setter Property="Minimum" Value="0"/>
+        <Setter Property="Maximum" Value="100"/>
+        <Setter Property="SmallChange" Value="5"/>
+        <Setter Property="LargeChange" Value="10"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Style.Resources>
+            <SolidColorBrush x:Key="SliderTrackValueFill" Color="#05192B"/>
+            <SolidColorBrush x:Key="SliderTrackValueFillPointerOver" Color="#05192B"/>
+            <SolidColorBrush x:Key="SliderTrackValueFillPressed" Color="#05192B"/>
+            <SolidColorBrush x:Key="SliderTrackFill" Color="#C5CDD6"/>
+            <SolidColorBrush x:Key="SliderTrackFillPointerOver" Color="#C5CDD6"/>
+            <SolidColorBrush x:Key="SliderTrackFillPressed" Color="#C5CDD6"/>
+            <SolidColorBrush x:Key="SliderThumbBackground" Color="#F5D28E"/>
+            <SolidColorBrush x:Key="SliderThumbBackgroundPointerOver" Color="#F5D28E"/>
+            <SolidColorBrush x:Key="SliderThumbBackgroundPressed" Color="#C18F3C"/>
+        </Style.Resources>
+    </Style>
+    <Style Selector="Slider.volume-slider.muted">
+        <Setter Property="Opacity" Value="0.45"/>
+    </Style>
+
+    <Style Selector="ToggleSwitch.switch-standard">
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        <Style.Resources>
+            <SolidColorBrush x:Key="ToggleSwitchFillOff" Color="#C5CDD6"/>
+            <SolidColorBrush x:Key="ToggleSwitchFillOffPointerOver" Color="#C5CDD6"/>
+            <SolidColorBrush x:Key="ToggleSwitchFillOffPressed" Color="#C5CDD6"/>
+            <SolidColorBrush x:Key="ToggleSwitchStrokeOff" Color="#8796A6"/>
+            <SolidColorBrush x:Key="ToggleSwitchStrokeOffPointerOver" Color="#8796A6"/>
+            <SolidColorBrush x:Key="ToggleSwitchStrokeOffPressed" Color="#8796A6"/>
+            <SolidColorBrush x:Key="ToggleSwitchKnobFillOff" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="ToggleSwitchKnobFillOffPointerOver" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="ToggleSwitchKnobFillOffPressed" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="ToggleSwitchFillOffDisabled" Color="#F1F3F5"/>
+            <SolidColorBrush x:Key="ToggleSwitchStrokeOffDisabled" Color="#C5CDD6"/>
+            <SolidColorBrush x:Key="ToggleSwitchKnobFillOffDisabled" Color="#C5CDD6"/>
+            <SolidColorBrush x:Key="ToggleSwitchFillOn" Color="#05192B"/>
+            <SolidColorBrush x:Key="ToggleSwitchFillOnPointerOver" Color="#05192B"/>
+            <SolidColorBrush x:Key="ToggleSwitchFillOnPressed" Color="#05192B"/>
+            <SolidColorBrush x:Key="ToggleSwitchStrokeOn" Color="#05192B"/>
+            <SolidColorBrush x:Key="ToggleSwitchStrokeOnPointerOver" Color="#05192B"/>
+            <SolidColorBrush x:Key="ToggleSwitchStrokeOnPressed" Color="#05192B"/>
+            <SolidColorBrush x:Key="ToggleSwitchKnobFillOn" Color="#F5D28E"/>
+            <SolidColorBrush x:Key="ToggleSwitchKnobFillOnPointerOver" Color="#F5D28E"/>
+            <SolidColorBrush x:Key="ToggleSwitchKnobFillOnPressed" Color="#F5D28E"/>
+        </Style.Resources>
+    </Style>
+
+    <Style Selector="Border.saved-notice">
+        <Setter Property="Padding" Value="10,6"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSuccessBackground}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusSmall}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+    </Style>
+    <Style Selector="Border.saved-notice TextBlock">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorSuccess}"/>
+    </Style>
+    <Style Selector="Border.saved-notice Path.icon">
+        <Setter Property="Width" Value="15"/>
+        <Setter Property="Height" Value="15"/>
+        <Setter Property="Stroke" Value="{DynamicResource ColorSuccess}"/>
+    </Style>
+
+    <Style Selector="Border.requirements-box">
+        <Setter Property="Padding" Value="20,16"/>
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+    </Style>
+
+    <Style Selector="Border.danger-zone">
+        <Setter Property="Padding" Value="18,16"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorError}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+    </Style>
+    <Style Selector="TextBlock.danger-title">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorError}"/>
+    </Style>
+
+
+    <!-- Dark modals (MOD-001, MOD-004...) -->
+    <Style Selector="Border.modal-card">
+        <Setter Property="Width" Value="{DynamicResource ModalWidth}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="28"/>
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPopup}"/>
+        <Setter Property="BoxShadow" Value="0 24 60 0 #99000000"/>
+    </Style>
+    <Style Selector="StackPanel.modal-stack">
+        <Setter Property="Spacing" Value="18"/>
+    </Style>
+    <Style Selector="StackPanel.modal-header">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="12"/>
+    </Style>
+    <Style Selector="Border.modal-icon">
+        <Setter Property="Width" Value="38"/>
+        <Setter Property="Height" Value="38"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPill}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Border.modal-icon Path.icon">
+        <Setter Property="Stroke" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="TextBlock.modal-title">
+        <Setter Property="FontFamily" Value="{DynamicResource FontTitleDisplay}"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style Selector="Border.modal-divider">
+        <Setter Property="Height" Value="1"/>
+        <Setter Property="Background" Value="{DynamicResource ColorAccentLightTintStrong}"/>
+    </Style>
+    <Style Selector="TextBlock.modal-text">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style Selector="TextBlock.modal-label">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+    </Style>
+    <Style Selector="TextBlock.modal-counter">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+    </Style>
+    <Style Selector="TextBlock.modal-counter.limit">
+        <Setter Property="Foreground" Value="{DynamicResource ColorErrorOnDark}"/>
+    </Style>
+    <Style Selector="ContentControl.field-message.on-dark">
+        <Setter Property="Foreground" Value="{DynamicResource ColorErrorOnDark}"/>
+    </Style>
+
+    <Style Selector="Button.modal-primary, Button.modal-secondary">
+        <Setter Property="Height" Value="{DynamicResource ControlHeight}"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeButtonSecondary}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    </Style>
+    <Style Selector="Button.modal-primary">
+        <Setter Property="Background" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+    </Style>
+    <Style Selector="Button.modal-primary /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorPrimary}"/>
+    </Style>
+    <Style Selector="Button.modal-primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorAccentHover}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccentHover}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorPrimary}"/>
+    </Style>
+    <Style Selector="Button.modal-primary:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorAccentPressed}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccentPressed}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorPrimary}"/>
+    </Style>
+    <Style Selector="Button.modal-primary:disabled">
+        <Setter Property="Opacity" Value="0.45"/>
+    </Style>
+    <Style Selector="Button.modal-primary:disabled /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorPrimary}"/>
+    </Style>
+    <Style Selector="Button.modal-primary.loading:disabled">
+        <Setter Property="Opacity" Value="1"/>
+    </Style>
+    <Style Selector="Button.modal-primary Path.spinner">
+        <Setter Property="Stroke" Value="{DynamicResource ColorPrimary}"/>
+    </Style>
+    <Style Selector="Button.modal-secondary:disabled">
+        <Setter Property="Opacity" Value="0.45"/>
+    </Style>
+    <Style Selector="Button.modal-secondary">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+    </Style>
+    <Style Selector="Button.modal-secondary /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+    </Style>
+    <Style Selector="Button.modal-secondary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorAccentLightTint}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+    </Style>
+    <Style Selector="Button.modal-secondary:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorAccentLightTintStrong}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+    </Style>
+    <Style Selector="Button.modal-primary:focus-visible /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.modal-secondary:focus-visible /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="BoxShadow" Value="0 0 0 3 #05192B, 0 0 0 5 #F5D28E"/>
+    </Style>
+    <Style Selector="Button.modal-secondary Path.icon">
+        <Setter Property="Stroke" Value="{DynamicResource ColorTextOnDark}"/>
+    </Style>
+
+    <Style Selector="TextBox.modal-input">
+        <Setter Property="Height" Value="{DynamicResource ControlHeightField}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurfaceRaised}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusSmall}"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="Padding" Value="10,0"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="TextBox.modal-input.multiline">
+        <Setter Property="Height" Value="{DynamicResource ControlHeightTextArea}"/>
+        <Setter Property="Padding" Value="10,8"/>
+        <Setter Property="VerticalContentAlignment" Value="Top"/>
+        <Setter Property="AcceptsReturn" Value="True"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style Selector="TextBox.modal-input /template/ Border#PART_BorderElement,
+                     TextBox.modal-input:pointerover /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="{DynamicResource ColorSurfaceRaised}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+    </Style>
+    <Style Selector="TextBox.modal-input:focus /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="{DynamicResource ColorSurfaceRaised}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+    </Style>
+    <Style Selector="TextBox.modal-input.error /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="{DynamicResource ColorErrorSurfaceOnDark}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorErrorOnDark}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+    </Style>
+
+    <Style Selector="ListBox.avatar-list">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+    </Style>
+    <Style Selector="ListBox.avatar-list ListBoxItem">
+        <Setter Property="Width" Value="{DynamicResource AvatarChoiceSize}"/>
+        <Setter Property="Height" Value="{DynamicResource AvatarChoiceSize}"/>
+        <Setter Property="Margin" Value="4"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPill}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    <Style Selector="ListBox.avatar-list ListBoxItem /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorSurfaceRaised}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPill}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="ListBox.avatar-list ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorPrimaryLoading}"/>
+    </Style>
+    <Style Selector="ListBox.avatar-list ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter,
+                     ListBox.avatar-list ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter,
+                     ListBox.avatar-list ListBoxItem:selected:focus /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorSurfaceRaised}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+    </Style>
+    <Style Selector="Path.avatar-icon">
+        <Setter Property="Width" Value="22"/>
+        <Setter Property="Height" Value="22"/>
+        <Setter Property="Stroke" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="StrokeThickness" Value="1.8"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Border.avatar-check">
+        <Setter Property="Width" Value="16"/>
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="Background" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPill}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Margin" Value="0,0,-4,-4"/>
+    </Style>
+    <Style Selector="Border.avatar-check Path.icon">
+        <Setter Property="Width" Value="10"/>
+        <Setter Property="Height" Value="10"/>
+        <Setter Property="Stroke" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="StrokeThickness" Value="2.4"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+
+    <!-- Notifications panel (PAN-001): a popover under the bell; the whole window around it closes it -->
+    <Style Selector="Button.scrim-dismiss">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
+    </Style>
+    <Style Selector="Button.scrim-dismiss /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.scrim-dismiss:pointerover /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.scrim-dismiss:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="Border.popover-panel">
+        <Setter Property="Width" Value="{DynamicResource NotificationsPanelWidth}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Margin" Value="{DynamicResource MarginNotificationsPanel}"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDivider}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPopup}"/>
+        <Setter Property="BoxShadow" Value="0 16 40 0 #40000000"/>
+        <Setter Property="ClipToBounds" Value="True"/>
+    </Style>
+    <Style Selector="Border.notifications-header">
+        <Setter Property="Padding" Value="16,14"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDivider}"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+    </Style>
+    <Style Selector="TextBlock.notifications-title">
+        <Setter Property="FontFamily" Value="{DynamicResource FontTitleDisplay}"/>
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="TextBlock.notifications-count">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="ScrollViewer.notifications-scroll">
+        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+    </Style>
+    <Style Selector="TextBlock.notifications-empty">
+        <Setter Property="Margin" Value="28"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}"/>
+    </Style>
+
+    <Style Selector="Border.notification-item">
+        <Setter Property="Padding" Value="16,14"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDivider}"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+    </Style>
+    <Style Selector="Border.notification-item.new">
+        <Setter Property="Background" Value="{DynamicResource ColorAccentLightTintStrong}"/>
+    </Style>
+    <Style Selector="Border.notification-avatar">
+        <Setter Property="VerticalAlignment" Value="Top"/>
+    </Style>
+    <Style Selector="StackPanel.notification-body">
+        <Setter Property="Spacing" Value="4"/>
+        <Setter Property="Margin" Value="12,0,0,0"/>
+    </Style>
+    <Style Selector="TextBlock.notification-name">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style Selector="TextBlock.notification-text">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style Selector="StackPanel.notification-meta">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="6"/>
+    </Style>
+    <Style Selector="StackPanel.notification-meta Path.icon">
+        <Setter Property="Width" Value="14"/>
+        <Setter Property="Height" Value="14"/>
+        <Setter Property="Stroke" Value="{DynamicResource ColorTextMuted}"/>
+        <Setter Property="StrokeThickness" Value="1.8"/>
+    </Style>
+    <Style Selector="TextBlock.notification-time">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextMuted}"/>
+    </Style>
+    <Style Selector="TextBlock.notification-expired">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorWarningText}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style Selector="StackPanel.notification-actions">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="8"/>
+        <Setter Property="Margin" Value="0,6,0,0"/>
+    </Style>
+
+    <Style Selector="Button.compact">
+        <Setter Property="Height" Value="{DynamicResource ControlHeightCompact}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="14,0"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusSmall}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+    </Style>
+    <Style Selector="Button.primary-btn.compact /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="BoxShadow" Value="0 0 0 0 Transparent"/>
+    </Style>
+    <Style Selector="Button.compact StackPanel.inline-icon-text">
+        <Setter Property="Spacing" Value="6"/>
+    </Style>
+    <Style Selector="Button.compact Path.spinner">
+        <Setter Property="Width" Value="14"/>
+        <Setter Property="Height" Value="14"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+    </Style>
+
+
+    <!-- Friends screens (GUI-003, GUI-004, GUI-005): common panel of the secondary screens -->
+    <Style Selector="Border.screen-panel">
+        <Setter Property="Width" Value="{DynamicResource ScreenPanelWidth}"/>
+        <Setter Property="Height" Value="{DynamicResource ScreenPanelHeight}"/>
+    </Style>
+    <Style Selector="Border.panel-body">
+        <Setter Property="Padding" Value="28,22"/>
+    </Style>
+
+    <Style Selector="Border.tab-strip">
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurfaceDisabled}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDivider}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+    </Style>
+    <Style Selector="StackPanel.tab-list">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="4"/>
+    </Style>
+    <Style Selector="Button.tab-btn">
+        <Setter Property="Padding" Value="18,10"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusInput}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    </Style>
+    <Style Selector="Button.tab-btn /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="Button.tab-btn:pointerover /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.tab-btn:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorSecondaryHover}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="Button.tab-btn:focus-visible /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="BoxShadow" Value="0 0 0 3 #C18F3C"/>
+    </Style>
+    <Style Selector="Button.tab-btn.selected /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.tab-btn.selected:pointerover /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.tab-btn.selected:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnPrimary}"/>
+    </Style>
+    <Style Selector="StackPanel.tab-content">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="4"/>
+    </Style>
+
+    <Style Selector="TextBlock.list-summary">
+        <Setter Property="Margin" Value="0,16,0,10"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}"/>
+    </Style>
+    <Style Selector="Border.list-frame">
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDivider}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+        <Setter Property="ClipToBounds" Value="True"/>
+    </Style>
+    <Style Selector="Grid.list-area">
+        <Setter Property="Margin" Value="0,16,0,0"/>
+    </Style>
+
+    <Style Selector="Border.person-row">
+        <Setter Property="Padding" Value="14,10"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDivider}"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+    </Style>
+    <Style Selector="Border.person-row:pointerover,
+                     Border.person-row:focus-within">
+        <Setter Property="Background" Value="{DynamicResource ColorAccentTint}"/>
+    </Style>
+    <Style Selector="Border.person-avatar">
+        <Setter Property="Width" Value="{DynamicResource PersonAvatarSize}"/>
+        <Setter Property="Height" Value="{DynamicResource PersonAvatarSize}"/>
+    </Style>
+    <Style Selector="StackPanel.person-info">
+        <Setter Property="Margin" Value="14,0"/>
+        <Setter Property="Spacing" Value="2"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="TextBlock.person-name">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+    <Style Selector="StackPanel.person-status">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="7"/>
+    </Style>
+    <Style Selector="TextBlock.person-status-text">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}"/>
+    </Style>
+    <Style Selector="StackPanel.person-actions">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="8"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Ellipse.presence">
+        <Setter Property="Width" Value="10"/>
+        <Setter Property="Height" Value="10"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Ellipse.presence.online">
+        <Setter Property="Fill" Value="{DynamicResource ColorSuccess}"/>
+    </Style>
+    <Style Selector="Ellipse.presence.offline">
+        <Setter Property="Stroke" Value="{DynamicResource ColorTextMuted}"/>
+        <Setter Property="StrokeThickness" Value="1.5"/>
+    </Style>
+    <Style Selector="Path.presence-diamond">
+        <Setter Property="Width" Value="10"/>
+        <Setter Property="Height" Value="10"/>
+        <Setter Property="Stretch" Value="Uniform"/>
+        <Setter Property="Fill" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="Button.danger-outline">
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorDanger}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDanger}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        <Setter Property="ClipToBounds" Value="False"/>
+    </Style>
+    <Style Selector="Button.danger-outline /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDanger}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorDanger}"/>
+    </Style>
+    <Style Selector="Button.danger-outline:pointerover /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.danger-outline:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorErrorBackground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDangerHover}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorDangerHover}"/>
+    </Style>
+    <Style Selector="Button.danger-outline:focus-visible /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="BoxShadow" Value="0 0 0 3 #C18F3C"/>
+    </Style>
+    <Style Selector="Button.danger-outline Path.icon">
+        <Setter Property="Width" Value="14"/>
+        <Setter Property="Height" Value="14"/>
+        <Setter Property="Stroke" Value="{DynamicResource ColorDanger}"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+    </Style>
+    <Style Selector="Button.secondary-btn.compact Path.icon">
+        <Setter Property="Width" Value="14"/>
+        <Setter Property="Height" Value="14"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+    </Style>
+    <Style Selector="Button.primary-btn.compact Path.icon">
+        <Setter Property="Width" Value="14"/>
+        <Setter Property="Height" Value="14"/>
+        <Setter Property="Stroke" Value="{DynamicResource ColorTextOnPrimary}"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+    </Style>
+
+    <Style Selector="TextBox.search-field">
+        <Setter Property="Width" Value="{DynamicResource SearchFieldWidth}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPill}"/>
+    </Style>
+    <Style Selector="TextBlock.search-hint">
+        <Setter Property="Margin" Value="14,0,0,0"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextMuted}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Button.icon-btn">
+        <Setter Property="Padding" Value="6"/>
+        <Setter Property="Margin" Value="0,0,8,0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPill}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    </Style>
+    <Style Selector="Button.icon-btn /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+    <Style Selector="Button.icon-btn:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorSecondaryHover}"/>
+    </Style>
+    <Style Selector="Button.icon-btn Path.icon">
+        <Setter Property="Width" Value="14"/>
+        <Setter Property="Height" Value="14"/>
+        <Setter Property="Stroke" Value="{DynamicResource ColorTextSecondary}"/>
+    </Style>
+    <Style Selector="Path.field-spinner">
+        <Setter Property="Margin" Value="0,0,12,0"/>
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Data" Value="{DynamicResource GeometrySpinner}"/>
+        <Setter Property="Stroke" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="StrokeThickness" Value="2.5"/>
+        <Setter Property="StrokeLineCap" Value="Round"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="RenderTransformOrigin" Value="50%,50%"/>
+        <Setter Property="RenderTransform">
+            <RotateTransform/>
+        </Setter>
+    </Style>
+    <Style Selector="Path.field-spinner:not(:disabled)">
+        <Style.Animations>
+            <Animation Duration="0:0:0.9" IterationCount="Infinite">
+                <KeyFrame Cue="0%">
+                    <Setter Property="RotateTransform.Angle" Value="0"/>
+                </KeyFrame>
+                <KeyFrame Cue="100%">
+                    <Setter Property="RotateTransform.Angle" Value="360"/>
+                </KeyFrame>
+            </Animation>
+        </Style.Animations>
+    </Style>
+
+    <Style Selector="StackPanel.result-action">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="6"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="StackPanel.result-action Path.icon">
+        <Setter Property="Width" Value="14"/>
+        <Setter Property="Height" Value="14"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+    </Style>
+    <Style Selector="TextBlock.result-status">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}"/>
+    </Style>
+    <Style Selector="StackPanel.result-action.success TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource ColorSuccess}"/>
+    </Style>
+    <Style Selector="StackPanel.result-action.success Path.icon">
+        <Setter Property="Stroke" Value="{DynamicResource ColorSuccess}"/>
+    </Style>
+    <Style Selector="StackPanel.result-action.neutral Path.icon">
+        <Setter Property="Stroke" Value="{DynamicResource ColorTextSecondary}"/>
+    </Style>
+    <Style Selector="StackPanel.result-action.danger TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource ColorDanger}"/>
+    </Style>
+    <Style Selector="StackPanel.result-action.danger Path.icon">
+        <Setter Property="Stroke" Value="{DynamicResource ColorDanger}"/>
+    </Style>
+
+    <Style Selector="StackPanel.empty-state">
+        <Setter Property="Spacing" Value="10"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="MaxWidth" Value="420"/>
+    </Style>
+    <Style Selector="TextBlock.empty-title">
+        <Setter Property="FontFamily" Value="{DynamicResource FontTitleDisplay}"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style Selector="TextBlock.empty-hint">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style Selector="Border.skeleton-row">
+        <Setter Property="Height" Value="52"/>
+        <Setter Property="Margin" Value="0,0,0,8"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurfaceDisabled}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+    </Style>
+
+    <!-- Dangerous confirmation (block): red primary button of the dark modals -->
+    <Style Selector="Button.modal-primary.danger">
+        <Setter Property="Background" Value="{DynamicResource ColorDanger}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDanger}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorSurface}"/>
+    </Style>
+    <Style Selector="Button.modal-primary.danger /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorDanger}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDanger}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorSurface}"/>
+    </Style>
+    <Style Selector="Button.modal-primary.danger:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorDangerHover}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDangerHover}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorSurface}"/>
+    </Style>
+    <Style Selector="Button.modal-primary.danger:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorDangerPressed}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDangerPressed}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorSurface}"/>
+    </Style>
+
+
+    <!-- Scoreboard (GUI-011) -->
+    <Style Selector="StackPanel.panel-header-actions">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="16"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="TextBlock.panel-header-note">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Grid.filter-row">
+        <Setter Property="Margin" Value="0,18,0,16"/>
+    </Style>
+    <Style Selector="Grid.filter-row > :is(Control)">
+        <Setter Property="Margin" Value="0,0,14,0"/>
+    </Style>
+    <Style Selector="Grid.filter-row > Button.clear-filters">
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+    </Style>
+
+    <Style Selector="Border.score-header">
+        <Setter Property="Background" Value="{DynamicResource ColorSurfaceDisabled}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="BorderThickness" Value="0,0,0,2"/>
+    </Style>
+    <Style Selector="TextBlock.score-header-cell">
+        <Setter Property="Padding" Value="14,12,0,12"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}"/>
+    </Style>
+    <Style Selector="Button.sort-header">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="10,12"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    </Style>
+    <Style Selector="Button.sort-header.numeric">
+        <Setter Property="HorizontalContentAlignment" Value="Right"/>
+        <Setter Property="Padding" Value="10,12,14,12"/>
+    </Style>
+    <Style Selector="Button.sort-header /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}"/>
+    </Style>
+    <Style Selector="Button.sort-header:pointerover /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.sort-header:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorSecondaryHover}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="Button.sort-header:focus-visible /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="BoxShadow" Value="inset 0 0 0 2 #C18F3C"/>
+    </Style>
+    <Style Selector="Button.sort-header.sorted /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="StackPanel.sort-content">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="6"/>
+    </Style>
+    <Style Selector="Path.sort-glyph">
+        <Setter Property="Width" Value="10"/>
+        <Setter Property="Height" Value="10"/>
+        <Setter Property="Stretch" Value="Uniform"/>
+        <Setter Property="Fill" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="Border.score-row">
+        <Setter Property="MinHeight" Value="46"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDivider}"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+    </Style>
+    <Style Selector="Border.score-row:pointerover">
+        <Setter Property="Background" Value="{DynamicResource ColorAccentTint}"/>
+    </Style>
+    <Style Selector="Border.score-row.own,
+                     Border.score-row.own:pointerover">
+        <Setter Property="Background" Value="{DynamicResource ColorSandHighlight}"/>
+    </Style>
+    <Style Selector="Border.score-row.own TextBlock">
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    <Style Selector="TextBlock.score-cell">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="TextBlock.score-cell.position">
+        <Setter Property="Margin" Value="14,0,0,0"/>
+    </Style>
+    <Style Selector="TextBlock.score-cell.numeric">
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Margin" Value="0,0,14,0"/>
+    </Style>
+    <Style Selector="TextBlock.score-cell.name">
+        <Setter Property="MaxWidth" Value="{DynamicResource ScoreNameMaxWidth}"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+    <Style Selector="Border.score-avatar">
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="Height" Value="30"/>
+    </Style>
+    <Style Selector="Border.score-avatar Path.avatar-icon">
+        <Setter Property="Width" Value="16"/>
+        <Setter Property="Height" Value="16"/>
+    </Style>
+    <Style Selector="Border.score-avatar TextBlock.avatar-initials">
+        <Setter Property="FontSize" Value="11"/>
+    </Style>
+    <Style Selector="Border.own-badge">
+        <Setter Property="Margin" Value="8,0,0,0"/>
+        <Setter Property="Padding" Value="7,2"/>
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusSmall}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="TextBlock.own-badge-text">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorAccentLight}"/>
+    </Style>
+
+    <Style Selector="Grid.score-footer">
+        <Setter Property="Margin" Value="0,14,0,0"/>
+    </Style>
+    <Style Selector="TextBlock.footer-text">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="StackPanel.pagination">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="12"/>
+        <Setter Property="Margin" Value="0,0,16,0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="TextBlock.page-text">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Path.empty-icon">
+        <Setter Property="Width" Value="38"/>
+        <Setter Property="Height" Value="38"/>
+        <Setter Property="Stretch" Value="Uniform"/>
+        <Setter Property="Stroke" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="StrokeThickness" Value="1.8"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="StackPanel.skeleton-list">
+        <Setter Property="Margin" Value="14,14,14,6"/>
+    </Style>
+
+
+    <!-- Guest mode (GUI-014, MOD-002), hamburger menu, game menu (GUI-006) and match setup (GUI-007) -->
+    <Style Selector="Border.modal-card.wide">
+        <Setter Property="Width" Value="{DynamicResource ModalWidthWide}"/>
+    </Style>
+    <Style Selector="Border.popover-panel.narrow">
+        <Setter Property="Width" Value="{DynamicResource MenuPanelWidth}"/>
+    </Style>
+
+    <Style Selector="StackPanel.capability-list">
+        <Setter Property="Spacing" Value="10"/>
+    </Style>
+    <Style Selector="TextBlock.capability-title">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="LetterSpacing" Value="1.5"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorAccent}"/>
+    </Style>
+    <Style Selector="TextBlock.capability-title.muted">
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDarkMuted}"/>
+    </Style>
+    <Style Selector="StackPanel.capability">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="10"/>
+    </Style>
+    <Style Selector="StackPanel.capability TextBlock">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="StackPanel.capability.no TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDarkMuted}"/>
+    </Style>
+    <Style Selector="StackPanel.capability Path.icon">
+        <Setter Property="Width" Value="15"/>
+        <Setter Property="Height" Value="15"/>
+        <Setter Property="Stroke" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+    </Style>
+    <Style Selector="StackPanel.capability.no Path.icon">
+        <Setter Property="Stroke" Value="{DynamicResource ColorTextOnDarkMuted}"/>
+    </Style>
+
+    <Style Selector="Border.guest-indicator">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Margin" Value="{DynamicResource MarginCornerTopLeft}"/>
+        <Setter Property="Padding" Value="14,6,6,6"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSandHighlight}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPill}"/>
+    </Style>
+    <Style Selector=".inline-indicator Border.guest-indicator">
+        <Setter Property="Margin" Value="0,8,12,8"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="StackPanel.guest-content">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="10"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="StackPanel.guest-content Path.icon">
+        <Setter Property="Stroke" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="TextBlock.guest-text">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Button.guest-info-btn">
+        <Setter Property="Padding" Value="12,6"/>
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPill}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    </Style>
+    <Style Selector="Button.guest-info-btn /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorAccentLight}"/>
+    </Style>
+    <Style Selector="Button.guest-info-btn:pointerover /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.guest-info-btn:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorPrimaryHover}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorAccentLight}"/>
+    </Style>
+    <Style Selector="Button.guest-info-btn:focus-visible /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="BoxShadow" Value="0 0 0 3 #C18F3C"/>
+    </Style>
+
+    <Style Selector="Border.menu-section">
+        <Setter Property="Padding" Value="16,14"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDivider}"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+    </Style>
+    <Style Selector="StackPanel.menu-section-content">
+        <Setter Property="Spacing" Value="8"/>
+    </Style>
+
+    <Style Selector="Border.choice-card">
+        <Setter Property="Padding" Value="22"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurfaceCard}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDivider}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPopup}"/>
+    </Style>
+    <Style Selector="Grid.choice-grid > Border.choice-card:nth-child(1)">
+        <Setter Property="Margin" Value="0,0,10,0"/>
+    </Style>
+    <Style Selector="Grid.choice-grid > Border.choice-card:nth-child(2)">
+        <Setter Property="Margin" Value="10,0,0,0"/>
+    </Style>
+    <Style Selector="StackPanel.choice-header">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="14"/>
+    </Style>
+    <Style Selector="Border.card-icon">
+        <Setter Property="Width" Value="46"/>
+        <Setter Property="Height" Value="46"/>
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPill}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Border.card-icon Path.icon">
+        <Setter Property="Width" Value="22"/>
+        <Setter Property="Height" Value="22"/>
+        <Setter Property="Stroke" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="TextBlock.card-title">
+        <Setter Property="FontFamily" Value="{DynamicResource FontTitleDisplay}"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="StackPanel.step-list">
+        <Setter Property="Spacing" Value="10"/>
+    </Style>
+    <Style Selector="StackPanel.step">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="12"/>
+    </Style>
+    <Style Selector="StackPanel.step > TextBlock">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style Selector="Border.step-badge">
+        <Setter Property="Width" Value="26"/>
+        <Setter Property="Height" Value="26"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPill}"/>
+    </Style>
+    <Style Selector="TextBlock.step-number">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorAccentHover}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="TextBox.code-field">
+        <Setter Property="Height" Value="{DynamicResource CodeFieldHeight}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FontMono}"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="LetterSpacing" Value="16"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+    </Style>
+    <Style Selector="TextBox.code-field /template/ TextBlock#PART_Watermark">
+        <Setter Property="LetterSpacing" Value="16"/>
+    </Style>
+
+    <Style Selector="Button.capacity-btn">
+        <Setter Property="MinWidth" Value="56"/>
+        <Setter Property="Height" Value="{DynamicResource ControlHeight}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeButton}"/>
+    </Style>
+    <Style Selector="StackPanel.capacity-list">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="10"/>
+    </Style>
+    <Style Selector="Border.goal-box">
+        <Setter Property="Padding" Value="16,14"/>
+        <Setter Property="Background" Value="{DynamicResource ColorAccentLightTint}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorSandShadow}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+    </Style>
+    <Style Selector="StackPanel.amulet-row">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="4"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Path.amulet">
+        <Setter Property="Width" Value="16"/>
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="Stretch" Value="Uniform"/>
+        <Setter Property="Stroke" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="StrokeThickness" Value="1.5"/>
+    </Style>
+    <Style Selector="Path.amulet.filled">
+        <Setter Property="Fill" Value="{DynamicResource ColorAccent}"/>
+    </Style>
+
+    <Style Selector="Button.radio-card">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Padding" Value="16,14"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorBorderInput}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    </Style>
+    <Style Selector="Button.radio-card /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorBorderInput}"/>
+    </Style>
+    <Style Selector="Button.radio-card:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorSecondaryHover}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorBorderInputHover}"/>
+    </Style>
+    <Style Selector="Button.radio-card:focus-visible /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="BoxShadow" Value="0 0 0 3 #C18F3C"/>
+    </Style>
+    <Style Selector="Button.radio-card.selected /template/ ContentPresenter#PART_ContentPresenter,
+                     Button.radio-card.selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorPrimary}"/>
+    </Style>
+    <Style Selector="Button.radio-card:disabled">
+        <Setter Property="Opacity" Value="0.6"/>
+    </Style>
+    <Style Selector="Button.radio-card TextBlock.radio-title">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="Button.radio-card TextBlock.radio-hint">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style Selector="Button.radio-card.selected TextBlock.radio-title">
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnPrimary}"/>
+    </Style>
+    <Style Selector="Button.radio-card.selected TextBlock.radio-hint">
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+    </Style>
+    <Style Selector="Path.radio-dot">
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Stretch" Value="Uniform"/>
+        <Setter Property="Stroke" Value="{DynamicResource ColorTextSecondary}"/>
+        <Setter Property="StrokeThickness" Value="1.8"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Button.radio-card.selected Path.radio-dot">
+        <Setter Property="Stroke" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="Fill" Value="{DynamicResource ColorAccentLight}"/>
+    </Style>
+    <Style Selector="Grid.setup-grid">
+        <Setter Property="Margin" Value="0,18,0,0"/>
+    </Style>
+    <Style Selector="StackPanel.setup-column">
+        <Setter Property="Spacing" Value="14"/>
+    </Style>
+    <Style Selector="StackPanel.footer-actions">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="12"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+    </Style>
+    <Style Selector="TextBlock.intro-text">
+        <Setter Property="Margin" Value="0,0,0,14"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}"/>
+    </Style>
+    <Style Selector="TextBlock.panel-subtitle">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+    </Style>
+
+
+    <!-- Waiting room (GUI-008) and invite dialog -->
+    <Style Selector="Border.code-box">
+        <Setter Property="Padding" Value="14,6"/>
+        <Setter Property="Background" Value="{DynamicResource ColorPrimaryHover}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+    </Style>
+    <Style Selector="TextBlock.code-text">
+        <Setter Property="FontFamily" Value="{DynamicResource FontMono}"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="LetterSpacing" Value="6"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorAccentLight}"/>
+    </Style>
+    <Style Selector="Border.settings-strip">
+        <Setter Property="Padding" Value="16,10"/>
+        <Setter Property="Background" Value="{DynamicResource ColorAccentLightTint}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorSandShadow}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+    </Style>
+    <Style Selector="StackPanel.strip-group">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="10"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Button.capacity-btn.small">
+        <Setter Property="MinWidth" Value="38"/>
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+    </Style>
+    <Style Selector="Button.capacity-btn:disabled">
+        <Setter Property="Opacity" Value="0.4"/>
+    </Style>
+    <Style Selector="Button.capacity-btn.struck:disabled TextBlock">
+        <Setter Property="TextDecorations" Value="Strikethrough"/>
+    </Style>
+    <Style Selector="Border.visibility-toggle">
+        <Setter Property="Padding" Value="3"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDivider}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+    </Style>
+    <Style Selector="Button.segment-btn">
+        <Setter Property="Padding" Value="12,6"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusSmall}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    </Style>
+    <Style Selector="Button.segment-btn /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="Button.segment-btn:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorSecondaryHover}"/>
+    </Style>
+    <Style Selector="Button.segment-btn.selected /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnPrimary}"/>
+    </Style>
+    <Style Selector="Button.segment-btn:disabled">
+        <Setter Property="Opacity" Value="0.5"/>
+    </Style>
+
+    <Style Selector="TextBlock.section-heading">
+        <Setter Property="FontFamily" Value="{DynamicResource FontTitleDisplay}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="Border.room-row">
+        <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="Margin" Value="0,0,0,6"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurfaceCard}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDivider}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+    </Style>
+    <Style Selector="Border.room-row.own">
+        <Setter Property="Background" Value="{DynamicResource ColorSandHighlight}"/>
+    </Style>
+    <Style Selector="Border.room-row.empty">
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorBorderInput}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+    <Style Selector="Border.tag">
+        <Setter Property="Padding" Value="8,2"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusSmall}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+    </Style>
+    <Style Selector="Border.tag.light">
+        <Setter Property="Background" Value="{DynamicResource ColorSecondaryHover}"/>
+    </Style>
+    <Style Selector="TextBlock.tag-text">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorAccentLight}"/>
+    </Style>
+    <Style Selector="Border.tag.light TextBlock.tag-text">
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="TextBlock.empty-slot-text">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextMuted}"/>
+    </Style>
+
+    <Style Selector="Border.chat-box">
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDivider}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+        <Setter Property="Padding" Value="12"/>
+    </Style>
+    <Style Selector="TextBlock.chat-system">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextMuted}"/>
+        <Setter Property="RenderTransformOrigin" Value="0%,100%"/>
+        <Setter Property="RenderTransform" Value="skew(-8deg, 0deg)"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style Selector="TextBlock.chat-author">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="TextBlock.chat-author.own">
+        <Setter Property="Foreground" Value="{DynamicResource ColorAccentHover}"/>
+    </Style>
+    <Style Selector="TextBlock.chat-text">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="StackPanel.chat-line">
+        <Setter Property="Margin" Value="0,0,0,6"/>
+    </Style>
+    <Style Selector="StackPanel.chat-line Path.icon">
+        <Setter Property="Width" Value="13"/>
+        <Setter Property="Height" Value="13"/>
+        <Setter Property="Stroke" Value="{DynamicResource ColorTextMuted}"/>
+        <Setter Property="StrokeThickness" Value="1.6"/>
+    </Style>
+    <Style Selector="Grid.footer-bar">
+        <Setter Property="Margin" Value="0,14,0,0"/>
+    </Style>
+    <Style Selector="TextBlock.footer-note">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="MaxWidth" Value="260"/>
+        <Setter Property="Margin" Value="0,0,12,0"/>
+    </Style>
+
+    <Style Selector="Border.invite-row">
+        <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="Margin" Value="0,0,0,6"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurfaceRaised}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+    </Style>
+    <Style Selector="CheckBox.invite-check">
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+        <Setter Property="MinWidth" Value="0"/>
+        <Setter Property="Padding" Value="10,0,0,0"/>
+    </Style>
+    <Style Selector="CheckBox.invite-check /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+    </Style>
+    <Style Selector="TextBlock.invite-name">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="TextBlock.invite-status">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDarkMuted}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="ScrollViewer.invite-scroll">
+        <Setter Property="MaxHeight" Value="260"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+    </Style>
+
+
+    <!-- Match (GUI-009) -->
+    <Style Selector="Border.card-face">
+        <Setter Property="Width" Value="150"/>
+        <Setter Property="Height" Value="220"/>
+        <Setter Property="Background" Value="{DynamicResource ColorCardFace}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorSandShadow}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="ClipToBounds" Value="True"/>
+    </Style>
+    <Style Selector="TextBlock.card-value">
+        <Setter Property="Margin" Value="10,4,0,0"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FontTitleDisplay}"/>
+        <Setter Property="FontSize" Value="34"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="Path.card-figure">
+        <Setter Property="Width" Value="64"/>
+        <Setter Property="Height" Value="64"/>
+        <Setter Property="Stretch" Value="Uniform"/>
+        <Setter Property="Stroke" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="StrokeThickness" Value="1.8"/>
+        <Setter Property="StrokeLineCap" Value="Round"/>
+        <Setter Property="StrokeJoin" Value="Round"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="TextBlock.card-name">
+        <Setter Property="FontFamily" Value="{DynamicResource FontTitleDisplay}"/>
+        <Setter Property="FontSize" Value="19"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="TextBlock.card-metal">
+        <Setter Property="Margin" Value="0,0,0,10"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="LetterSpacing" Value="1.5"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="Border.match-bar">
+        <Setter Property="Margin" Value="20,16,20,0"/>
+        <Setter Property="Padding" Value="20,0"/>
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+    </Style>
+    <Style Selector="StackPanel.bar-group">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="16"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="TextBlock.bar-text">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="TextBlock.bar-timer">
+        <Setter Property="FontFamily" Value="{DynamicResource FontMono}"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTimerBar}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="TextBlock.bar-timer.warning">
+        <Setter Property="Foreground" Value="{DynamicResource ColorTimerWarning}"/>
+    </Style>
+    <Style Selector="ProgressBar.timer-bar">
+        <Setter Property="Width" Value="110"/>
+        <Setter Property="Height" Value="6"/>
+        <Setter Property="Minimum" Value="0"/>
+        <Setter Property="Maximum" Value="1"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTimerBar}"/>
+        <Setter Property="Background" Value="{DynamicResource ColorPrimaryLoading}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="ProgressBar.timer-bar.warning">
+        <Setter Property="Foreground" Value="{DynamicResource ColorTimerWarning}"/>
+    </Style>
+    <Style Selector="Border.bar-divider">
+        <Setter Property="Width" Value="1"/>
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="Background" Value="{DynamicResource ColorAccentLightTintStrong}"/>
+    </Style>
+
+    <Style Selector="Border.match-panel">
+        <Setter Property="Padding" Value="18,14"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPopup}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorSandShadow}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+    <Style Selector="Border.match-panel.table">
+        <Setter Property="Background" Value="{DynamicResource ColorAccentTint}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+    </Style>
+    <Style Selector="Border.opponent">
+        <Setter Property="Width" Value="270"/>
+        <Setter Property="Margin" Value="10,0"/>
+        <Setter Property="Padding" Value="14,10"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorSandShadow}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+    </Style>
+    <Style Selector="Border.opponent.turn">
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="BoxShadow" Value="0 0 18 0 #C18F3C"/>
+    </Style>
+    <Style Selector="Border.opponent.out">
+        <Setter Property="Opacity" Value="0.6"/>
+    </Style>
+    <Style Selector="StackPanel.mini-cards">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="4"/>
+    </Style>
+    <Style Selector="Border.mini-card">
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="Height" Value="44"/>
+        <Setter Property="Background" Value="{DynamicResource ColorCardFace}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorSandShadow}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="4"/>
+    </Style>
+    <Style Selector="Border.mini-card.hidden">
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+    </Style>
+    <Style Selector="TextBlock.mini-card-value">
+        <Setter Property="FontFamily" Value="{DynamicResource FontTitleDisplay}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Border.status-chip">
+        <Setter Property="Padding" Value="8,2"/>
+        <Setter Property="Background" Value="{DynamicResource ColorInfoBackground}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusSmall}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+    </Style>
+    <Style Selector="TextBlock.status-chip-text">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+    </Style>
+    <Style Selector="StackPanel.amulet-row.small Path.amulet">
+        <Setter Property="Width" Value="11"/>
+        <Setter Property="Height" Value="11"/>
+    </Style>
+
+    <Style Selector="Border.log-panel TextBlock">
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style Selector="TextBlock.log-line">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="Margin" Value="0,0,0,5"/>
+    </Style>
+    <Style Selector="TextBlock.log-line.gain">
+        <Setter Property="Foreground" Value="{DynamicResource ColorSuccess}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    <Style Selector="TextBlock.log-line.loss">
+        <Setter Property="Foreground" Value="{DynamicResource ColorError}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    <Style Selector="TextBlock.log-line.hint">
+        <Setter Property="Foreground" Value="{DynamicResource ColorAccentHover}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style Selector="Border.table-card">
+        <Setter Property="Width" Value="110"/>
+        <Setter Property="Height" Value="156"/>
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="10"/>
+    </Style>
+    <Style Selector="Border.table-slot">
+        <Setter Property="Width" Value="190"/>
+        <Setter Property="Height" Value="156"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorSandShadow}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="10"/>
+    </Style>
+    <Style Selector="TextBlock.table-caption">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style Selector="Grid.unseen-row">
+        <Setter Property="Margin" Value="0,0,0,6"/>
+    </Style>
+    <Style Selector="TextBlock.unseen-label">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="TextBlock.unseen-label.depleted">
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextMuted}"/>
+    </Style>
+    <Style Selector="Border.unseen-pip">
+        <Setter Property="Width" Value="10"/>
+        <Setter Property="Height" Value="10"/>
+        <Setter Property="Background" Value="{DynamicResource ColorDivider}"/>
+        <Setter Property="CornerRadius" Value="2"/>
+    </Style>
+    <Style Selector="Border.unseen-pip.filled">
+        <Setter Property="Background" Value="{DynamicResource ColorAccent}"/>
+    </Style>
+
+    <Style Selector="Button.hand-card">
+        <Setter Property="Width" Value="150"/>
+        <Setter Property="Height" Value="220"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        <Setter Property="RenderTransform" Value="translateY(0px)"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.12"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    <Style Selector="Button.hand-card /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+    <Style Selector="Button.hand-card:pointerover">
+        <Setter Property="RenderTransform" Value="translateY(-14px)"/>
+    </Style>
+    <Style Selector="Button.hand-card.selected">
+        <Setter Property="RenderTransform" Value="translateY(-14px)"/>
+    </Style>
+    <Style Selector="Button.hand-card.selected /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="4"/>
+        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="BoxShadow" Value="0 0 0 3 #C18F3C"/>
+    </Style>
+    <Style Selector="Button.hand-card:disabled">
+        <Setter Property="Opacity" Value="0.55"/>
+    </Style>
+    <Style Selector="TextBlock.key-hint">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextMuted}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Border.hint-box">
+        <Setter Property="Padding" Value="14,10"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurfaceCard}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorSandShadow}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+    </Style>
+    <Style Selector="Border.hint-box.warn">
+        <Setter Property="Background" Value="{DynamicResource ColorWarningBackground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorWarningBorder}"/>
+    </Style>
+    <Style Selector="TextBlock.hint-text">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style Selector="Border.warn TextBlock.hint-text">
+        <Setter Property="Foreground" Value="{DynamicResource ColorWarningText}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style Selector="Grid.standing-row">
+        <Setter Property="Margin" Value="0,0,0,8"/>
+    </Style>
+    <Style Selector="Border.chat-panel">
+        <Setter Property="Padding" Value="14"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPopup}"/>
+        <Setter Property="BoxShadow" Value="0 12 30 0 #40000000"/>
+    </Style>
+    <Style Selector="Button.match-btn">
+        <Setter Property="Padding" Value="14,8"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    </Style>
+    <Style Selector="Button.match-btn /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+    </Style>
+    <Style Selector="Button.match-btn:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorAccentLightTint}"/>
+    </Style>
+    <Style Selector="Button.match-btn Path.icon">
+        <Setter Property="Width" Value="15"/>
+        <Setter Property="Height" Value="15"/>
+        <Setter Property="Stroke" Value="{DynamicResource ColorTextOnDark}"/>
+    </Style>
+
+    <!-- Match dialogs: objective selection, summary, result -->
+    <Style Selector="Border.modal-card.xwide">
+        <Setter Property="Width" Value="1000"/>
+    </Style>
+    <Style Selector="Border.modal-card.medium">
+        <Setter Property="Width" Value="640"/>
+    </Style>
+    <Style Selector="ItemsControl.pick-list">
+        <Setter Property="Margin" Value="0,2,0,0"/>
+    </Style>
+    <Style Selector="Button.pick-row">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="0,0,0,8"/>
+        <Setter Property="Padding" Value="14,10"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurfaceRaised}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    </Style>
+    <Style Selector="Button.pick-row /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorSurfaceRaised}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+    </Style>
+    <Style Selector="Button.pick-row:disabled">
+        <Setter Property="Opacity" Value="0.55"/>
+    </Style>
+    <Style Selector="Button.pick-row.selected /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorPrimary}"/>
+    </Style>
+    <Style Selector="Button.chip-btn">
+        <Setter Property="Margin" Value="0,0,8,8"/>
+        <Setter Property="Padding" Value="12,6"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurfaceRaised}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusSmall}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    </Style>
+    <Style Selector="Button.chip-btn /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorSurfaceRaised}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+    </Style>
+    <Style Selector="Button.chip-btn:disabled">
+        <Setter Property="Opacity" Value="0.45"/>
+    </Style>
+    <Style Selector="Button.chip-btn.selected /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorPrimary}"/>
+    </Style>
+    <Style Selector="Border.summary-row">
+        <Setter Property="Padding" Value="14,10"/>
+        <Setter Property="Margin" Value="0,0,0,8"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorDivider}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
+    </Style>
+    <Style Selector="Border.summary-row.winner">
+        <Setter Property="Background" Value="{DynamicResource ColorSandHighlight}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+    </Style>
+    <Style Selector="Border.summary-row.out">
+        <Setter Property="Opacity" Value="0.7"/>
+    </Style>
+    <Style Selector="Border.summary-row TextBlock">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="TextBlock.summary-head">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="LetterSpacing" Value="1"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}"/>
+    </Style>
+    <Style Selector="TextBlock.points-gain">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorSuccess}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+    </Style>
+    <Style Selector="StackPanel.summary-modal">
+        <Setter Property="Spacing" Value="10"/>
+    </Style>
+    <Style Selector="Border.summary-card">
+        <Setter Property="Width" Value="1000"/>
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusPopup}"/>
+        <Setter Property="ClipToBounds" Value="True"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Border.summary-card.result">
+        <Setter Property="Width" Value="720"/>
+    </Style>
+    <Style Selector="Border.summary-header">
+        <Setter Property="Padding" Value="24,16"/>
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorAccent}"/>
+        <Setter Property="BorderThickness" Value="0,0,0,2"/>
+    </Style>
+    <Style Selector="Border.summary-body">
+        <Setter Property="Padding" Value="24,18"/>
+    </Style>
+    <Style Selector="TextBlock.result-title">
+        <Setter Property="FontFamily" Value="{DynamicResource FontTitleDisplay}"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorAccentLight}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style Selector="TextBlock.result-subtitle">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextOnDark}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="StackPanel.exit-row">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="12"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
 
 </Styles>

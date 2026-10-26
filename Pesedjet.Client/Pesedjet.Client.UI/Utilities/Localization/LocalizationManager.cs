@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -12,10 +13,14 @@ namespace Pesedjet.Client.UI.Utilities.Localization;
 public sealed class LocalizationManager : INotifyPropertyChanged
 {
     private const string DefaultCultureCode = "es-MX";
-    
     private const string AllPropertiesChanged = "";
-    
+
     private static readonly string[] SupportedCultureCodes = [DefaultCultureCode, "en-US"];
+
+    private readonly UserSettingsStore _settingsStore;
+    private readonly object _cultureChangeLock = new();
+    private readonly object _settingsWriteLock = new();
+    private volatile CultureInfo _activeCulture = CultureInfo.InvariantCulture;
 
     public static IReadOnlyList<LanguageOption> AvailableLanguages { get; } =
         SupportedCultureCodes.Select(LanguageOption.FromCultureCode).ToList();
@@ -23,27 +28,19 @@ public sealed class LocalizationManager : INotifyPropertyChanged
     public static LocalizationManager Instance { get; } =
         new(new UserSettingsStore(new AesGcmSettingsProtector()));
 
-    private readonly UserSettingsStore _settingsStore;
-    private readonly object _cultureChangeLock = new();
-    private readonly object _settingsWriteLock = new();
-    private volatile CultureInfo _activeCulture = null!;
-
     public event PropertyChangedEventHandler? PropertyChanged;
-    public event EventHandler? LanguageChanged;
 
-    private LocalizationManager(UserSettingsStore settingsStore)
-    {
-        _settingsStore = settingsStore;
-        var savedCultureCode = FindSupportedCultureCode(_settingsStore.Load()?.Language);
-        ApplyCulture(savedCultureCode ?? DefaultCultureCode);
-    }
+    public event EventHandler? LanguageChanged;
 
     public string this[string key] =>
         Strings.ResourceManager.GetString(key, _activeCulture) ?? $"[{key}]";
-    
+
     public LanguageOption CurrentLanguage
     {
-        get => AvailableLanguages.First(language => language.CultureCode == _activeCulture.Name);
+        get
+        {
+            return AvailableLanguages.First(language => language.CultureCode == _activeCulture.Name);
+        }
         set
         {
             if (value is not null)
@@ -52,39 +49,52 @@ public sealed class LocalizationManager : INotifyPropertyChanged
             }
         }
     }
-    
-    public bool ChangeLanguage(string cultureCode)
+
+    private LocalizationManager(UserSettingsStore settingsStore)
     {
-        var supportedCultureCode = FindSupportedCultureCode(cultureCode);
-        if (supportedCultureCode is null)
-        {
-            return false;
-        }
-
-        lock (_cultureChangeLock)
-        {
-            if (supportedCultureCode == _activeCulture.Name)
-            {
-                return true;
-            }
-
-            ApplyCulture(supportedCultureCode);
-        }
-        
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(AllPropertiesChanged));
-        LanguageChanged?.Invoke(this, EventArgs.Empty);
-        
-        Task.Run(SaveActiveLanguagePreference);
-        return true;
+        _settingsStore = settingsStore;
+        string? savedCultureCode = FindSupportedCultureCode(_settingsStore.Load()?.Language);
+        ApplyCulture(savedCultureCode ?? DefaultCultureCode);
     }
 
-    /// <summary>
-    /// Every localized binding subscribes (weakly) to this singleton, one subscription per bound text. Avalonia only
-    /// drops the subscriptions of screens that are already gone when the singleton raises the event they listen to,
-    /// so without this they pile up with every navigation. Re-reading the few dozen texts of the visible screen is cheap.
-    /// </summary>
-    public void ReleaseDetachedBindings() =>
+    public bool ChangeLanguage(string cultureCode)
+    {
+        string? supportedCultureCode = FindSupportedCultureCode(cultureCode);
+        bool isLanguageSupported = supportedCultureCode is not null;
+        bool hasLanguageChanged = false;
+
+        if (supportedCultureCode is not null)
+        {
+            lock (_cultureChangeLock)
+            {
+                hasLanguageChanged = supportedCultureCode != _activeCulture.Name;
+
+                if (hasLanguageChanged)
+                {
+                    ApplyCulture(supportedCultureCode);
+                }
+            }
+
+            if (hasLanguageChanged)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(AllPropertiesChanged));
+                LanguageChanged?.Invoke(this, EventArgs.Empty);
+
+                Task.Run(SaveActiveLanguagePreference);
+            }
+        }
+
+        return isLanguageSupported;
+    }
+
+    // Every localized binding subscribes (weakly) to this singleton, one subscription per bound text. Avalonia only
+    // drops the subscriptions of screens that are already gone when the singleton raises the event they listen to,
+    // so without this they pile up with every navigation. Re-reading the few dozen texts of the visible screen is
+    // cheap.
+    public void ReleaseDetachedBindings()
+    {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(AllPropertiesChanged));
+    }
 
     private void SaveActiveLanguagePreference()
     {
@@ -94,9 +104,10 @@ public sealed class LocalizationManager : INotifyPropertyChanged
             {
                 _settingsStore.Save(new UserSettings(_activeCulture.Name));
             }
-            catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
-                //TODO: Manage Exception when the language applies to this session but could not be saved for the next one.
+                // TODO: Replace the trace with a logger when the language applies to this session but is not saved.
+                Trace.TraceWarning($"The language preference could not be saved: {ex.Message}");
             }
         }
     }
@@ -109,8 +120,10 @@ public sealed class LocalizationManager : INotifyPropertyChanged
         CultureInfo.CurrentCulture = _activeCulture;
         CultureInfo.CurrentUICulture = _activeCulture;
     }
-    
-    private static string? FindSupportedCultureCode(string? cultureCode) =>
-        SupportedCultureCodes.FirstOrDefault(
+
+    private static string? FindSupportedCultureCode(string? cultureCode)
+    {
+        return SupportedCultureCodes.FirstOrDefault(
             supportedCode => string.Equals(supportedCode, cultureCode, StringComparison.OrdinalIgnoreCase));
+    }
 }

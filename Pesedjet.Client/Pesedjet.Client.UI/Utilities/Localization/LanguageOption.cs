@@ -9,10 +9,11 @@ public sealed record LanguageOption(string CultureCode, string DisplayName)
 
     public static LanguageOption FromCultureCode(string cultureCode)
     {
-        var culture = CultureInfo.GetCultureInfo(cultureCode);
-        var nativeName = culture.NativeName;
-        var capitalizedNativeName =
+        CultureInfo culture = CultureInfo.GetCultureInfo(cultureCode);
+        string nativeName = culture.NativeName;
+        string capitalizedNativeName =
             char.ToUpper(nativeName[FirstCharacterIndex], culture) + nativeName[SecondCharacterIndex..];
+
         return new LanguageOption(cultureCode, capitalizedNativeName);
     }
 }
