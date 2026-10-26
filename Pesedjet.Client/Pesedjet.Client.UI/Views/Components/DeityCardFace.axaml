@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:conv="using:Pesedjet.Client.UI.Utilities.Converters"
+             xmlns:models="using:Pesedjet.Client.UI.Models"
+             mc:Ignorable="d" d:DesignWidth="150" d:DesignHeight="220"
+             x:Class="Pesedjet.Client.UI.Views.Components.DeityCardFace"
+             x:DataType="models:DeityCard"
+             x:CompileBindings="True">
+    <Viewbox Stretch="Uniform">
+        <Border Classes="card-face">
+            <Grid RowDefinitions="14,*,Auto,Auto">
+                <Border Background="{Binding Metal, Converter={x:Static conv:CardMetalConverters.Brush}}"/>
+                <Grid Grid.Row="1">
+                    <TextBlock Classes="card-value" Text="{Binding Value}"/>
+                    <Path Classes="card-figure" Data="{Binding IconData}"/>
+                </Grid>
+                <TextBlock Grid.Row="2" Classes="card-name" Text="{Binding Name}"/>
+                <TextBlock Grid.Row="3" Classes="card-metal"
+                           Text="{Binding Metal, Converter={x:Static conv:CardMetalConverters.Name}}"/>
+            </Grid>
+        </Border>
+    </Viewbox>
+</UserControl>

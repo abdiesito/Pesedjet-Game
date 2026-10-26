@@ -1,0 +1,98 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.RoundSummaryView"
+             x:DataType="vm:RoundSummaryViewModel"
+             x:CompileBindings="True">
+
+    <ThemeVariantScope RequestedThemeVariant="Light">
+        <Grid Classes="dialog-scrim" Background="{DynamicResource ColorOverlay}">
+            <Viewbox Classes="dialog-fit">
+                <Border Classes="summary-card">
+                    <StackPanel>
+                        <Border Classes="summary-header">
+                            <TextBlock Classes="panel-title" Text="{Binding Title}"/>
+                        </Border>
+                        <Border Classes="summary-body">
+                            <StackPanel Classes="summary-modal">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <TextBlock Classes="summary-head"
+                                               Text="{Binding [RoundSummary.Cause],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                    <TextBlock Classes="person-name" Text="{Binding Cause}"/>
+                                </StackPanel>
+                                <Grid ColumnDefinitions="170,60,*,70,200" Margin="14,6,14,0">
+                            <TextBlock Classes="summary-head"
+                                       Grid.Column="0"
+                                       Text="{Binding [RoundSummary.ColPlayer],
+                                                      Source={x:Static
+                                                          loc:LocalizationManager.Instance}}"/>
+                            <TextBlock Classes="summary-head"
+                                       Grid.Column="1"
+                                       Text="{Binding [RoundSummary.ColHand],
+                                                      Source={x:Static
+                                                          loc:LocalizationManager.Instance}}"/>
+                            <TextBlock Classes="summary-head"
+                                       Grid.Column="2"
+                                       Text="{Binding [RoundSummary.ColResult],
+                                                      Source={x:Static
+                                                          loc:LocalizationManager.Instance}}"/>
+                            <TextBlock Classes="summary-head"
+                                       Grid.Column="3" HorizontalAlignment="Right"
+                                       Text="{Binding [RoundSummary.ColPoints],
+                                                      Source={x:Static
+                                                          loc:LocalizationManager.Instance}}"/>
+                            <TextBlock Classes="summary-head"
+                                       Grid.Column="4"
+                                       HorizontalAlignment="Right"
+                                       Text="{Binding ScoreboardHeader}"/>
+                                </Grid>
+                                <ItemsControl ItemsSource="{Binding Rows}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="models:RoundSummaryRow">
+                                            <Border Classes="summary-row"
+                                                    Classes.winner="{Binding IsWinner}"
+                                                    Classes.out="{Binding IsOut}">
+                                                <Grid ColumnDefinitions="170,60,*,70,200">
+                                                    <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <Border Classes="avatar score-avatar">
+                                                            <TextBlock Classes="avatar-initials" Text="{Binding Initials}"/>
+                                                        </Border>
+                                                        <TextBlock FontWeight="Bold" Text="{Binding Username}"/>
+                                                    </StackPanel>
+                                                    <TextBlock Grid.Column="1" Text="{Binding HandText}"/>
+                                                    <TextBlock Grid.Column="2" Text="{Binding ResultText}"/>
+                                                    <TextBlock Grid.Column="3" Classes="points-gain"
+                                                               IsVisible="{Binding HasRoundPoints}"
+                                                               Text="{Binding RoundPointsText}"/>
+                                                    <TextBlock Grid.Column="4" HorizontalAlignment="Right"
+                                                               Text="{Binding TotalPoints}"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <HeaderedContentControl Classes="alert" Header="{Binding NextRoundNote}"/>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="field-hint" VerticalAlignment="Center"
+                                               Text="{Binding ReadyText}"/>
+                                    <Button Grid.Column="1" Classes="primary-btn compact"
+                                            behaviors:InitialFocus.IsEnabled="True"
+                                            Command="{Binding ContinueCommand}"
+                                            Content="{Binding ContinueText}"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Viewbox>
+        </Grid>
+    </ThemeVariantScope>
+</UserControl>

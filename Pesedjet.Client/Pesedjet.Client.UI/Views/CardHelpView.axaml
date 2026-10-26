@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:components="using:Pesedjet.Client.UI.Views.Components"
+             xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.CardHelpView"
+             x:DataType="vm:CardHelpViewModel"
+             x:CompileBindings="True">
+
+    <ThemeVariantScope RequestedThemeVariant="Dark">
+        <Grid Classes="dialog-scrim">
+            <Viewbox Classes="dialog-fit">
+                <Border Classes="modal-card">
+                    <StackPanel Classes="modal-stack">
+                        <StackPanel Classes="modal-header">
+                            <Border Classes="modal-icon">
+                                <Path Classes="icon" Data="{DynamicResource IconInfo}"/>
+                            </Border>
+                            <TextBlock Classes="modal-title" Text="{Binding Card.Name}"/>
+                        </StackPanel>
+                        <Border Classes="modal-divider"/>
+                        <StackPanel Orientation="Horizontal" Spacing="16">
+                            <components:DeityCardFace Width="90" Height="130" DataContext="{Binding Card}"/>
+                            <StackPanel Spacing="10" VerticalAlignment="Center">
+                                <TextBlock Classes="modal-text" MaxWidth="360" Text="{Binding Effect}"/>
+                                <TextBlock Classes="modal-label" Text="{Binding Counts}"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Button Classes="modal-secondary"
+                                behaviors:InitialFocus.IsEnabled="True"
+                                Command="{Binding CloseCommand}"
+                                Content="{Binding [CardHelp.Close],
+                                    Source={x:Static
+                                        loc:LocalizationManager.Instance}}"/>
+                    </StackPanel>
+                </Border>
+            </Viewbox>
+        </Grid>
+    </ThemeVariantScope>
+</UserControl>

@@ -1,0 +1,105 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:components="using:Pesedjet.Client.UI.Views.Components"
+             xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.ObjectiveSelectionView"
+             x:DataType="vm:ObjectiveSelectionViewModel"
+             x:CompileBindings="True">
+
+    <ThemeVariantScope RequestedThemeVariant="Dark">
+        <Grid Classes="dialog-scrim">
+            <Viewbox Classes="dialog-fit">
+                <Border Classes="modal-card wide">
+                    <StackPanel Classes="modal-stack">
+                        <StackPanel Classes="modal-header">
+                            <Border Classes="modal-icon">
+                                <Path Classes="icon" Data="{DynamicResource IconPlay}"/>
+                            </Border>
+                            <TextBlock Classes="modal-title" Text="{Binding Title}"/>
+                        </StackPanel>
+                        <Border Classes="modal-divider"/>
+                        <StackPanel Orientation="Horizontal" Spacing="16">
+                            <components:DeityCardFace Width="70" Height="100" DataContext="{Binding Card}"/>
+                            <TextBlock Classes="modal-text" VerticalAlignment="Center" Text="{Binding CardEffect}"/>
+                        </StackPanel>
+                        <TextBlock Classes="modal-label"
+                                   Text="{Binding [Objective.ChooseOpponent],
+                                                  Source={x:Static
+                                                      loc:LocalizationManager.Instance}}"/>
+                        <ItemsControl ItemsSource="{Binding Targets}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:ObjectiveOption">
+                                    <Button Classes="pick-row"
+                                            Classes.selected="{Binding IsSelected}"
+                                            IsEnabled="{Binding IsEligible}"
+                                            Command="{Binding SelectCommand}"
+                                            CommandParameter="{Binding}">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <TextBlock Text="{Binding Username}"/>
+                                            <StackPanel Grid.Column="1" Classes="inline-icon-text"
+                                                        IsVisible="{Binding HasReason}">
+                                                <Path Classes="icon" Data="{DynamicResource IconLock}"/>
+                                                <TextBlock FontSize="12" Text="{Binding ReasonText}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Classes="modal-text"
+                                   IsVisible="{Binding HasNoTargets}"
+                                   Text="{Binding [Objective.NoTargets],
+                                                  Source={x:Static
+                                                      loc:LocalizationManager.Instance}}"/>
+                        <StackPanel IsVisible="{Binding ShowsDeities}" Spacing="8">
+                            <TextBlock Classes="modal-label"
+                                       Text="{Binding [Objective.NameDeity],
+                                                      Source={x:Static
+                                                          loc:LocalizationManager.Instance}}"/>
+                            <ItemsControl ItemsSource="{Binding Deities}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="models:DeityChoice">
+                                        <Button Classes="chip-btn"
+                                                Classes.selected="{Binding IsSelected}"
+                                                IsEnabled="{Binding IsNamable}"
+                                                Command="{Binding SelectCommand}"
+                                                CommandParameter="{Binding}"
+                                                Content="{Binding Label}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock Classes="modal-text"
+                                       Text="{Binding [Objective.NoNeftis],
+                                                      Source={x:Static
+                                                          loc:LocalizationManager.Instance}}"/>
+                        </StackPanel>
+                        <UniformGrid Classes="button-row">
+                            <Button Classes="modal-secondary"
+                                    behaviors:InitialFocus.IsEnabled="True"
+                                    Command="{Binding CancelCommand}"
+                                    Content="{Binding [Objective.ChooseAnother],
+                                    Source={x:Static
+                                        loc:LocalizationManager.Instance}}"/>
+                            <Button Classes="modal-primary"
+                                    Command="{Binding ConfirmCommand}"
+                                    Content="{Binding [Objective.Confirm],
+                                    Source={x:Static
+                                        loc:LocalizationManager.Instance}}"/>
+                        </UniformGrid>
+                    </StackPanel>
+                </Border>
+            </Viewbox>
+        </Grid>
+    </ThemeVariantScope>
+</UserControl>

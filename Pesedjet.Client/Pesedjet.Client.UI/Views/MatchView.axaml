@@ -1,0 +1,459 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:components="using:Pesedjet.Client.UI.Views.Components"
+             xmlns:views="using:Pesedjet.Client.UI.Views"
+             xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.MatchView"
+             x:DataType="vm:MatchViewModel"
+             x:CompileBindings="True">
+
+    <Viewbox Stretch="Uniform">
+        <Grid Width="1920" Height="1080" RowDefinitions="84,200,*,400">
+
+            <Border Classes="match-bar">
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Classes="bar-group">
+                        <views:GuestIndicatorView Classes="inline-indicator"
+                                                  DataContext="{Binding TopBar}"
+                                                  IsVisible="{Binding IsGuest}"/>
+                        <TextBlock Classes="bar-text" Text="{Binding RoundText}"/>
+                        <Border Classes="bar-divider"/>
+                        <TextBlock Classes="bar-text" Text="{Binding TurnText}"/>
+                        <TextBlock Classes="bar-timer"
+                                   Classes.warning="{Binding IsTimerWarning}"
+                                   Text="{Binding TimerText}"/>
+                        <ProgressBar Classes="timer-bar"
+                                     Classes.warning="{Binding IsTimerWarning}"
+                                     Value="{Binding TimerFraction}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Classes="bar-group">
+                        <Button Classes="match-btn" Command="{Binding ToggleChatCommand}">
+                            <StackPanel Classes="inline-icon-text">
+                                <Path Classes="icon" Data="{DynamicResource IconChat}"/>
+                                    <TextBlock
+                                               Text="{Binding [Match.Chat],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                <Border Classes="badge" IsVisible="{Binding HasUnreadMessages}">
+                                    <TextBlock Classes="badge-text" Text="{Binding UnreadText}"/>
+                                </Border>
+                            </StackPanel>
+                        </Button>
+                        <Button Classes="match-btn"
+                                Command="{Binding OpenMenuCommand}">
+                            <StackPanel Classes="inline-icon-text">
+                                <Path Classes="icon" Data="{DynamicResource IconMenu}"/>
+                                <TextBlock
+                                           Text="{Binding [Match.Menu],
+                                                          Source={x:Static
+                                                              loc:LocalizationManager.Instance}}"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding Opponents}"
+                          HorizontalAlignment="Center"
+                          Margin="0,12,0,0">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="models:MatchOpponentItem">
+                        <Border Classes="opponent"
+                                Classes.turn="{Binding IsInTurn}"
+                                Classes.out="{Binding IsOut}"
+                                VerticalAlignment="Top">
+                            <StackPanel Spacing="8">
+                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                    <Border Classes="avatar score-avatar">
+                                        <Panel>
+                                            <TextBlock Classes="avatar-initials"
+                                                       IsVisible="{Binding !HasAvatar}"
+                                                       Text="{Binding Initials}"/>
+                                            <Path Classes="icon avatar-icon"
+                                                  IsVisible="{Binding HasAvatar}"
+                                                  Data="{Binding AvatarIconData}"/>
+                                        </Panel>
+                                    </Border>
+                                    <TextBlock Grid.Column="1" Classes="person-name"
+                                               Margin="10,0"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding Username}"
+                                               ToolTip.Tip="{Binding Username}"/>
+                                    <TextBlock Grid.Column="2" Classes="field-hint"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding PointsText}"/>
+                                </Grid>
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <ItemsControl ItemsSource="{Binding AmuletSlots}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Classes="amulet-row small"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="x:Boolean">
+                                                <Path Classes="amulet" Classes.filled="{Binding}" Data="{DynamicResource IconDiamond}"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <Border Classes="status-chip" IsVisible="{Binding HasStatus}">
+                                        <TextBlock Classes="status-chip-text" Text="{Binding StatusText}"/>
+                                    </Border>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <Border Classes="mini-card hidden" IsVisible="{Binding HasHiddenCard}"/>
+                                    <ItemsControl ItemsSource="{Binding Discards}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Classes="mini-cards"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="x:Int32">
+                                                <Border Classes="mini-card">
+                                                    <TextBlock Classes="mini-card-value" Text="{Binding}"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Grid Grid.Row="2" Margin="20,0" ColumnDefinitions="560,*,420">
+
+                <Border Classes="match-panel log-panel" Margin="0,0,10,0">
+                    <Grid RowDefinitions="Auto,*">
+                        <TextBlock Classes="section-heading"
+                                   Margin="0,0,0,8"
+                                   Text="{Binding [Match.Log],
+                                                  Source={x:Static
+                                                      loc:LocalizationManager.Instance}}"/>
+                        <ScrollViewer Grid.Row="1" Classes="notifications-scroll"
+                                      VerticalContentAlignment="Bottom">
+                            <ItemsControl ItemsSource="{Binding Log}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="models:MatchLogEntry">
+                                        <TextBlock Classes="log-line"
+                                                   Classes.gain="{Binding IsGain}"
+                                                   Classes.loss="{Binding IsLoss}"
+                                                   Classes.hint="{Binding IsHint}"
+                                                   Text="{Binding Text}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="1" Classes="match-panel table" Margin="10,0">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Spacing="28">
+                            <StackPanel Spacing="8">
+                                <Border Classes="table-card"/>
+                                <TextBlock Classes="table-caption" Text="{Binding DeckText}"/>
+                            </StackPanel>
+                            <StackPanel Spacing="8" IsVisible="{Binding HasSetAside}">
+                                <Border Classes="table-card"/>
+                                <TextBlock Classes="table-caption"
+                                           Text="{Binding [Match.SetAside],
+                                                          Source={x:Static
+                                                              loc:LocalizationManager.Instance}}"/>
+                            </StackPanel>
+                            <StackPanel Spacing="8">
+                                <Border Classes="table-slot">
+                                    <TextBlock Classes="table-caption"
+                                               Margin="14" VerticalAlignment="Center" IsVisible="{Binding IsTwoPlayerMatch, Converter={x:Static BoolConverters.Not}}"
+                                               Text="{Binding [Match.FaceUpHint],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                </Border>
+                                <TextBlock Classes="table-caption"
+                                           Text="{Binding [Match.FaceUp],
+                                                          Source={x:Static
+                                                              loc:LocalizationManager.Instance}}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Classes="match-panel" Margin="10,0,0,0">
+                    <Grid RowDefinitions="Auto,*">
+                        <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
+                                <TextBlock Classes="section-heading"
+                                           Text="{Binding [Match.Unseen],
+                                                          Source={x:Static
+                                                              loc:LocalizationManager.Instance}}"/>
+                                <TextBlock Classes="field-hint"
+                                           Grid.Column="1"
+                                           Text="{Binding [Match.UnseenColumns],
+                                                          Source={x:Static
+                                                              loc:LocalizationManager.Instance}}"/>
+                        </Grid>
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding Unseen}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:UnseenItem">
+                                    <Grid Classes="unseen-row" ColumnDefinitions="130,*,Auto">
+                                        <TextBlock Classes="unseen-label"
+                                                   Classes.depleted="{Binding IsDepleted}"
+                                                   Text="{Binding Label}"/>
+                                        <ItemsControl Grid.Column="1" ItemsSource="{Binding Slots}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal" Spacing="3"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="x:Boolean">
+                                                    <Border Classes="unseen-pip" Classes.filled="{Binding}"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <TextBlock Grid.Column="2" Classes="unseen-label"
+                                                   Classes.depleted="{Binding IsDepleted}"
+                                                   Text="{Binding FractionText}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </Border>
+
+            </Grid>
+
+            <Grid Grid.Row="3" Margin="20,10,20,20" ColumnDefinitions="560,*,420">
+
+                <Border Classes="match-panel" Margin="0,0,10,0">
+                    <StackPanel Spacing="10">
+                        <TextBlock Classes="section-heading"
+                                   Text="{Binding MyTitle}"/>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <ItemsControl ItemsSource="{Binding MyAmuletSlots}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Classes="amulet-row"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="x:Boolean">
+                                        <Path Classes="amulet" Classes.filled="{Binding}" Data="{DynamicResource IconDiamond}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock Classes="person-name" Text="{Binding MyAmuletsText}"/>
+                        </StackPanel>
+                        <TextBlock Classes="person-name" Text="{Binding MyPointsText}"/>
+                        <Border Classes="status-chip" IsVisible="{Binding HasMyStatus}">
+                            <TextBlock Classes="status-chip-text" Text="{Binding MyStatusText}"/>
+                        </Border>
+                        <TextBlock Classes="brand-section-title"
+                                   Foreground="{DynamicResource ColorAccentHover}"
+                                   Text="{Binding [Match.YourDiscards],
+                                                  Source={x:Static
+                                                      loc:LocalizationManager.Instance}}"/>
+                        <ItemsControl ItemsSource="{Binding MyDiscards}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Classes="mini-cards"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="x:Int32">
+                                    <Border Classes="mini-card">
+                                        <TextBlock Classes="mini-card-value" Text="{Binding}"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Classes="match-panel" Margin="10,0">
+                    <Grid RowDefinitions="Auto,*" ColumnDefinitions="Auto,*">
+                        <TextBlock Classes="brand-section-title"
+                                   Grid.ColumnSpan="2" Foreground="{DynamicResource ColorAccentHover}"
+                                   Text="{Binding [Match.YourHand],
+                                                  Source={x:Static
+                                                      loc:LocalizationManager.Instance}}"/>
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding Hand}" VerticalAlignment="Center">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" Spacing="12"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:HandCardItem">
+                                    <StackPanel>
+                                        <Button Classes="hand-card"
+                                                Classes.selected="{Binding IsSelected}"
+                                                Command="{Binding SelectCommand}"
+                                                CommandParameter="{Binding}">
+                                            <components:DeityCardFace Width="150"
+                                                                      Height="220"
+                                                                      DataContext="{Binding Card}"/>
+                                        </Button>
+                                        <TextBlock Classes="key-hint"
+                                                   Text="{Binding KeyHint}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="20,0,0,0" Spacing="10">
+                            <Border Classes="hint-box" IsVisible="{Binding CanPlay}">
+                                <TextBlock Classes="hint-text" Text="{Binding SelectedCardText}"/>
+                            </Border>
+                            <Border Classes="hint-box" IsVisible="{Binding !CanPlay}">
+                                <TextBlock Classes="hint-text" Text="{Binding HandHint}"/>
+                            </Border>
+                            <Border Classes="hint-box warn" IsVisible="{Binding ShowsAtumRaWarning}">
+                                    <TextBlock Classes="hint-text"
+                                               Text="{Binding [Match.AtumRaWarning],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                            </Border>
+                            <StackPanel Orientation="Horizontal" Spacing="12" HorizontalAlignment="Right">
+                            <Button Classes="secondary-btn compact"
+                                    Command="{Binding ShowCardHelpCommand}">
+                                <StackPanel Classes="inline-icon-text">
+                                    <Path Classes="icon" Data="{DynamicResource IconInfo}"/>
+                                    <TextBlock
+                                               Text="{Binding [Match.CardHelp],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                            </Button>
+                                <Button Classes="primary-btn compact"
+                                        Classes.loading="{Binding IsBusy}"
+                                        behaviors:InitialFocus.IsEnabled="True"
+                                        Command="{Binding PlayCardCommand}">
+                                    <StackPanel Classes="inline-icon-text">
+                                        <Path Classes="spinner" IsVisible="{Binding IsBusy}"/>
+                                        <TextBlock
+                                                   Text="{Binding [Match.PlayCard],
+                                                                  Source={x:Static
+                                                                      loc:LocalizationManager.Instance}}"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="2" Classes="match-panel" Margin="10,0,0,0">
+                    <StackPanel Spacing="4">
+                        <TextBlock Classes="section-heading" Margin="0,0,0,10" Text="{Binding ScoreboardTitle}"/>
+                        <ItemsControl ItemsSource="{Binding Standings}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:StandingItem">
+                                    <Grid Classes="standing-row" ColumnDefinitions="Auto,*,Auto,Auto">
+                                        <Border Classes="avatar score-avatar">
+                                            <TextBlock Classes="avatar-initials" Text="{Binding Initials}"/>
+                                        </Border>
+                                        <TextBlock Grid.Column="1" Classes="person-name" Margin="10,0"
+                                                   VerticalAlignment="Center"
+                                                   Text="{Binding Username}"/>
+                                        <ItemsControl Grid.Column="2" Margin="0,0,10,0" VerticalAlignment="Center" ItemsSource="{Binding AmuletSlots}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Classes="amulet-row small"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="x:Boolean">
+                                                    <Path Classes="amulet" Classes.filled="{Binding}" Data="{DynamicResource IconDiamond}"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <TextBlock Grid.Column="3" Classes="field-hint" VerticalAlignment="Center"
+                                                   Text="{Binding PointsText}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+            </Grid>
+
+            <Border Grid.Row="2" Grid.RowSpan="2" Grid.Column="0"
+                    Classes="chat-panel"
+                    HorizontalAlignment="Right"
+                    Width="420"
+                    Margin="20,0,20,20"
+                    IsVisible="{Binding IsChatOpen}">
+                <Grid RowDefinitions="Auto,*,Auto">
+                    <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,10">
+                        <TextBlock Classes="section-heading"
+                                   Text="{Binding [Match.ChatTitle],
+                                                  Source={x:Static
+                                                      loc:LocalizationManager.Instance}}"/>
+                    <Button Classes="compact secondary-btn"
+                            Grid.Column="1"
+                            Command="{Binding ToggleChatCommand}">
+                        <StackPanel Classes="inline-icon-text">
+                            <Path Classes="icon" Data="{DynamicResource IconClose}"/>
+                            <TextBlock
+                                       Text="{Binding [Match.ChatClose],
+                                                      Source={x:Static
+                                                          loc:LocalizationManager.Instance}}"/>
+                        </StackPanel>
+                    </Button>
+                    </Grid>
+                    <ScrollViewer Grid.Row="1" Classes="notifications-scroll">
+                        <ItemsControl ItemsSource="{Binding ChatMessages}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:RoomChatEntry">
+                                    <StackPanel Classes="chat-line" Orientation="Horizontal" Spacing="8">
+                                        <TextBlock Classes="chat-author"
+                                                   Classes.own="{Binding IsOwn}"
+                                                   Text="{Binding Author, StringFormat={}{0}:}"/>
+                                        <TextBlock Classes="chat-text" TextWrapping="Wrap" Text="{Binding Text}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <Grid Grid.Row="2" Margin="0,10,0,0" ColumnDefinitions="*,Auto">
+                        <TextBox Classes="input-field"
+                                 Height="38"
+                                 MaxLength="200"
+                                 Text="{Binding ChatText}"
+                                 Watermark="{Binding [Match.ChatPlaceholder],
+                                                     Source={x:Static
+                                                         loc:LocalizationManager.Instance}}">
+                            <TextBox.KeyBindings>
+                                <KeyBinding Gesture="Enter" Command="{Binding SendMessageCommand}"/>
+                            </TextBox.KeyBindings>
+                        </TextBox>
+                        <Button Classes="secondary-btn compact"
+                                Grid.Column="1" Margin="8,0,0,0"
+                                Command="{Binding SendMessageCommand}">
+                            <StackPanel Classes="inline-icon-text">
+                                <Path Classes="icon" Data="{DynamicResource IconSend}"/>
+                                <TextBlock
+                                           Text="{Binding [Match.ChatSend],
+                                                          Source={x:Static
+                                                              loc:LocalizationManager.Instance}}"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Border>
+
+        </Grid>
+    </Viewbox>
+</UserControl>

@@ -1,0 +1,97 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.MatchResultView"
+             x:DataType="vm:MatchResultViewModel"
+             x:CompileBindings="True">
+
+    <ThemeVariantScope RequestedThemeVariant="Light">
+        <Grid Classes="dialog-scrim">
+            <Viewbox Classes="dialog-fit">
+                <Border Classes="summary-card result">
+                    <StackPanel>
+                        <Border Classes="summary-header">
+                            <StackPanel Spacing="6">
+                                <TextBlock Classes="result-title" Text="{Binding Title}"/>
+                                <TextBlock Classes="result-subtitle" Text="{Binding Subtitle}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Classes="summary-body">
+                            <StackPanel Classes="summary-modal">
+                                <TextBlock Classes="summary-head"
+                                           Text="{Binding [MatchResult.Standings],
+                                                          Source={x:Static
+                                                              loc:LocalizationManager.Instance}}"/>
+                                <ItemsControl ItemsSource="{Binding Rows}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="models:MatchResultRow">
+                                            <Border Classes="summary-row" Classes.winner="{Binding IsWinner}">
+                                                <Grid ColumnDefinitions="50,*,Auto,110">
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Place, StringFormat={}{0}.º}"/>
+                                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
+                                                        <Border Classes="avatar score-avatar">
+                                                            <TextBlock Classes="avatar-initials" Text="{Binding Initials}"/>
+                                                        </Border>
+                                                        <TextBlock FontWeight="Bold" Text="{Binding Username}"/>
+                                                        <TextBlock Classes="field-hint"
+                                                                   IsVisible="{Binding IsWithdrawn}"
+                                                                   Text="{Binding WithdrawnReason}"/>
+                                                    </StackPanel>
+                                                    <TextBlock Grid.Column="2" Margin="0,0,16,0"
+                                                               Text="{Binding Amulets}"/>
+                                                    <TextBlock Grid.Column="3" HorizontalAlignment="Right"
+                                                               FontWeight="Bold"
+                                                               Text="{Binding Points}"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <HeaderedContentControl Classes="alert success"
+                                                        IsVisible="{Binding IsRegistered}"
+                                                        Header="{Binding [MatchResult.SavedNotice],
+                                                        Source={x:Static
+                                                            loc:LocalizationManager.Instance}}"/>
+                                <HeaderedContentControl Classes="alert"
+                                                        IsVisible="{Binding IsGuest}"
+                                                        Header="{Binding [MatchResult.GuestNotice],
+                                                        Source={x:Static
+                                                            loc:LocalizationManager.Instance}}"/>
+                                <StackPanel Classes="exit-row" IsVisible="{Binding IsRegistered}">
+                                    <Button Classes="primary-btn compact"
+                                            behaviors:InitialFocus.IsEnabled="True"
+                                            Command="{Binding GoToMainMenuCommand}"
+                                            Content="{Binding [MatchResult.MainMenu],
+                                            Source={x:Static
+                                                loc:LocalizationManager.Instance}}"/>
+                                    <Button Classes="secondary-btn compact"
+                                            Command="{Binding GoBackToRoomCommand}"
+                                            Content="{Binding [MatchResult.BackToRoom],
+                                            Source={x:Static
+                                                loc:LocalizationManager.Instance}}"/>
+                                    <Button Classes="secondary-btn compact"
+                                            Command="{Binding ViewScoreboardCommand}"
+                                            Content="{Binding [MatchResult.Scoreboard],
+                                            Source={x:Static
+                                                loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Classes="exit-row" IsVisible="{Binding IsGuest}">
+                                    <Button Classes="primary-btn compact"
+                                            behaviors:InitialFocus.IsEnabled="True"
+                                            Command="{Binding ContinueAsGuestCommand}"
+                                            Content="{Binding ContinueText}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Viewbox>
+        </Grid>
+    </ThemeVariantScope>
+</UserControl>
