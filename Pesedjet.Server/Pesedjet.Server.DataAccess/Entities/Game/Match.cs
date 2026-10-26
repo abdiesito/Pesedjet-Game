@@ -13,7 +13,7 @@ public class Match
     public DateTime PlayedAt { get; set; }
 
     [Required]
-    public int PlayerCount { get; set; } // RJ-02
+    public int PlayerCount { get; set; }
 
     public ICollection<MatchResult> Results { get; set; } = new List<MatchResult>();
 }

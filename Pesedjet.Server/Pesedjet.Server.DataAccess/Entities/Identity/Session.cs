@@ -11,15 +11,18 @@ public class Session
 
     [Required]
     public Guid PlayerId { get; set; }
-    [ForeignKey("PlayerId")]
-    public Player Player { get; set; }
 
-    [Required, MaxLength(256)]
-    public string TokenHash { get; set; } 
-
-    [Required, MaxLength(100)]
-    public string Device { get; set; }
+    [ForeignKey(nameof(PlayerId))]
+    public Player Player { get; set; } = null!;
 
     [Required]
-    public DateTime ExpiresAt { get; set; } 
+    [MaxLength(256)]
+    public string TokenHash { get; set; } = string.Empty;
+
+    [Required]
+    [MaxLength(100)]
+    public string Device { get; set; } = string.Empty;
+
+    [Required]
+    public DateTime ExpiresAt { get; set; }
 }

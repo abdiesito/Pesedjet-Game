@@ -6,64 +6,74 @@ namespace Pesedjet.Server.DataAccess.Contexts;
 
 public class PesedjetDatabaseContext : DbContext
 {
-    public PesedjetDatabaseContext(DbContextOptions<PesedjetDatabaseContext> options) : base(options) { }
-    
     public DbSet<Player> Players { get; set; }
+
     public DbSet<VerificationCode> VerificationCodes { get; set; }
+
     public DbSet<Session> Sessions { get; set; }
+
     public DbSet<Friendship> Friendships { get; set; }
-    public DbSet<BlockedPlayer> BlockedUsers { get; set; }
+
+    public DbSet<BlockedPlayer> BlockedPlayers { get; set; }
 
     public DbSet<Match> Matches { get; set; }
+
     public DbSet<MatchResult> MatchResults { get; set; }
+
+    public PesedjetDatabaseContext(DbContextOptions<PesedjetDatabaseContext> options) : base(options)
+    {
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
-        modelBuilder.Entity<Friendship>().HasKey(f => new { f.PlayerRequesterId, f.PlayerAddresseeId });
-        
+
         modelBuilder.Entity<Friendship>()
-            .HasOne(f => f.PlayerRequester)
+            .HasKey(friendship => new { friendship.PlayerRequesterId, friendship.PlayerAddresseeId });
+
+        modelBuilder.Entity<Friendship>()
+            .HasOne(friendship => friendship.PlayerRequester)
             .WithMany()
-            .HasForeignKey(f => f.PlayerRequesterId)
+            .HasForeignKey(friendship => friendship.PlayerRequesterId)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Friendship>()
-            .HasOne(f => f.PlayerAddressee)
+            .HasOne(friendship => friendship.PlayerAddressee)
             .WithMany()
-            .HasForeignKey(f => f.PlayerAddresseeId)
+            .HasForeignKey(friendship => friendship.PlayerAddresseeId)
             .OnDelete(DeleteBehavior.NoAction);
-        
-        modelBuilder.Entity<BlockedPlayer>().HasKey(b => new { b.PlayerId, b.BlockedId });
+
         modelBuilder.Entity<BlockedPlayer>()
-            .HasOne(b => b.Player)
+            .HasKey(blockedPlayer => new { blockedPlayer.PlayerId, blockedPlayer.BlockedId });
+
+        modelBuilder.Entity<BlockedPlayer>()
+            .HasOne(blockedPlayer => blockedPlayer.Player)
             .WithMany()
-            .HasForeignKey(b => b.PlayerId)
+            .HasForeignKey(blockedPlayer => blockedPlayer.PlayerId)
             .OnDelete(DeleteBehavior.Cascade);
+
         modelBuilder.Entity<BlockedPlayer>()
-            .HasOne(b => b.Blocked)
+            .HasOne(blockedPlayer => blockedPlayer.Blocked)
             .WithMany()
-            .HasForeignKey(b => b.BlockedId)
+            .HasForeignKey(blockedPlayer => blockedPlayer.BlockedId)
             .OnDelete(DeleteBehavior.NoAction);
-        
+
         modelBuilder.Entity<VerificationCode>()
-            .HasOne(v => v.Player)
-            .WithMany(u => u.VerificationCodes)
-            .HasForeignKey(v => v.PlayerId)
+            .HasOne(verificationCode => verificationCode.Player)
+            .WithMany(player => player.VerificationCodes)
+            .HasForeignKey(verificationCode => verificationCode.PlayerId)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Session>()
-            .HasOne(s => s.Player)
-            .WithMany(u => u.Sessions)
-            .HasForeignKey(s => s.PlayerId)
+            .HasOne(session => session.Player)
+            .WithMany(player => player.Sessions)
+            .HasForeignKey(session => session.PlayerId)
             .OnDelete(DeleteBehavior.Cascade);
-        
+
         modelBuilder.Entity<MatchResult>()
-            .HasOne(mr => mr.Player)
-            .WithMany(u => u.MatchResults)
-            .HasForeignKey(mr => mr.PlayerId)
+            .HasOne(matchResult => matchResult.Player)
+            .WithMany(player => player.MatchResults)
+            .HasForeignKey(matchResult => matchResult.PlayerId)
             .OnDelete(DeleteBehavior.SetNull);
     }
-    
 }

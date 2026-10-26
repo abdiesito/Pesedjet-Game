@@ -2,8 +2,8 @@ namespace Pesedjet.Server.DataAccess.Entities.Enums;
 
 public enum ExpulsionReason
 {
-    None, 
-    Inactivity, 
-    InappropriateBehavior, 
+    None,
+    Inactivity,
+    InappropriateBehavior,
     Other
 }

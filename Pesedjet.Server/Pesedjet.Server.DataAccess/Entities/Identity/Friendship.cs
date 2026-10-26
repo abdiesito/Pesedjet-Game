@@ -8,12 +8,14 @@ namespace Pesedjet.Server.DataAccess.Entities.Identity;
 public class Friendship
 {
     public Guid PlayerRequesterId { get; set; }
-    [ForeignKey("PlayerRequesterId")]
-    public Player PlayerRequester { get; set; }
+
+    [ForeignKey(nameof(PlayerRequesterId))]
+    public Player PlayerRequester { get; set; } = null!;
 
     public Guid PlayerAddresseeId { get; set; }
-    [ForeignKey("PlayerAddresseeId")]
-    public Player PlayerAddressee { get; set; }
+
+    [ForeignKey(nameof(PlayerAddresseeId))]
+    public Player PlayerAddressee { get; set; } = null!;
 
     [Required]
     public FriendshipStatus Status { get; set; }

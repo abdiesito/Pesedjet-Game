@@ -6,10 +6,12 @@ namespace Pesedjet.Server.DataAccess.Entities.Identity;
 public class BlockedPlayer
 {
     public Guid PlayerId { get; set; }
-    [ForeignKey("PlayerId")]
-    public Player Player { get; set; }
+
+    [ForeignKey(nameof(PlayerId))]
+    public Player Player { get; set; } = null!;
 
     public Guid BlockedId { get; set; }
-    [ForeignKey("BlockedId")]
-    public Player Blocked { get; set; }
+
+    [ForeignKey(nameof(BlockedId))]
+    public Player Blocked { get; set; } = null!;
 }

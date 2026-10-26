@@ -13,11 +13,13 @@ public class MatchResult
 
     [Required]
     public Guid MatchId { get; set; }
-    [ForeignKey("MatchId")]
-    public Match Match { get; set; }
-    
+
+    [ForeignKey(nameof(MatchId))]
+    public Match Match { get; set; } = null!;
+
     public Guid? PlayerId { get; set; }
-    [ForeignKey("PlayerId")]
+
+    [ForeignKey(nameof(PlayerId))]
     public Player? Player { get; set; }
 
     [Required]
@@ -33,7 +35,7 @@ public class MatchResult
     public int Rank { get; set; }
 
     [Required]
-    public MatchExitReason ExitReason { get; set; } 
+    public MatchExitReason ExitReason { get; set; }
 
     public ExpulsionReason? ExpulsionReason { get; set; }
 }

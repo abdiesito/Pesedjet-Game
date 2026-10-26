@@ -12,11 +12,13 @@ public class VerificationCode
 
     [Required]
     public Guid PlayerId { get; set; }
-    [ForeignKey("PlayerId")]
-    public Player Player { get; set; }
 
-    [Required, MaxLength(6)]
-    public string Code { get; set; }
+    [ForeignKey(nameof(PlayerId))]
+    public Player Player { get; set; } = null!;
+
+    [Required]
+    [MaxLength(6)]
+    public string Code { get; set; } = string.Empty;
 
     [Required]
     public CodePurpose Purpose { get; set; }
