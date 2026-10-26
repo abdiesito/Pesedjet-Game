@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.MatchMenuView"
+             x:DataType="vm:MatchMenuViewModel"
+             x:CompileBindings="True">
+
+    <ThemeVariantScope RequestedThemeVariant="Light">
+        <Grid>
+            <Button Classes="scrim-dismiss" Command="{Binding CloseCommand}"/>
+            <Border Classes="popover-panel narrow" Margin="0,92,20,0">
+                <StackPanel>
+                    <Border Classes="notifications-header">
+                        <TextBlock Classes="notifications-title"
+                                   Text="{Binding [MatchMenu.Title],
+                                                  Source={x:Static
+                                                      loc:LocalizationManager.Instance}}"/>
+                    </Border>
+                    <Border Classes="menu-section">
+                        <Button Classes="secondary-btn" Command="{Binding OpenSettingsCommand}">
+                            <StackPanel Classes="inline-icon-text">
+                                <Path Classes="icon" Data="{DynamicResource IconSettings}"/>
+                                <TextBlock
+                                           Text="{Binding [MatchMenu.Settings],
+                                                          Source={x:Static
+                                                              loc:LocalizationManager.Instance}}"/>
+                            </StackPanel>
+                        </Button>
+                    </Border>
+                    <Border Classes="menu-section">
+                        <Button Classes="danger-outline"
+                                Height="48"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                Command="{Binding AbandonCommand}">
+                            <StackPanel Classes="inline-icon-text">
+                                <Path Classes="icon" Data="{DynamicResource IconDoor}"/>
+                                <TextBlock
+                                           Text="{Binding [MatchMenu.Abandon],
+                                                          Source={x:Static
+                                                              loc:LocalizationManager.Instance}}"/>
+                            </StackPanel>
+                        </Button>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </ThemeVariantScope>
+</UserControl>
