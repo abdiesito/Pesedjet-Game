@@ -146,7 +146,7 @@ namespace Pesedjet.Server.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Players", "Identity");
+                    b.ToTable("Player", "Identity");
                 });
 
             modelBuilder.Entity("Pesedjet.Server.DataAccess.Entities.Identity.Session", b =>
