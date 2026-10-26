@@ -2,6 +2,15 @@ namespace Pesedjet.Client.UI.Utilities.Navigation;
 
 public interface INavigable
 {
-    void OnNavigatedTo() { }
-    void OnNavigatedFrom() { }
+    bool ShowsTopBar => false;
+    
+    bool ShowsGuestIndicator => ShowsTopBar;
+
+    void OnNavigatedTo()
+    {
+    }
+
+    void OnNavigatedFrom()
+    {
+    }
 }
