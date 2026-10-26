@@ -1,0 +1,65 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="560"
+             x:Class="Pesedjet.Client.UI.Views.BlockedPlayersView"
+             x:DataType="vm:BlockedPlayersViewModel"
+             x:CompileBindings="True">
+
+    <Grid Classes="list-area" RowDefinitions="Auto,Auto,*">
+
+        <HeaderedContentControl Classes="alert"
+                                Header="{Binding [Blocked.Notice],
+                                                 Source={x:Static loc:LocalizationManager.Instance}}"/>
+
+        <TextBlock Grid.Row="1" Classes="list-summary"
+                   IsVisible="{Binding !IsEmpty}"
+                   Text="{Binding CountText}"/>
+
+        <Border Grid.Row="2" Classes="list-frame"
+                VerticalAlignment="Top"
+                IsVisible="{Binding !IsEmpty}">
+            <ScrollViewer Classes="notifications-scroll">
+                <ItemsControl ItemsSource="{Binding BlockedPlayers}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:BlockedPlayerItem">
+                            <Border Classes="person-row">
+                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                    <Border Classes="avatar person-avatar">
+                                        <TextBlock Classes="avatar-initials" Text="{Binding Initials}"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Classes="person-info">
+                                        <TextBlock Classes="person-name"
+                                                   Text="{Binding Username}"
+                                                   ToolTip.Tip="{Binding Username}"/>
+                                        <TextBlock Classes="person-status-text" Text="{Binding BlockedOnText}"/>
+                                    </StackPanel>
+                                    <Button Grid.Column="2" Classes="secondary-btn compact"
+                                            Command="{Binding UnblockCommand}"
+                                            CommandParameter="{Binding}">
+                                        <TextBlock Text="{Binding [Blocked.Unblock],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+
+        <StackPanel Grid.Row="2" Classes="empty-state" IsVisible="{Binding IsEmpty}">
+            <TextBlock Classes="empty-title"
+                       Text="{Binding [Blocked.EmptyTitle],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+            <TextBlock Classes="empty-hint"
+                       Text="{Binding [Blocked.EmptyHint],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

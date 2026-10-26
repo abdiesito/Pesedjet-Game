@@ -1,0 +1,48 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.PlayerActionConfirmationView"
+             x:DataType="vm:PlayerActionConfirmationViewModel"
+             x:CompileBindings="True">
+
+    <ThemeVariantScope RequestedThemeVariant="Dark">
+        <Grid Classes="dialog-scrim">
+            <Viewbox Classes="dialog-fit">
+                <Border Classes="modal-card">
+                    <StackPanel Classes="modal-stack">
+                        <StackPanel Classes="modal-header">
+                            <Border Classes="modal-icon">
+                                <Panel>
+                                    <Path Classes="icon"
+                                          IsVisible="{Binding IsDestructive}"
+                                          Data="{DynamicResource IconWarning}"/>
+                                    <Path Classes="icon"
+                                          IsVisible="{Binding !IsDestructive}"
+                                          Data="{DynamicResource IconInfo}"/>
+                                </Panel>
+                            </Border>
+                            <TextBlock Classes="modal-title" Text="{Binding Title}"/>
+                        </StackPanel>
+                        <Border Classes="modal-divider"/>
+                        <TextBlock Classes="modal-text" Text="{Binding Message}"/>
+                        <UniformGrid Classes="button-row">
+                            <Button Classes="modal-secondary"
+                                    behaviors:InitialFocus.IsEnabled="True"
+                                    Command="{Binding CancelCommand}"
+                                    Content="{Binding CancelLabel}"/>
+                            <Button Classes="modal-primary"
+                                    Classes.danger="{Binding IsDestructive}"
+                                    Command="{Binding ConfirmCommand}"
+                                    Content="{Binding ConfirmLabel}"/>
+                        </UniformGrid>
+                    </StackPanel>
+                </Border>
+            </Viewbox>
+        </Grid>
+    </ThemeVariantScope>
+</UserControl>

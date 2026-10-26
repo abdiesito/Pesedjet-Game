@@ -1,0 +1,137 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="560"
+             x:Class="Pesedjet.Client.UI.Views.PlayerSearchView"
+             x:DataType="vm:PlayerSearchViewModel"
+             x:CompileBindings="True">
+
+    <Grid Classes="list-area" RowDefinitions="Auto,*">
+
+        <Grid ColumnDefinitions="Auto,*">
+            <TextBox Classes="input-field search-field"
+                     behaviors:InitialFocus.IsEnabled="True"
+                     Text="{Binding SearchText}"
+                     Watermark="{Binding [Friends.SearchPlaceholder],
+                                         Source={x:Static loc:LocalizationManager.Instance}}">
+                <TextBox.InnerLeftContent>
+                    <Path Classes="icon field-icon" Data="{DynamicResource IconSearch}"/>
+                </TextBox.InnerLeftContent>
+                <TextBox.InnerRightContent>
+                    <Panel>
+                        <Path Classes="field-spinner" IsVisible="{Binding IsSearching}"/>
+                        <Button Classes="icon-btn"
+                                IsVisible="{Binding HasSearchText}"
+                                Command="{Binding ClearSearchCommand}">
+                            <Path Classes="icon" Data="{DynamicResource IconClose}"/>
+                        </Button>
+                    </Panel>
+                </TextBox.InnerRightContent>
+            </TextBox>
+            <TextBlock Classes="search-hint"
+                       Grid.Column="1"
+                       Text="{Binding [Friends.SearchHint],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+        </Grid>
+
+        <Border Grid.Row="1" Classes="list-frame"
+                VerticalAlignment="Top"
+                IsVisible="{Binding HasResults}">
+            <ScrollViewer Classes="notifications-scroll">
+                <ItemsControl ItemsSource="{Binding Results}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:PlayerSearchResult">
+                            <Border Classes="person-row">
+                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                    <Border Classes="avatar person-avatar">
+                                        <TextBlock Classes="avatar-initials" Text="{Binding Initials}"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Classes="person-info">
+                                        <TextBlock Classes="person-name"
+                                                   Text="{Binding Username}"
+                                                   ToolTip.Tip="{Binding Username}"/>
+                                        <StackPanel Classes="person-status">
+                                            <Ellipse Classes="presence online" IsVisible="{Binding IsOnline}"/>
+                                            <Path Classes="presence-diamond"
+                                                  IsVisible="{Binding IsInMatch}"
+                                                  Data="{DynamicResource IconDiamond}"/>
+                                            <Ellipse Classes="presence offline" IsVisible="{Binding IsOffline}"/>
+                                            <TextBlock Classes="person-status-text" Text="{Binding StatusText}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <Button Grid.Column="2" Classes="primary-btn compact"
+                                            Classes.loading="{Binding IsSending}"
+                                            IsVisible="{Binding CanSendRequest}"
+                                            IsEnabled="{Binding !IsSending}"
+                                            Command="{Binding SendRequestCommand}"
+                                            CommandParameter="{Binding}">
+                                        <StackPanel Classes="inline-icon-text">
+                                            <Path Classes="spinner" IsVisible="{Binding IsSending}"/>
+                                            <Path Classes="icon"
+                                                  IsVisible="{Binding !IsSending}"
+                                                  Data="{DynamicResource IconFriends}"/>
+                                            <TextBlock Text="{Binding DisplayLabel}"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <StackPanel Grid.Column="2"
+                                                Classes="result-action success"
+                                                IsVisible="{Binding IsRequestSent}">
+                                        <Path Classes="icon" Data="{DynamicResource IconCheck}"/>
+                                        <TextBlock Classes="result-status"
+                                                   Text="{Binding [Friends.RequestSent],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2"
+                                                Classes="result-action neutral"
+                                                IsVisible="{Binding AreFriends}">
+                                        <Path Classes="icon" Data="{DynamicResource IconFriends}"/>
+                                        <TextBlock Classes="result-status"
+                                                   Text="{Binding [Friends.AlreadyFriends],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2"
+                                                Classes="result-action danger"
+                                                IsVisible="{Binding IsBlocked}">
+                                        <Path Classes="icon" Data="{DynamicResource IconLock}"/>
+                                        <TextBlock Classes="result-status"
+                                                   Text="{Binding [Friends.BlockedByYou],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+
+        <StackPanel Grid.Row="1" Classes="empty-state" IsVisible="{Binding IsPromptVisible}">
+            <TextBlock Classes="empty-title"
+                       Text="{Binding [Friends.SearchPromptTitle],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+            <TextBlock Classes="empty-hint"
+                       Text="{Binding [Friends.SearchMinimumHint],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Classes="empty-state" IsVisible="{Binding IsTooShortVisible}">
+            <TextBlock Classes="empty-title"
+                       Text="{Binding [Friends.SearchTooShortTitle],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+            <TextBlock Classes="empty-hint"
+                       Text="{Binding [Friends.SearchMinimumHint],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Classes="empty-state" IsVisible="{Binding HasNoResults}">
+            <TextBlock Classes="empty-title" Text="{Binding NoMatchesTitle}"/>
+            <TextBlock Classes="empty-hint"
+                       Text="{Binding [Friends.NoMatchesHint],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

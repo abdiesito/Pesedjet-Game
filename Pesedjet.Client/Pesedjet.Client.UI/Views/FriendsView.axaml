@@ -1,0 +1,71 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.FriendsView"
+             x:DataType="vm:FriendsViewModel"
+             x:CompileBindings="True">
+
+    <Viewbox Classes="fit-down">
+        <Border Classes="dialog-card screen-panel">
+            <Grid RowDefinitions="Auto,*">
+
+                <Border Classes="panel-header">
+                    <StackPanel Classes="panel-header-content">
+                        <Button Classes="header-btn" Command="{Binding GoBackCommand}">
+                            <StackPanel Classes="inline-icon-text">
+                                <Path Classes="icon" Data="{DynamicResource IconBack}"/>
+                                <TextBlock Text="{Binding [Friends.Back],
+                                                          Source={x:Static loc:LocalizationManager.Instance}}"/>
+                            </StackPanel>
+                        </Button>
+                        <TextBlock Classes="panel-title"
+                                   Text="{Binding [Friends.Title],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="1" Classes="panel-body">
+                    <Grid RowDefinitions="Auto,*">
+                        <Border Classes="tab-strip">
+                            <StackPanel Classes="tab-list">
+                            <Button Classes="tab-btn"
+                                    Classes.selected="{Binding IsFriendsTabSelected}"
+                                    Command="{Binding ShowFriendsCommand}">
+                                <StackPanel Classes="tab-content">
+                                    <TextBlock Text="{Binding [Friends.TabFriends],
+                                                              Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                    <TextBlock Text="{Binding FriendCount, StringFormat=({0})}"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Classes="tab-btn"
+                                    Classes.selected="{Binding IsSearchTabSelected}"
+                                    Command="{Binding ShowSearchCommand}">
+                                <StackPanel Classes="tab-content">
+                                    <TextBlock Text="{Binding [Friends.TabSearch],
+                                                              Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Classes="tab-btn"
+                                    Classes.selected="{Binding IsBlockedTabSelected}"
+                                    Command="{Binding ShowBlockedCommand}">
+                                <StackPanel Classes="tab-content">
+                                    <TextBlock Text="{Binding [Friends.TabBlocked],
+                                                              Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                    <TextBlock Text="{Binding BlockedCount, StringFormat=({0})}"/>
+                                </StackPanel>
+                            </Button>
+                            </StackPanel>
+                        </Border>
+
+                        <ContentControl Grid.Row="1" Content="{Binding CurrentTabViewModel}"/>
+                    </Grid>
+                </Border>
+
+            </Grid>
+        </Border>
+    </Viewbox>
+</UserControl>

@@ -1,0 +1,106 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="560"
+             x:Class="Pesedjet.Client.UI.Views.FriendListView"
+             x:DataType="vm:FriendListViewModel"
+             x:CompileBindings="True">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <TextBlock Classes="list-summary"
+                   IsVisible="{Binding ShowsList}"
+                   Text="{Binding Summary}"/>
+
+        <Border Grid.Row="1" Classes="list-frame" IsVisible="{Binding ShowsList}">
+            <ScrollViewer Classes="notifications-scroll">
+                <ItemsControl ItemsSource="{Binding Friends}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:FriendItem">
+                            <Border Classes="person-row">
+                                    <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                                        <Border Classes="avatar person-avatar">
+                                            <TextBlock Classes="avatar-initials" Text="{Binding Initials}"/>
+                                        </Border>
+                                        <StackPanel Grid.Column="1" Classes="person-info">
+                                            <TextBlock Classes="person-name"
+                                                       Text="{Binding Username}"
+                                                       ToolTip.Tip="{Binding Username}"/>
+                                            <StackPanel Classes="person-status">
+                                                <Ellipse Classes="presence online" IsVisible="{Binding IsOnline}"/>
+                                                <Path Classes="presence-diamond"
+                                                      IsVisible="{Binding IsInMatch}"
+                                                      Data="{DynamicResource IconDiamond}"/>
+                                                <Ellipse Classes="presence offline" IsVisible="{Binding IsOffline}"/>
+                                                <TextBlock Classes="person-status-text" Text="{Binding StatusText}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <Button Grid.Column="2" Classes="secondary-btn compact"
+                                                Command="{Binding RemoveCommand}"
+                                                CommandParameter="{Binding}">
+                                            <StackPanel Classes="inline-icon-text">
+                                                <Path Classes="icon" Data="{DynamicResource IconClose}"/>
+                                                <TextBlock Text="{Binding [Friends.Remove],
+                                                                          Source={x:Static
+                                                                              loc:LocalizationManager.Instance}}"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Grid.Column="3" Classes="danger-outline compact"
+                                                Command="{Binding BlockCommand}"
+                                                CommandParameter="{Binding}">
+                                            <StackPanel Classes="inline-icon-text">
+                                                <Path Classes="icon" Data="{DynamicResource IconLock}"/>
+                                                <TextBlock Text="{Binding [Friends.Block],
+                                                                          Source={x:Static
+                                                                              loc:LocalizationManager.Instance}}"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+
+        <StackPanel Grid.Row="1" Classes="empty-state" IsVisible="{Binding ShowsEmptyState}">
+            <TextBlock Classes="empty-title"
+                       Text="{Binding [Friends.EmptyTitle],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+            <TextBlock Classes="empty-hint"
+                       Text="{Binding [Friends.EmptyHint],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+            <Button Classes="primary-btn compact"
+                    HorizontalAlignment="Center"
+                    Command="{Binding GoToSearchCommand}">
+                <TextBlock Text="{Binding [Friends.TabSearch],
+                                          Source={x:Static loc:LocalizationManager.Instance}}"/>
+            </Button>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" IsVisible="{Binding IsLoading}">
+            <Border Classes="skeleton-row"/>
+            <Border Classes="skeleton-row"/>
+            <Border Classes="skeleton-row"/>
+        </StackPanel>
+
+        <HeaderedContentControl Grid.Row="1" Classes="alert error"
+                                VerticalAlignment="Top"
+                                IsVisible="{Binding HasLoadError}"
+                                Header="{Binding [Friends.LoadError],
+                                                 Source={x:Static loc:LocalizationManager.Instance}}">
+            <Button Classes="alert-action" Command="{Binding RetryCommand}">
+                <StackPanel Classes="inline-icon-text">
+                    <Path Classes="icon" Data="{DynamicResource IconRefresh}"/>
+                    <TextBlock Text="{Binding [Common.Retry],
+                                              Source={x:Static loc:LocalizationManager.Instance}}"/>
+                </StackPanel>
+            </Button>
+        </HeaderedContentControl>
+
+    </Grid>
+</UserControl>
