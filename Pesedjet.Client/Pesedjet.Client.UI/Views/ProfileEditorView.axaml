@@ -1,0 +1,141 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:rules="using:Pesedjet.Client.UI.Utilities.Validation"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.ProfileEditorView"
+             x:DataType="vm:ProfileEditorViewModel"
+             x:CompileBindings="True">
+
+    <ThemeVariantScope RequestedThemeVariant="Dark">
+        <Grid>
+            <Grid Classes="dialog-scrim" IsEnabled="{Binding !IsConfirming}">
+                <Viewbox Classes="dialog-fit">
+                    <Border Classes="modal-card">
+                        <StackPanel Classes="modal-stack">
+                            <StackPanel Classes="modal-header">
+                                <Border Classes="modal-icon">
+                                    <Path Classes="icon" Data="{DynamicResource IconUser}"/>
+                                </Border>
+                                <TextBlock Classes="modal-title"
+                                           Text="{Binding [ProfileEditor.Title],
+                                                          Source={x:Static loc:LocalizationManager.Instance}}"/>
+                            </StackPanel>
+                            <Border Classes="modal-divider"/>
+                            <StackPanel Classes="field">
+                                <TextBlock Classes="brand-section-title"
+                                           Text="{Binding [ProfileEditor.Avatar],
+                                                          Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                <ListBox Classes="avatar-list"
+                                         ItemsSource="{Binding Avatars}"
+                                         SelectedItem="{Binding SelectedAvatar}">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Columns="5"/>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate x:DataType="models:AvatarOption">
+                                            <Panel>
+                                                <Path Classes="icon avatar-icon" Data="{Binding IconData}"/>
+                                                <Border Classes="avatar-check"
+                                                        IsVisible="{Binding $parent[ListBoxItem].IsSelected}">
+                                                    <Path Classes="icon" Data="{DynamicResource IconCheck}"/>
+                                                </Border>
+                                            </Panel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+
+                            <StackPanel Classes="field">
+                                <TextBlock Classes="modal-label">
+                                    <Run Text="{Binding [ProfileEditor.Username],
+                                            Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                    <Run Classes="required"/>
+                                </TextBlock>
+                                <TextBox Classes="modal-input"
+                                         Classes.error="{Binding HasUsernameError}"
+                                         Text="{Binding Username}"
+                                         MaxLength="{x:Static rules:UsernameRules.MaximumLength}"/>
+                            <ContentControl Classes="field-message on-dark"
+                                            Content="{Binding [RegisterAccount.ObligatoryField],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"
+                                            IsVisible="{Binding IsUsernameRequired}"/>
+                            <ContentControl Classes="field-message on-dark"
+                                            Content="{Binding [Common.UsernameFormatInvalid],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"
+                                            IsVisible="{Binding IsUsernameFormatInvalid}"/>
+                            <ContentControl Classes="field-message on-dark"
+                                            Content="{Binding [RegisterAccount.UsernameAlreadyRegistered],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"
+                                            IsVisible="{Binding IsUsernameAlreadyRegistered}"/>
+                            </StackPanel>
+
+                            <StackPanel Classes="field">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="modal-label"
+                                               Text="{Binding [ProfileEditor.Description],
+                                                              Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                    <TextBlock Grid.Column="1" Classes="modal-counter"
+                                               Classes.limit="{Binding IsDescriptionAtLimit}"
+                                               Text="{Binding DescriptionCounter}"/>
+                                </Grid>
+                                <TextBox Classes="modal-input multiline"
+                                         Text="{Binding Description}"
+                                         MaxLength="{x:Static rules:ProfileRules.DescriptionMaximumLength}"/>
+                            </StackPanel>
+
+                            <UniformGrid Classes="button-row">
+                                <Button Classes="modal-secondary"
+                                        Command="{Binding CancelCommand}"
+                                        Content="{Binding [Common.Cancel],
+                                            Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                <Button Classes="modal-primary"
+                                        Command="{Binding SaveCommand}"
+                                        Content="{Binding [ProfileEditor.Save],
+                                            Source={x:Static loc:LocalizationManager.Instance}}"/>
+                            </UniformGrid>
+                        </StackPanel>
+                    </Border>
+                </Viewbox>
+            </Grid>
+
+            <Grid Classes="dialog-scrim" IsVisible="{Binding IsConfirming}">
+                <Viewbox Classes="dialog-fit">
+                    <Border Classes="modal-card">
+                        <StackPanel Classes="modal-stack">
+                            <StackPanel Classes="modal-header">
+                                <Border Classes="modal-icon">
+                                    <Path Classes="icon" Data="{DynamicResource IconInfo}"/>
+                                </Border>
+                                <TextBlock Classes="modal-title"
+                                           Text="{Binding [ProfileEditor.ConfirmTitle],
+                                                          Source={x:Static loc:LocalizationManager.Instance}}"/>
+                            </StackPanel>
+                            <Border Classes="modal-divider"/>
+                            <TextBlock Classes="modal-text" Text="{Binding ConfirmMessage}"/>
+                            <UniformGrid Classes="button-row">
+                                <Button Classes="modal-secondary"
+                                        Command="{Binding KeepEditingCommand}"
+                                        Content="{Binding [ProfileEditor.KeepEditing],
+                                            Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                <Button Classes="modal-primary"
+                                        Command="{Binding ConfirmSaveCommand}"
+                                        Content="{Binding [ProfileEditor.Save],
+                                            Source={x:Static loc:LocalizationManager.Instance}}"/>
+                            </UniformGrid>
+                        </StackPanel>
+                    </Border>
+                </Viewbox>
+            </Grid>
+        </Grid>
+    </ThemeVariantScope>
+</UserControl>

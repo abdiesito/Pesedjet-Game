@@ -1,0 +1,60 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.LogOutView"
+             x:DataType="vm:LogOutViewModel"
+             x:CompileBindings="True">
+
+    <ThemeVariantScope RequestedThemeVariant="Dark">
+        <Grid Classes="dialog-scrim">
+            <Viewbox Classes="dialog-fit">
+                <Border Classes="modal-card">
+                    <StackPanel Classes="modal-stack">
+                    <StackPanel Classes="modal-header">
+                        <Border Classes="modal-icon">
+                            <Path Classes="icon" Data="{DynamicResource IconLogout}"/>
+                        </Border>
+                        <TextBlock Classes="modal-title"
+                                   Text="{Binding [LogOut.Title],
+                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
+                    </StackPanel>
+                    <Border Classes="modal-divider"/>
+                    <TextBlock Classes="modal-text"
+                               Text="{Binding [LogOut.Message],
+                                              Source={x:Static loc:LocalizationManager.Instance}}"/>
+                        <UniformGrid Classes="button-row">
+                            <Button Classes="modal-secondary"
+                                    behaviors:InitialFocus.IsEnabled="True"
+                                    Command="{Binding CancelCommand}"
+                                    Content="{Binding [Common.Cancel],
+                                    Source={x:Static loc:LocalizationManager.Instance}}"/>
+                            <Button Classes="modal-primary"
+                                    Classes.loading="{Binding IsBusy}"
+                                    Command="{Binding ConfirmLogOutCommand}">
+                                <StackPanel Classes="inline-icon-text">
+                                    <Path Classes="spinner" IsVisible="{Binding IsBusy}"/>
+                                    <Path Classes="icon"
+                                          IsVisible="{Binding !IsBusy}"
+                                          Data="{DynamicResource IconLogout}"/>
+                                    <TextBlock IsVisible="{Binding !IsBusy}"
+                                               Text="{Binding [MainMenu.LogOut],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                    <TextBlock IsVisible="{Binding IsBusy}"
+                                               Text="{Binding [LogOut.LoggingOut],
+                                                              Source={x:Static
+                                                                  loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+                            </Button>
+                        </UniformGrid>
+                    </StackPanel>
+                </Border>
+            </Viewbox>
+        </Grid>
+    </ThemeVariantScope>
+</UserControl>
