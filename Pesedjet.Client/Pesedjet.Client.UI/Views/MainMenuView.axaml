@@ -1,0 +1,95 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
+             xmlns:components="using:Pesedjet.Client.UI.Views.Components"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="Pesedjet.Client.UI.Views.MainMenuView"
+             x:DataType="vm:MainMenuViewModel"
+             x:CompileBindings="True">
+
+    <Grid>
+
+        <Viewbox Classes="fit-down">
+            <Panel Classes="card-frame">
+                <Border Classes="card card-centered">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <components:BrandPanel/>
+
+                        <Border Grid.Column="1" Classes="form-panel">
+                            <StackPanel Classes="form-stack">
+
+                                <StackPanel Classes="heading-group">
+                                    <TextBlock Classes="heading-1"
+                                               Text="{Binding [MainMenu.Title],
+                                                              Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                    <TextBlock Classes="body-secondary"
+                                               Text="{Binding [MainMenu.Subtitle],
+                                                              Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                </StackPanel>
+
+                                <StackPanel Classes="menu-stack">
+                                    <Button Classes="primary-btn menu-btn"
+                                            behaviors:InitialFocus.IsEnabled="True"
+                                            IsDefault="True"
+                                            Command="{Binding PlayCommand}">
+                                        <StackPanel Classes="inline-icon-text">
+                                            <Path Classes="icon" Data="{DynamicResource IconPlay}"/>
+                                            <TextBlock Text="{Binding [MainMenu.Play],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Classes="secondary-btn menu-btn"
+                                            Command="{Binding OpenScoreboardCommand}">
+                                        <StackPanel Classes="inline-icon-text">
+                                            <Path Classes="icon" Data="{DynamicResource IconTrophy}"/>
+                                            <TextBlock Text="{Binding [MainMenu.Scoreboard],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Classes="secondary-btn menu-btn"
+                                            Command="{Binding OpenFriendsCommand}">
+                                        <StackPanel Classes="inline-icon-text">
+                                            <Path Classes="icon" Data="{DynamicResource IconFriends}"/>
+                                            <TextBlock Text="{Binding [MainMenu.Friends],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Classes="secondary-btn menu-btn"
+                                            Command="{Binding OpenSettingsCommand}">
+                                        <StackPanel Classes="inline-icon-text">
+                                            <Path Classes="icon" Data="{DynamicResource IconSettings}"/>
+                                            <TextBlock Text="{Binding [MainMenu.Settings],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Border Classes="menu-divider"/>
+
+                                    <Button Classes="secondary-btn menu-btn"
+                                            Command="{Binding LogOutCommand}">
+                                        <StackPanel Classes="inline-icon-text">
+                                            <Path Classes="icon" Data="{DynamicResource IconLogout}"/>
+                                            <TextBlock Text="{Binding [MainMenu.LogOut],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Panel>
+        </Viewbox>
+
+    </Grid>
+</UserControl>

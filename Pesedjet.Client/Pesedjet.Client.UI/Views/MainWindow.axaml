@@ -1,7 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="using:Pesedjet.Client.UI.Views"
         xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
-        xmlns:components="using:Pesedjet.Client.UI.Views.Components"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
@@ -10,13 +10,27 @@
         x:CompileBindings="True"
         Icon="/Assets/avalonia-logo.ico"
         Title="Pesedjet">
-    
-    
-    <ContentControl Classes="EgyptSandBackground">
-        <Grid>
-            <ContentControl Content="{Binding Navigator.CurrentViewModel}"/>
-            <components:LanguageSelector/>
+
+    <Window.KeyBindings>
+        <KeyBinding Gesture="Escape" Command="{Binding CloseCurrentDialogCommand}"/>
+    </Window.KeyBindings>
+
+    <Grid>
+        <Grid IsEnabled="{Binding !DialogManager.HasOpenDialog}">
+            <ContentControl Classes="EgyptSandBackground">
+                <ContentControl Content="{Binding Navigator.CurrentViewModel}"/>
+            </ContentControl>
+            <Panel IsVisible="{Binding IsTopBarVisible}">
+                <views:TopBarView DataContext="{Binding TopBar}"/>
+            </Panel>
         </Grid>
-    </ContentControl>
+        <HeaderedContentControl Classes="alert success toast"
+                                Header="{Binding ToastManager.Message}"
+                                IsVisible="{Binding ToastManager.IsVisible}"/>
+        <ContentControl Content="{Binding DialogManager.CurrentDialogView}"/>
+        <Panel IsVisible="{Binding IsGuestIndicatorVisible}">
+            <views:GuestIndicatorView DataContext="{Binding TopBar}"/>
+        </Panel>
+    </Grid>
 
 </Window>

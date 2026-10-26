@@ -1,0 +1,18 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             x:Class="Pesedjet.Client.UI.Views.Components.BrandPanel"
+             x:CompileBindings="True">
+    <Border Classes="brand-panel">
+        <StackPanel Classes="brand-stack">
+            <ContentControl Classes="pyramid-emblem"/>
+            <TextBlock Classes="brand-title"
+                       Text="{Binding [Menu.Title],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+            <Border Classes="brand-divider"/>
+            <TextBlock Classes="brand-subtitle"
+                       Text="{Binding [Menu.Subtitle],
+                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+        </StackPanel>
+    </Border>
+</UserControl>

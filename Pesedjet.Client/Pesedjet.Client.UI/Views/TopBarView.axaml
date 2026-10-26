@@ -1,0 +1,61 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="120"
+             x:Class="Pesedjet.Client.UI.Views.TopBarView"
+             x:DataType="vm:TopBarViewModel"
+             x:CompileBindings="True">
+
+    <Grid>
+
+        <Button Classes="profile-chip"
+                IsVisible="{Binding IsRegistered}"
+                Command="{Binding OpenProfileEditorCommand}"
+                ToolTip.Tip="{Binding [MainMenu.CustomizeProfile],
+                                      Source={x:Static loc:LocalizationManager.Instance}}">
+            <StackPanel Classes="profile-content">
+                <Border Classes="avatar">
+                    <Panel>
+                        <TextBlock Classes="avatar-initials"
+                                   IsVisible="{Binding !HasAvatar}"
+                                   Text="{Binding AvatarInitials}"/>
+                        <Path Classes="icon avatar-icon"
+                              IsVisible="{Binding HasAvatar}"
+                              Data="{Binding AvatarIconData}"/>
+                    </Panel>
+                </Border>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Classes="profile-name"
+                               Text="{Binding Username}"
+                               ToolTip.Tip="{Binding Username}"/>
+                    <TextBlock Classes="profile-stats" Text="{Binding ProfileStats}"/>
+                </StackPanel>
+            </StackPanel>
+        </Button>
+
+        <Button Classes="corner-btn"
+                IsVisible="{Binding IsRegistered}"
+                Command="{Binding OpenNotificationsCommand}"
+                ToolTip.Tip="{Binding [MainMenu.Notifications],
+                                      Source={x:Static loc:LocalizationManager.Instance}}">
+            <Panel>
+                <Path Classes="icon" Data="{DynamicResource IconBell}"/>
+                <Border Classes="badge" IsVisible="{Binding HasPendingNotifications}">
+                    <TextBlock Classes="badge-text" Text="{Binding NotificationBadgeText}"/>
+                </Border>
+            </Panel>
+        </Button>
+
+        <Button Classes="corner-btn"
+                IsVisible="{Binding IsGuest}"
+                Command="{Binding OpenMenuCommand}"
+                ToolTip.Tip="{Binding [HamburgerMenu.Open],
+                                      Source={x:Static loc:LocalizationManager.Instance}}">
+            <Path Classes="icon" Data="{DynamicResource IconMenu}"/>
+        </Button>
+
+    </Grid>
+</UserControl>

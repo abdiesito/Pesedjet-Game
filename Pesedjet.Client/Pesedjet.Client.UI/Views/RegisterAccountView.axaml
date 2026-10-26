@@ -2,7 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:components="using:Pesedjet.Client.UI.Views.Components"
              xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
+             xmlns:rules="using:Pesedjet.Client.UI.Utilities.Validation"
              xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
              x:Class="Pesedjet.Client.UI.Views.RegisterAccountView"
@@ -18,36 +20,56 @@
                         <StackPanel Classes="brand-header">
                             <Path Classes="icon brand-mark" Data="{DynamicResource IconPyramid}"/>
                             <TextBlock Classes="brand-title compact"
-                                       Text="{Binding [Menu.Title], Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                       Text="{Binding [Menu.Title],
+                                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
                         </StackPanel>
 
                         <StackPanel Classes="brand-list">
                             <TextBlock Classes="brand-section-title"
-                                       Text="{Binding [RegisterAccount.RequirementsTitle], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                <HeaderedContentControl Classes="requirement"
-                                                        Classes.met="{Binding HasMinimumLength}"
-                                                        Header="{Binding [RegisterAccount.RequirementMinLength], Source={x:Static loc:LocalizationManager.Instance}}"
-                                                        Content="{Binding [RegisterAccount.RequirementMet], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                <HeaderedContentControl Classes="requirement"
-                                                        Classes.met="{Binding HasUppercase}"
-                                                        Header="{Binding [RegisterAccount.RequirementUppercase], Source={x:Static loc:LocalizationManager.Instance}}"
-                                                        Content="{Binding [RegisterAccount.RequirementMet], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                <HeaderedContentControl Classes="requirement"
-                                                        Classes.met="{Binding HasNumber}"
-                                                        Header="{Binding [RegisterAccount.RequirementNumber], Source={x:Static loc:LocalizationManager.Instance}}"
-                                                        Content="{Binding [RegisterAccount.RequirementMet], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                <HeaderedContentControl Classes="requirement"
-                                                        Classes.met="{Binding HasSpecialCharacter}"
-                                                        Header="{Binding [RegisterAccount.RequirementSpecial], Source={x:Static loc:LocalizationManager.Instance}}"
-                                                        Content="{Binding [RegisterAccount.RequirementMet], Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                       Text="{Binding [RegisterAccount.RequirementsTitle],
+                                                      Source={x:Static loc:LocalizationManager.Instance}}"/>
+                            <HeaderedContentControl Classes="requirement"
+                                                    Classes.met="{Binding HasMinimumLength}"
+                                                    Header="{Binding [RegisterAccount.RequirementMinLength],
+                                                                     Source={x:Static
+                                                                         loc:LocalizationManager.Instance}}"
+                                                    Content="{Binding [RegisterAccount.RequirementMet],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                            <HeaderedContentControl Classes="requirement"
+                                                    Classes.met="{Binding HasUppercase}"
+                                                    Header="{Binding [RegisterAccount.RequirementUppercase],
+                                                                     Source={x:Static
+                                                                         loc:LocalizationManager.Instance}}"
+                                                    Content="{Binding [RegisterAccount.RequirementMet],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                            <HeaderedContentControl Classes="requirement"
+                                                    Classes.met="{Binding HasNumber}"
+                                                    Header="{Binding [RegisterAccount.RequirementNumber],
+                                                                     Source={x:Static
+                                                                         loc:LocalizationManager.Instance}}"
+                                                    Content="{Binding [RegisterAccount.RequirementMet],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
+                            <HeaderedContentControl Classes="requirement"
+                                                    Classes.met="{Binding HasSpecialCharacter}"
+                                                    Header="{Binding [RegisterAccount.RequirementSpecial],
+                                                                     Source={x:Static
+                                                                         loc:LocalizationManager.Instance}}"
+                                                    Content="{Binding [RegisterAccount.RequirementMet],
+                                                                      Source={x:Static
+                                                                          loc:LocalizationManager.Instance}}"/>
                         </StackPanel>
 
                         <Border Classes="brand-rule"/>
 
                         <ContentControl Classes="brand-note info"
-                                        Content="{Binding [RegisterAccount.CodeNotice], Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                        Content="{Binding [RegisterAccount.CodeNotice],
+                                                          Source={x:Static loc:LocalizationManager.Instance}}"/>
                         <ContentControl Classes="brand-note age"
-                                        Content="{Binding [RegisterAccount.MinimumAgeNotice], Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                        Content="{Binding [RegisterAccount.MinimumAgeNotice],
+                                                          Source={x:Static loc:LocalizationManager.Instance}}"/>
                     </StackPanel>
                 </Border>
 
@@ -59,148 +81,205 @@
                                 <StackPanel Classes="inline-icon-text">
                                     <Path Classes="icon" Data="{DynamicResource IconBack}"/>
                                     <TextBlock Classes="back-text"
-                                               Text="{Binding [RegisterAccount.Back], Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                               Text="{Binding [RegisterAccount.Back],
+                                                              Source={x:Static loc:LocalizationManager.Instance}}"/>
                                 </StackPanel>
                             </Button>
 
                             <StackPanel Classes="heading-group">
                                 <TextBlock Classes="heading-1"
-                                           Text="{Binding [RegisterAccount.Title], Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                           Text="{Binding [RegisterAccount.Title],
+                                                          Source={x:Static loc:LocalizationManager.Instance}}"/>
                                 <TextBlock Classes="body-secondary"
-                                           Text="{Binding [RegisterAccount.RequiredFieldsNote], Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                           Text="{Binding [RegisterAccount.RequiredFieldsNote],
+                                                          Source={x:Static loc:LocalizationManager.Instance}}"/>
                             </StackPanel>
 
-                                <StackPanel Classes="field">
-                                    <TextBlock Classes="field-label" Classes.error="{Binding HasFullNameError}">
-                                        <Run Text="{Binding [RegisterAccount.FullName], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                        <Run Classes="required"/>
-                                    </TextBlock>
-                                    <TextBox Classes="input-field"
-                                             Classes.error="{Binding HasFullNameError}"
-                                             Text="{Binding FullName}"
-                                             Watermark="{Binding [RegisterAccount.FullNamePlaceholder], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                    <ContentControl Classes="field-message"
-                                                    Content="{Binding [RegisterAccount.ObligatoryField], Source={x:Static loc:LocalizationManager.Instance}}"
-                                                    IsVisible="{Binding IsFullNameRequired}"/>
-                                </StackPanel>
-                                <StackPanel Classes="field">
-                                    <TextBlock Classes="field-label" Classes.error="{Binding HasUsernameError}">
-                                        <Run Text="{Binding [RegisterAccount.Username], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                        <Run Classes="required"/>
-                                    </TextBlock>
-                                    <TextBox Classes="input-field"
-                                             Classes.error="{Binding HasUsernameError}"
-                                             Text="{Binding Username}"
-                                         MaxLength="50"
-                                             Watermark="{Binding [RegisterAccount.UsernamePlaceholder], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                    <TextBlock Classes="field-hint"
-                                               Text="{Binding [RegisterAccount.UsernameHint], Source={x:Static loc:LocalizationManager.Instance}}"
-                                               IsVisible="{Binding !HasUsernameError}"/>
-                                    <ContentControl Classes="field-message"
-                                                    Content="{Binding [RegisterAccount.ObligatoryField], Source={x:Static loc:LocalizationManager.Instance}}"
-                                                    IsVisible="{Binding IsUsernameRequired}"/>
-                                    <ContentControl Classes="field-message"
-                                                    Content="{Binding [MSG-REG-010], Source={x:Static loc:LocalizationManager.Instance}}"
-                                                    IsVisible="{Binding IsUsernameFormatInvalid}"/>
-                                </StackPanel>
-                                <StackPanel Classes="field">
-                                    <TextBlock Classes="field-label" Classes.error="{Binding HasBirthDateError}">
-                                        <Run Text="{Binding [RegisterAccount.BirthDate], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                        <Run Classes="required"/>
-                                    </TextBlock>
-                                    <TextBox Classes="input-field"
-                                             Classes.error="{Binding HasBirthDateError}"
-                                             Text="{Binding BirthDate}"
-                                             Watermark="{Binding [RegisterAccount.BirthDatePlaceholder], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                    <ContentControl Classes="field-message"
-                                                    Content="{Binding [RegisterAccount.ObligatoryField], Source={x:Static loc:LocalizationManager.Instance}}"
-                                                    IsVisible="{Binding IsBirthDateRequired}"/>
-                                    <ContentControl Classes="field-message"
-                                                    Content="{Binding [MSG-REG-007], Source={x:Static loc:LocalizationManager.Instance}}"
-                                                    IsVisible="{Binding IsBirthDateInvalid}"/>
-                                    <ContentControl Classes="field-message"
-                                                    Content="{Binding [RegisterAccount.UnderageError], Source={x:Static loc:LocalizationManager.Instance}}"
-                                                    IsVisible="{Binding IsBirthDateUnderage}"/>
-                                </StackPanel>
-                                <StackPanel Classes="field">
-                                    <TextBlock Classes="field-label" Classes.error="{Binding HasEmailError}">
-                                        <Run Text="{Binding [RegisterAccount.Email], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                        <Run Classes="required"/>
-                                    </TextBlock>
-                                    <TextBox Classes="input-field"
-                                             Classes.error="{Binding HasEmailError}"
-                                             Text="{Binding Email}"
-                                             Watermark="{Binding [RegisterAccount.EmailPlaceholder], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                    <ContentControl Classes="field-message"
-                                                    Content="{Binding [RegisterAccount.ObligatoryField], Source={x:Static loc:LocalizationManager.Instance}}"
-                                                    IsVisible="{Binding IsEmailRequired}"/>
-                                    <ContentControl Classes="field-message"
-                                                    Content="{Binding [RegisterAccount.InvalidEmail], Source={x:Static loc:LocalizationManager.Instance}}"
-                                                    IsVisible="{Binding IsEmailInvalid}"/>
-                                </StackPanel>
-                                <StackPanel Classes="field">
-                                    <TextBlock Classes="field-label" Classes.error="{Binding HasPasswordError}">
-                                        <Run Text="{Binding [RegisterAccount.Password], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                        <Run Classes="required"/>
-                                    </TextBlock>
-                                    <TextBox Classes="input-field password"
-                                             Classes.error="{Binding HasPasswordError}"
-                                             Text="{Binding Password}"
-                                             RevealPassword="{Binding IsPasswordVisible}">
-                                        <TextBox.InnerRightContent>
-                                            <ToggleButton Classes="reveal-toggle" IsChecked="{Binding IsPasswordVisible}">
-                                                <Panel>
-                                                    <TextBlock IsVisible="{Binding !IsPasswordVisible}"
-                                                               Text="{Binding [AccessMenu.ShowPassword], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                                    <TextBlock IsVisible="{Binding IsPasswordVisible}"
-                                                               Text="{Binding [AccessMenu.HidePassword], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                                </Panel>
-                                            </ToggleButton>
-                                        </TextBox.InnerRightContent>
-                                    </TextBox>
-                                    <ContentControl Classes="field-message"
-                                                    Content="{Binding [RegisterAccount.ObligatoryField], Source={x:Static loc:LocalizationManager.Instance}}"
-                                                    IsVisible="{Binding IsPasswordRequired}"/>
-                                    <ContentControl Classes="field-message"
-                                                    Content="{Binding [MSG-REG-004], Source={x:Static loc:LocalizationManager.Instance}}"
-                                                    IsVisible="{Binding ArePasswordRequirementsUnmet}"/>
-                                </StackPanel>
-                                <StackPanel Classes="field">
-                                    <TextBlock Classes="field-label" Classes.error="{Binding HasConfirmPasswordError}">
-                                        <Run Text="{Binding [RegisterAccount.ConfirmPassword], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                        <Run Classes="required"/>
-                                    </TextBlock>
-                                    <TextBox Classes="input-field password"
-                                             Classes.error="{Binding HasConfirmPasswordError}"
-                                             Text="{Binding ConfirmPassword}"
-                                             RevealPassword="{Binding IsConfirmPasswordVisible}">
-                                        <TextBox.InnerRightContent>
-                                            <ToggleButton Classes="reveal-toggle" IsChecked="{Binding IsConfirmPasswordVisible}">
-                                                <Panel>
-                                                    <TextBlock IsVisible="{Binding !IsConfirmPasswordVisible}"
-                                                               Text="{Binding [AccessMenu.ShowPassword], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                                    <TextBlock IsVisible="{Binding IsConfirmPasswordVisible}"
-                                                               Text="{Binding [AccessMenu.HidePassword], Source={x:Static loc:LocalizationManager.Instance}}"/>
-                                                </Panel>
-                                            </ToggleButton>
-                                        </TextBox.InnerRightContent>
-                                    </TextBox>
-                                    <ContentControl Classes="field-message"
-                                                    Content="{Binding [RegisterAccount.ObligatoryField], Source={x:Static loc:LocalizationManager.Instance}}"
-                                                    IsVisible="{Binding IsConfirmPasswordRequired}"/>
-                                    <ContentControl Classes="field-message"
-                                                    Content="{Binding [MSG-REG-005], Source={x:Static loc:LocalizationManager.Instance}}"
-                                                    IsVisible="{Binding IsConfirmPasswordMismatch}"/>
-                                </StackPanel>
+                            <StackPanel Classes="field">
+                                <TextBlock Classes="field-label" Classes.error="{Binding HasFullNameError}">
+                                    <Run Text="{Binding [RegisterAccount.FullName],
+                                                        Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                    <Run Classes="required"/>
+                                </TextBlock>
+                                <TextBox Classes="input-field"
+                                         Classes.error="{Binding HasFullNameError}"
+                                         Text="{Binding FullName}"
+                                         Watermark="{Binding [RegisterAccount.FullNamePlaceholder],
+                                                             Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                <ContentControl Classes="field-message"
+                                                Content="{Binding [RegisterAccount.ObligatoryField],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"
+                                                IsVisible="{Binding IsFullNameRequired}"/>
+                            </StackPanel>
+                            <StackPanel Classes="field">
+                                <TextBlock Classes="field-label" Classes.error="{Binding HasUsernameError}">
+                                    <Run Text="{Binding [RegisterAccount.Username],
+                                                        Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                    <Run Classes="required"/>
+                                </TextBlock>
+                                <TextBox Classes="input-field"
+                                         Classes.error="{Binding HasUsernameError}"
+                                         Text="{Binding Username}"
+                                         MaxLength="{x:Static rules:UsernameRules.MaximumLength}"
+                                         Watermark="{Binding [RegisterAccount.UsernamePlaceholder],
+                                                             Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                <TextBlock Classes="field-hint"
+                                           Text="{Binding [RegisterAccount.UsernameHint],
+                                                          Source={x:Static loc:LocalizationManager.Instance}}"
+                                           IsVisible="{Binding !HasUsernameError}"/>
+                                <ContentControl Classes="field-message"
+                                                Content="{Binding [RegisterAccount.ObligatoryField],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"
+                                                IsVisible="{Binding IsUsernameRequired}"/>
+                                <ContentControl Classes="field-message"
+                                                Content="{Binding [Common.UsernameFormatInvalid],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"
+                                                IsVisible="{Binding IsUsernameFormatInvalid}"/>
+                                <ContentControl Classes="field-message"
+                                                Content="{Binding [RegisterAccount.UsernameAlreadyRegistered],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"
+                                                IsVisible="{Binding IsUsernameAlreadyRegistered}"/>
+                            </StackPanel>
+                            <StackPanel Classes="field">
+                                <TextBlock Classes="field-label" Classes.error="{Binding HasBirthDateError}">
+                                    <Run Text="{Binding [RegisterAccount.BirthDate],
+                                                        Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                    <Run Classes="required"/>
+                                </TextBlock>
+                                <TextBox Classes="input-field"
+                                         Classes.error="{Binding HasBirthDateError}"
+                                         Text="{Binding BirthDate}"
+                                         Watermark="{Binding [RegisterAccount.BirthDatePlaceholder],
+                                                             Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                <ContentControl Classes="field-message"
+                                                Content="{Binding [RegisterAccount.ObligatoryField],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"
+                                                IsVisible="{Binding IsBirthDateRequired}"/>
+                                <ContentControl Classes="field-message"
+                                                Content="{Binding [RegisterAccount.BirthDateInvalid],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"
+                                                IsVisible="{Binding IsBirthDateFormatInvalid}"/>
+                                <ContentControl Classes="field-message"
+                                                Content="{Binding [RegisterAccount.UnderageError],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"
+                                                IsVisible="{Binding IsBirthDateUnderage}"/>
+                            </StackPanel>
+                            <StackPanel Classes="field">
+                                <TextBlock Classes="field-label" Classes.error="{Binding HasEmailError}">
+                                    <Run Text="{Binding [RegisterAccount.Email],
+                                                        Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                    <Run Classes="required"/>
+                                </TextBlock>
+                                <TextBox Classes="input-field"
+                                         Classes.error="{Binding HasEmailError}"
+                                         Text="{Binding Email}"
+                                         Watermark="{Binding [RegisterAccount.EmailPlaceholder],
+                                                             Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                <ContentControl Classes="field-message"
+                                                Content="{Binding [RegisterAccount.ObligatoryField],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"
+                                                IsVisible="{Binding IsEmailRequired}"/>
+                                <ContentControl Classes="field-message"
+                                                Content="{Binding [RegisterAccount.InvalidEmail],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"
+                                                IsVisible="{Binding IsEmailFormatInvalid}"/>
+                                <ContentControl Classes="field-message"
+                                                Content="{Binding [RegisterAccount.EmailAlreadyRegistered],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"
+                                                IsVisible="{Binding IsEmailAlreadyRegistered}"/>
+                            </StackPanel>
+                            <StackPanel Classes="field">
+                                <TextBlock Classes="field-label" Classes.error="{Binding HasPasswordError}">
+                                    <Run Text="{Binding [RegisterAccount.Password],
+                                                        Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                    <Run Classes="required"/>
+                                </TextBlock>
+                                <TextBox Classes="input-field password"
+                                         Classes.error="{Binding HasPasswordError}"
+                                         Text="{Binding Password}"
+                                         RevealPassword="{Binding IsPasswordVisible}">
+                                    <TextBox.InnerRightContent>
+                                        <ToggleButton Classes="reveal-toggle" IsChecked="{Binding IsPasswordVisible}">
+                                            <Panel>
+                                                <TextBlock IsVisible="{Binding !IsPasswordVisible}"
+                                                           Text="{Binding [AccessMenu.ShowPassword],
+                                                                          Source={x:Static
+                                                                              loc:LocalizationManager.Instance}}"/>
+                                                <TextBlock IsVisible="{Binding IsPasswordVisible}"
+                                                           Text="{Binding [AccessMenu.HidePassword],
+                                                                          Source={x:Static
+                                                                              loc:LocalizationManager.Instance}}"/>
+                                            </Panel>
+                                        </ToggleButton>
+                                    </TextBox.InnerRightContent>
+                                </TextBox>
+                                <ContentControl Classes="field-message"
+                                                Content="{Binding [RegisterAccount.ObligatoryField],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"
+                                                IsVisible="{Binding IsPasswordRequired}"/>
+                                <ContentControl Classes="field-message"
+                                                Content="{Binding [RegisterAccount.PasswordRequirementsUnmet],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"
+                                                IsVisible="{Binding ArePasswordRequirementsUnmet}"/>
+                            </StackPanel>
+                            <StackPanel Classes="field">
+                                <TextBlock Classes="field-label" Classes.error="{Binding HasConfirmPasswordError}">
+                                    <Run Text="{Binding [RegisterAccount.ConfirmPassword],
+                                                        Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                    <Run Classes="required"/>
+                                </TextBlock>
+                                <TextBox Classes="input-field password"
+                                         Classes.error="{Binding HasConfirmPasswordError}"
+                                         Text="{Binding ConfirmPassword}"
+                                         RevealPassword="{Binding IsConfirmPasswordVisible}">
+                                    <TextBox.InnerRightContent>
+                                        <ToggleButton Classes="reveal-toggle"
+                                                      IsChecked="{Binding IsConfirmPasswordVisible}">
+                                            <Panel>
+                                                <TextBlock IsVisible="{Binding !IsConfirmPasswordVisible}"
+                                                           Text="{Binding [AccessMenu.ShowPassword],
+                                                                          Source={x:Static
+                                                                              loc:LocalizationManager.Instance}}"/>
+                                                <TextBlock IsVisible="{Binding IsConfirmPasswordVisible}"
+                                                           Text="{Binding [AccessMenu.HidePassword],
+                                                                          Source={x:Static
+                                                                              loc:LocalizationManager.Instance}}"/>
+                                            </Panel>
+                                        </ToggleButton>
+                                    </TextBox.InnerRightContent>
+                                </TextBox>
+                                <ContentControl Classes="field-message"
+                                                Content="{Binding [RegisterAccount.ObligatoryField],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"
+                                                IsVisible="{Binding IsConfirmPasswordRequired}"/>
+                                <ContentControl Classes="field-message"
+                                                Content="{Binding [RegisterAccount.PasswordsMismatch],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"
+                                                IsVisible="{Binding IsConfirmPasswordMismatch}"/>
+                            </StackPanel>
 
                             <HeaderedContentControl Classes="alert error"
-                                                    Header="{Binding [MSG-REG-011], Source={x:Static loc:LocalizationManager.Instance}}"
+                                                    Header="{Binding [RegisterAccount.ValidationSummary],
+                                                                     Source={x:Static
+                                                                         loc:LocalizationManager.Instance}}"
                                                     IsVisible="{Binding HasValidationSummary}"/>
+
+                            <HeaderedContentControl Classes="alert error"
+                                                    Header="{Binding [RegisterAccount.CouldntReachServer],
+                                                                     Source={x:Static
+                                                                         loc:LocalizationManager.Instance}}"
+                                                    IsVisible="{Binding IsServerUnreachable}"/>
+                            <HeaderedContentControl Classes="alert error"
+                                                    Header="{Binding [RegisterAccount.RegistrationFailed],
+                                                                     Source={x:Static
+                                                                         loc:LocalizationManager.Instance}}"
+                                                    IsVisible="{Binding IsRegistrationFailed}"/>
 
                             <UniformGrid Classes="button-row">
                                 <Button Classes="secondary-btn"
                                         Command="{Binding CancelCommand}"
-                                        Content="{Binding [RegisterAccount.Cancel], Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                        Content="{Binding [RegisterAccount.Cancel],
+                                                          Source={x:Static loc:LocalizationManager.Instance}}"/>
                                 <Button Classes="primary-btn"
                                         Classes.loading="{Binding IsBusy}"
                                         IsDefault="True"
@@ -208,9 +287,11 @@
                                     <StackPanel Classes="inline-icon-text">
                                         <Path Classes="spinner" IsVisible="{Binding IsBusy}"/>
                                         <TextBlock IsVisible="{Binding !IsBusy}"
-                                                   Text="{Binding [RegisterAccount.Register], Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                                   Text="{Binding [RegisterAccount.Register],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
                                         <TextBlock IsVisible="{Binding IsBusy}"
-                                                   Text="{Binding [RegisterAccount.Processing], Source={x:Static loc:LocalizationManager.Instance}}"/>
+                                                   Text="{Binding [RegisterAccount.Processing],
+                                                                  Source={x:Static loc:LocalizationManager.Instance}}"/>
                                     </StackPanel>
                                 </Button>
                             </UniformGrid>
@@ -220,6 +301,8 @@
                 </Border>
             </Grid>
         </Border>
+
+        <components:LanguageSelector/>
 
     </Grid>
 </UserControl>
