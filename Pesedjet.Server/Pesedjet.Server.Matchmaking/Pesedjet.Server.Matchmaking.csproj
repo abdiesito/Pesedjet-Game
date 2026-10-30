@@ -6,4 +6,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Pesedjet.Server.Contracts\Pesedjet.Server.Contracts.csproj" />
+      <ProjectReference Include="..\Pesedjet.Server.DataAccess\Pesedjet.Server.DataAccess.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CoreWCF.Primitives" Version="1.9.1" />
+    </ItemGroup>
+
 </Project>

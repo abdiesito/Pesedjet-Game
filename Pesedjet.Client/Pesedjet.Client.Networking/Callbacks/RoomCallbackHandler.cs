@@ -1,12 +1,13 @@
 #nullable enable
 
+using System;
 using System.ServiceModel;
 using Pesedjet.Server.Contracts.Callbacks;
 using Pesedjet.Server.Contracts.DTOs;
 
 namespace Pesedjet.Client.Networking.Callbacks;
 
-[CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
+[CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Single, UseSynchronizationContext = false)]
 public sealed class RoomCallbackHandler : IRoomCallback
 {
     public event EventHandler<RoomMember>? PlayerJoined;

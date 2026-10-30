@@ -14,11 +14,11 @@ public interface IRoomServiceAsync
 {
     [OperationContract]
     [FaultContract(typeof(ServiceFault))]
-    Task<string> CreateRoomAsync(Guid hostPlayerId, bool isPublic, int maxPlayers);
+    Task<string> CreateRoomAsync(RoomMember host, bool isPublic, int maxPlayers);
 
     [OperationContract]
     [FaultContract(typeof(ServiceFault))]
-    Task JoinRoomAsync(string roomCode, Guid playerId);
+    Task<RoomJoinResponse> JoinRoomAsync(string roomCode, RoomMember player);
 
     [OperationContract]
     [FaultContract(typeof(ServiceFault))]

@@ -6,7 +6,6 @@ using System.ServiceModel;
 using System.Threading.Tasks;
 using Pesedjet.Client.Networking.Callbacks;
 using Pesedjet.Client.Networking.Interfaces;
-using Pesedjet.Server.Contracts.Callbacks;
 using Pesedjet.Server.Contracts.DTOs;
 
 namespace Pesedjet.Client.Networking.Proxies;
@@ -16,6 +15,10 @@ public sealed class RoomClient : IRoomClient
     private readonly RoomCallbackHandler _callbackHandler;
     private readonly DuplexChannelFactory<IRoomServiceAsync> _channelFactory;
     private readonly object _syncRoot = new();
+    private readonly object _eventLock = new();
+    private readonly Queue<Action> _pendingEvents = new();
+    private EventHandler<RoomMember>? _playerJoined;
+    private EventHandler<Guid>? _playerLeft;
     private IRoomServiceAsync? _channel;
     private bool _isDisposed;
 
@@ -33,20 +36,54 @@ public sealed class RoomClient : IRoomClient
             new EndpointAddress(serviceAddress));
     }
 
-    public event EventHandler<RoomMember>? PlayerJoined;
-
-    public event EventHandler<Guid>? PlayerLeft;
-
-    public Task<string> CreateRoomAsync(Guid hostPlayerId, bool isPublic, int maxPlayers)
+    public event EventHandler<RoomMember>? PlayerJoined
     {
-        Task<string> operation = ExecuteAsync(channel => channel.CreateRoomAsync(hostPlayerId, isPublic, maxPlayers));
+        add
+        {
+            lock (_eventLock)
+            {
+                _playerJoined += value;
+            }
+        }
+        remove
+        {
+            lock (_eventLock)
+            {
+                _playerJoined -= value;
+            }
+        }
+    }
+
+    public event EventHandler<Guid>? PlayerLeft
+    {
+        add
+        {
+            lock (_eventLock)
+            {
+                _playerLeft += value;
+            }
+        }
+        remove
+        {
+            lock (_eventLock)
+            {
+                _playerLeft -= value;
+            }
+        }
+    }
+
+    public Task<string> CreateRoomAsync(RoomMember host, bool isPublic, int maxPlayers)
+    {
+        ClearPendingEvents();
+        Task<string> operation = ExecuteAsync(channel => channel.CreateRoomAsync(host, isPublic, maxPlayers));
 
         return operation;
     }
 
-    public Task JoinRoomAsync(string roomCode, Guid playerId)
+    public Task<RoomJoinResponse> JoinRoomAsync(string roomCode, RoomMember player)
     {
-        Task operation = ExecuteAsync(channel => channel.JoinRoomAsync(roomCode, playerId));
+        ClearPendingEvents();
+        Task<RoomJoinResponse> operation = ExecuteAsync(channel => channel.JoinRoomAsync(roomCode, player));
 
         return operation;
     }
@@ -63,6 +100,17 @@ public sealed class RoomClient : IRoomClient
         Task<List<RoomSummary>> operation = ExecuteAsync(channel => channel.GetPublicRoomsAsync());
 
         return operation;
+    }
+
+    public void ReplayPendingEvents()
+    {
+        lock (_eventLock)
+        {
+            while (_pendingEvents.Count > 0)
+            {
+                _pendingEvents.Dequeue().Invoke();
+            }
+        }
     }
 
     public async ValueTask DisposeAsync()
@@ -82,6 +130,7 @@ public sealed class RoomClient : IRoomClient
         {
             _callbackHandler.PlayerJoined -= OnPlayerJoined;
             _callbackHandler.PlayerLeft -= OnPlayerLeft;
+            ClearPendingEvents();
 
             if (channel is not null)
             {
@@ -188,13 +237,43 @@ public sealed class RoomClient : IRoomClient
         }
     }
 
+    private void ClearPendingEvents()
+    {
+        lock (_eventLock)
+        {
+            _pendingEvents.Clear();
+        }
+    }
+
+    // Events are raised inside the lock so replayed and live events keep the server's order;
+    // subscribers must only marshal to the UI thread (Dispatcher.Post) and return.
     private void OnPlayerJoined(object? sender, RoomMember player)
     {
-        PlayerJoined?.Invoke(this, player);
+        lock (_eventLock)
+        {
+            if (_playerJoined is null)
+            {
+                _pendingEvents.Enqueue(() => _playerJoined?.Invoke(this, player));
+            }
+            else
+            {
+                _playerJoined.Invoke(this, player);
+            }
+        }
     }
 
     private void OnPlayerLeft(object? sender, Guid playerId)
     {
-        PlayerLeft?.Invoke(this, playerId);
+        lock (_eventLock)
+        {
+            if (_playerLeft is null)
+            {
+                _pendingEvents.Enqueue(() => _playerLeft?.Invoke(this, playerId));
+            }
+            else
+            {
+                _playerLeft.Invoke(this, playerId);
+            }
+        }
     }
 }

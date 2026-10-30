@@ -13,11 +13,13 @@ public interface IRoomClient : IAsyncDisposable
 
     event EventHandler<Guid>? PlayerLeft;
 
-    Task<string> CreateRoomAsync(Guid hostPlayerId, bool isPublic, int maxPlayers);
+    Task<string> CreateRoomAsync(RoomMember host, bool isPublic, int maxPlayers);
 
-    Task JoinRoomAsync(string roomCode, Guid playerId);
+    Task<RoomJoinResponse> JoinRoomAsync(string roomCode, RoomMember player);
 
     Task LeaveRoomAsync(string roomCode, Guid playerId);
 
     Task<List<RoomSummary>> GetPublicRoomsAsync();
+
+    void ReplayPendingEvents();
 }

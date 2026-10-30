@@ -1,6 +1,7 @@
 #nullable enable
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Globalization;
@@ -20,7 +21,7 @@ namespace Pesedjet.Client.UI.ViewModels;
 public partial class MatchLobbyViewModel : ViewModelBase, IDisposable
 {
     private const int MinimumPlayersToStart = 2;
-    private const string ConnectionErrorKey = "Messages.MSG-GEN-001";
+    private const string ConnectionErrorKey = "MSG-GEN-001";
     private const string OccupancyKey = "Lobby.Occupancy";
     private const string StatusWaitingKey = "Lobby.StatusWaiting";
     private const string StatusFullKey = "Lobby.StatusFull";
@@ -49,7 +50,6 @@ public partial class MatchLobbyViewModel : ViewModelBase, IDisposable
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasConnectionError))]
-    [NotifyPropertyChangedFor(nameof(ErrorMessage))]
     [NotifyPropertyChangedFor(nameof(StatusText))]
     private string _connectionError = string.Empty;
 
@@ -76,17 +76,13 @@ public partial class MatchLobbyViewModel : ViewModelBase, IDisposable
 
     public ObservableCollection<RoomMember> Members { get; } = new();
 
-    public ObservableCollection<RoomMember> Participants => Members;
-
     public bool CanStartMatch => IsHost && !IsBusy && Members.Count >= MinimumPlayersToStart;
 
     public bool CanLeaveLobby => !IsBusy;
 
     public bool HasConnectionError => !string.IsNullOrEmpty(ConnectionError);
 
-    public string ErrorMessage => ConnectionError;
-
-    public bool ShowMinimumPlayersHint => Members.Count < MinimumPlayersToStart;
+    public bool ShowMinimumPlayersHint => IsHost && Members.Count < MinimumPlayersToStart;
 
     public bool IsWaitingForHost => !IsHost;
 
@@ -139,6 +135,20 @@ public partial class MatchLobbyViewModel : ViewModelBase, IDisposable
 
         Members.Clear();
         Members.Add(localPlayer);
+    }
+
+    public void AddExistingMembers(IEnumerable<RoomMember> existingMembers)
+    {
+        int insertIndex = 0;
+        foreach (RoomMember member in existingMembers)
+        {
+            bool isAlreadyListed = Members.Any(listed => listed.PlayerId == member.PlayerId);
+            if (!isAlreadyListed)
+            {
+                Members.Insert(insertIndex, member);
+                insertIndex++;
+            }
+        }
     }
 
     public void Dispose()
@@ -206,6 +216,7 @@ public partial class MatchLobbyViewModel : ViewModelBase, IDisposable
             _roomClient.PlayerJoined += OnPlayerJoined;
             _roomClient.PlayerLeft += OnPlayerLeft;
             _isSubscribed = true;
+            _roomClient.ReplayPendingEvents();
         }
     }
 
