@@ -455,4 +455,20 @@
   <data name="Card.Effect.2" xml:space="preserve"><value>Mira en secreto la mano de otro jugador.</value></data>
   <data name="Card.Effect.1" xml:space="preserve"><value>Nombra una deidad; si el rival la tiene, queda eliminado.</value></data>
   <data name="Card.Effect.0" xml:space="preserve"><value>No hace nada al jugarla; puede darte un punto extra al final de la ronda.</value></data>
+  <data name="Lobby.Title" xml:space="preserve"><value>Sala de Espera</value></data>
+  <data name="Lobby.RoomCode" xml:space="preserve"><value>CÓDIGO DE SALA</value></data>
+  <data name="Lobby.Participants" xml:space="preserve"><value>JUGADORES EN LA SALA</value></data>
+  <data name="Lobby.Host" xml:space="preserve"><value>Anfitrión</value></data>
+  <data name="Lobby.You" xml:space="preserve"><value>Tú</value></data>
+  <data name="Lobby.Guest" xml:space="preserve"><value>Invitado</value></data>
+  <data name="Lobby.Occupancy" xml:space="preserve"><value>{0} de {1} jugadores</value></data>
+  <data name="Lobby.StatusWaiting" xml:space="preserve"><value>Esperando jugadores…</value></data>
+  <data name="Lobby.StatusFull" xml:space="preserve"><value>Sala llena</value></data>
+  <data name="Lobby.StatusDisconnected" xml:space="preserve"><value>Conexión interrumpida</value></data>
+  <data name="Lobby.WaitingForHost" xml:space="preserve"><value>Esperando a que el anfitrión inicie la partida…</value></data>
+  <data name="Lobby.LeaveRoom" xml:space="preserve"><value>Abandonar sala</value></data>
+  <data name="Lobby.StartMatch" xml:space="preserve"><value>Iniciar partida</value></data>
+  <data name="Messages.MSG-ROOM-005" xml:space="preserve"><value>Se requieren al menos 2 jugadores para iniciar.</value></data>
+  <data name="Messages.MSG-GEN-001" xml:space="preserve"><value>Ocurrió un problema de comunicación con el servidor.</value></data>
+  
 </root>
