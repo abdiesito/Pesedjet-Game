@@ -13,5 +13,6 @@
         <FluentTheme/>
         <StyleInclude Source="avares://Pesedjet.Client.UI/Styles/EgyptSandBackground.axaml"/>
         <StyleInclude Source="avares://Pesedjet.Client.UI/Styles/PesedjetTheme.axaml"/>
+        <StyleInclude Source="avares://Pesedjet.Client.UI/Styles/LobbyStyles.axaml" />
     </Application.Styles>
 </Application>

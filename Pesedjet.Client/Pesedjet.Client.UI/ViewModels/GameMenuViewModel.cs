@@ -1,6 +1,9 @@
+#nullable enable
+
 using System;
 using System.Globalization;
 using System.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -11,6 +14,8 @@ using Pesedjet.Client.UI.Utilities.Navigation;
 using Pesedjet.Client.UI.Utilities.Rooms;
 using Pesedjet.Client.UI.Utilities.Session;
 using Pesedjet.Client.UI.Utilities.Validation;
+using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.Faults;
 
 namespace Pesedjet.Client.UI.ViewModels;
 
@@ -108,26 +113,38 @@ public partial class GameMenuViewModel : ViewModelBase, INavigable
     {
         IsJoining = true;
         HasConnectionError = false;
-        RoomJoinResult result;
+        _lastJoinError = null;
+        RefreshCodeError();
 
         try
         {
-            result = await _roomGateway.JoinRoomAsync(RoomCode);
+            RoomJoinResult result = await _roomGateway.JoinRoomAsync(RoomCode);
+
+            ShowJoinError(result);
+
+            if (result.Room is not null)
+            {
+                _roomSession.Current = result.Room;
+                _navigator.NavigateTo<WaitingRoomViewModel>();
+            }
+        }
+        catch (FaultException<ServiceFault> ex)
+        {
+            _lastJoinError = MapMessageKeyToJoinResult(ex.Detail.MessageKey);
+            RefreshCodeError();
+        }
+        catch (CommunicationException)
+        {
+            HasConnectionError = true;
+        }
+        catch (TimeoutException)
+        {
+            HasConnectionError = true;
         }
         finally
         {
             IsJoining = false;
         }
-
-        ShowJoinError(result);
-
-        if (result.Room is not null)
-        {
-            _roomSession.Current = result.Room;
-            _navigator.NavigateTo<WaitingRoomViewModel>();
-        }
-
-        // TODO: On a communication failure (MSG-GEN-001) set HasConnectionError and offer "Retry".
     }
 
     private bool CanJoinRoom()
@@ -187,5 +204,18 @@ public partial class GameMenuViewModel : ViewModelBase, INavigable
         }
 
         return text;
+    }
+
+    private static RoomJoinResult MapMessageKeyToJoinResult(string messageKey)
+    {
+        RoomCodeError error = messageKey switch
+        {
+            ServiceMessageKeys.RoomNotFound => RoomCodeError.NotFound,
+            ServiceMessageKeys.RoomFull => RoomCodeError.Full,
+            ServiceMessageKeys.RoomAlreadyStarted => RoomCodeError.Started,
+            _ => RoomCodeError.NotFound
+        };
+
+        return new RoomJoinResult(error, 0, 0, null);
     }
 }

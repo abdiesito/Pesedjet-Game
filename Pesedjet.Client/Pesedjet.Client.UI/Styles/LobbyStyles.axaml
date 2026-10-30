@@ -1,0 +1,193 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Styles.Resources>
+        <StreamGeometry x:Key="IconAlert">
+            F0 M12,2 A10,10 0 1 0 12,22 A10,10 0 1 0 12,2 Z M11,7 H13 V13 H11 Z M11,15 H13 V17 H11 Z
+        </StreamGeometry>
+        <StreamGeometry x:Key="IconCrown">M3,18 L5,7 L10,12 L12,5 L14,12 L19,7 L21,18 Z</StreamGeometry>
+    </Styles.Resources>
+
+    <Style Selector="Border.lobby-panel">
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorGold}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusCard}" />
+        <Setter Property="ClipToBounds" Value="True" />
+        <Setter Property="MaxWidth" Value="1280" />
+        <Setter Property="MaxHeight" Value="760" />
+    </Style>
+
+    <Style Selector="Border.lobby-header">
+        <Setter Property="Background" Value="{DynamicResource ColorPrimary}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorGold}" />
+        <Setter Property="BorderThickness" Value="0,0,0,3" />
+        <Setter Property="Padding" Value="32,24" />
+    </Style>
+
+    <Style Selector="StackPanel.lobby-heading">
+        <Setter Property="Spacing" Value="6" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="TextBlock.lobby-title">
+        <Setter Property="FontFamily" Value="Georgia, DejaVu Serif, serif" />
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorGoldLight}" />
+    </Style>
+
+    <Style Selector="StackPanel.lobby-status">
+        <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="Spacing" Value="8" />
+    </Style>
+
+    <Style Selector="TextBlock.lobby-subtitle">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorSandHighlight}" />
+    </Style>
+
+    <Style Selector="TextBlock.lobby-subtitle.error">
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorErrorBackground}" />
+    </Style>
+
+    <Style Selector="StackPanel.room-code-block">
+        <Setter Property="Spacing" Value="2" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="StackPanel.room-code-block > TextBlock.caption">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorGold}" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+    </Style>
+
+    <Style Selector="TextBlock.room-code">
+        <Setter Property="FontFamily" Value="Consolas, Menlo, DejaVu Sans Mono, monospace" />
+        <Setter Property="FontSize" Value="34" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="LetterSpacing" Value="4" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorGoldLight}" />
+    </Style>
+
+    <Style Selector="Border.alert-error">
+        <Setter Property="Margin" Value="32,16,32,0" />
+        <Setter Property="Padding" Value="12" />
+        <Setter Property="CornerRadius" Value="9" />
+        <Setter Property="Background" Value="{DynamicResource ColorErrorBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorError}" />
+        <Setter Property="BorderThickness" Value="5,1.5,1.5,1.5" />
+    </Style>
+
+    <Style Selector="StackPanel.alert-content">
+        <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="Spacing" Value="10" />
+    </Style>
+
+    <Style Selector="PathIcon.alert-icon">
+        <Setter Property="Width" Value="20" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorError}" />
+    </Style>
+
+    <Style Selector="TextBlock.alert-text">
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorError}" />
+    </Style>
+
+    <Style Selector="Grid.members-section">
+        <Setter Property="Margin" Value="32,20,32,0" />
+    </Style>
+
+    <Style Selector="TextBlock.section-title">
+        <Setter Property="Margin" Value="0,0,0,10" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="LetterSpacing" Value="1" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorGold}" />
+    </Style>
+
+    <Style Selector="ItemsControl.members-list">
+        <Setter Property="ItemsPanel">
+            <ItemsPanelTemplate>
+                <StackPanel Spacing="8" />
+            </ItemsPanelTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Border.member-row">
+        <Setter Property="Padding" Value="14,10" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="BorderThickness" Value="1.5" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ColorBorder}" />
+        <Setter Property="Background" Value="{DynamicResource ColorSurface}" />
+    </Style>
+
+    <Style Selector="TextBlock.member-name">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorPrimary}" />
+    </Style>
+
+    <Style Selector=":is(Control).badge">
+        <Setter Property="Margin" Value="8,0,0,0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="StackPanel.badge">
+        <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="Spacing" Value="4" />
+    </Style>
+
+    <Style Selector="StackPanel.badge.host > TextBlock">
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorGoldDark}" />
+    </Style>
+
+    <Style Selector="PathIcon.badge-icon">
+        <Setter Property="Width" Value="16" />
+        <Setter Property="Height" Value="16" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorGold}" />
+    </Style>
+
+    <Style Selector="TextBlock.badge.self">
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorPrimary}" />
+    </Style>
+
+    <Style Selector="TextBlock.badge.guest">
+        <Setter Property="FontStyle" Value="Italic" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}" />
+    </Style>
+
+    <Style Selector="Grid.lobby-footer">
+        <Setter Property="Margin" Value="32,16,32,24" />
+    </Style>
+
+    <Style Selector="StackPanel.footer-hints">
+        <Setter Property="Spacing" Value="6" />
+        <Setter Property="Margin" Value="16,0" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="TextBlock.hint">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="TextAlignment" Value="Right" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorTextSecondary}" />
+    </Style>
+
+    <Style Selector="ProgressBar.busy-indicator">
+        <Setter Property="Width" Value="120" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="Foreground" Value="{DynamicResource ColorGold}" />
+    </Style>
+</Styles>

@@ -1,3 +1,7 @@
+#nullable enable
+
+using System;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Pesedjet.Server.DataAccess.Contexts;
 using Pesedjet.Server.DataAccess.Entities.Identity;
@@ -16,16 +20,31 @@ public class PlayerRepository : IPlayerRepository
         _context = context;
     }
 
+    public async Task<Player?> GetPlayerByIdAsync(Guid playerId)
+    {
+        Player? player = await _context.Players
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Id == playerId);
+
+        return player;
+    }
+
     public async Task<Player?> GetPlayerByUsernameAsync(string username)
     {
-        return await _context.Players
-            .FirstOrDefaultAsync(player => player.Username == username);
+        Player? player = await _context.Players
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Username == username);
+
+        return player;
     }
 
     public async Task<Player?> GetPlayerByEmailAsync(string email)
     {
-        return await _context.Players
-            .FirstOrDefaultAsync(player => player.Email == email);
+        Player? player = await _context.Players
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Email == email);
+
+        return player;
     }
 
     public async Task<bool> CreatePlayerAsync(Player player)

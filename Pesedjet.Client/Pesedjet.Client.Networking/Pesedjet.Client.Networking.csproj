@@ -7,11 +7,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="System.ServiceModel.NetTcp" Version="8.1.0" />
+        <PackageReference Include="System.ServiceModel.Duplex" Version="6.0.0" />
+        <PackageReference Include="System.ServiceModel.NetTcp" Version="8.1.0" />
+        <PackageReference Include="System.ServiceModel.Primitives" Version="8.1.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Pesedjet.Server\Pesedjet.Server.Contracts\Pesedjet.Server.Contracts.csproj" />
+        <ProjectReference Include="C:\Users\habdi\RiderProjects\Pesedjet-Game\Pesedjet.Server\Pesedjet.Server.Contracts\Pesedjet.Server.Contracts.csproj" />
     </ItemGroup>
 
 </Project>
