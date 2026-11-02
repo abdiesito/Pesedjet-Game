@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.ServiceModel;
-using System.Threading.Tasks;
 using Pesedjet.Client.Networking.Callbacks;
 using Pesedjet.Client.Networking.Interfaces;
 using Pesedjet.Server.Contracts.DTOs;

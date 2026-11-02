@@ -101,6 +101,7 @@ public static class ViewDependencyInjectionSetup
         services.AddTransient<DisplaySettingsViewModel>();
         services.AddTransient<LanguageSettingsViewModel>();
         services.AddTransient<AccountSettingsViewModel>();
+        services.AddTransient<AccessMenuViewModel>();
 
         services.AddSingleton<TopBarViewModel>();
         services.AddSingleton<MainWindowViewModel>();

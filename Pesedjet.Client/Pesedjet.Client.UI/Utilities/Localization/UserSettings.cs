@@ -1,3 +1,5 @@
 namespace Pesedjet.Client.UI.Utilities.Localization;
 
-public sealed record UserSettings(string Language);
+public sealed record UserSettings(
+    string Language, 
+    string RememberToken = "");
