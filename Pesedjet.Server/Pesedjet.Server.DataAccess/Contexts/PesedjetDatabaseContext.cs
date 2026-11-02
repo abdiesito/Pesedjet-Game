@@ -6,27 +6,37 @@ namespace Pesedjet.Server.DataAccess.Contexts;
 
 public class PesedjetDatabaseContext : DbContext
 {
-    public DbSet<Player> Players { get; set; }
+    public DbSet<Player> Players { get; set; } = null!;
 
-    public DbSet<VerificationCode> VerificationCodes { get; set; }
+    public DbSet<VerificationCode> VerificationCodes { get; set; } = null!;
 
-    public DbSet<Session> Sessions { get; set; }
+    public DbSet<Session> Sessions { get; set; } = null!;
 
-    public DbSet<Friendship> Friendships { get; set; }
+    public DbSet<Friendship> Friendships { get; set; } = null!;
 
-    public DbSet<BlockedPlayer> BlockedPlayers { get; set; }
+    public DbSet<BlockedPlayer> BlockedPlayers { get; set; } = null!;
 
-    public DbSet<Match> Matches { get; set; }
+    public DbSet<Match> Matches { get; set; } = null!;
 
-    public DbSet<MatchResult> MatchResults { get; set; }
+    public DbSet<MatchResult> MatchResults { get; set; } = null!;
 
-    public PesedjetDatabaseContext(DbContextOptions<PesedjetDatabaseContext> options) : base(options)
+    public PesedjetDatabaseContext(DbContextOptions<PesedjetDatabaseContext> options)
+        : base(options)
     {
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Player>(entity =>
+        {
+            entity.HasIndex(player => player.Username)
+                .IsUnique();
+
+            entity.HasIndex(player => player.Email)
+                .IsUnique();
+        });
 
         modelBuilder.Entity<Friendship>()
             .HasKey(friendship => new { friendship.PlayerRequesterId, friendship.PlayerAddresseeId });

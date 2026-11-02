@@ -11,6 +11,10 @@
     <ItemGroup>
       <PackageReference Include="CoreWCF.NetTcp" Version="1.9.1" />
       <PackageReference Include="CoreWCF.Primitives" Version="1.9.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
     </ItemGroup>
 
     <ItemGroup>

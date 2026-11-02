@@ -10,4 +10,8 @@ public interface IPlayerRepository
     Task<Player?> GetPlayerByEmailAsync(string email);
 
     Task<bool> CreatePlayerAsync(Player player);
+    
+    Task<bool> VerifyCodeAsync(string usernameOrEmail, string code, string purpose);
+    Task<bool> GeneratePasswordResetCodeAsync(Guid playerId);
+    Task<bool> UpdatePasswordHashAsync(Guid playerId, string newPasswordHash);
 }

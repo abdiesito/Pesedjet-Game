@@ -9,5 +9,9 @@ public static class ServiceMessageKeys
     public const string RoomFull = "ROOM_FULL";    
     public const string RoomAlreadyStarted = "MSG-ROOM-009";
     public const string InvalidRoomCapacity = "MSG-ROOM-011";
+    public const string InvalidData = "ErrorInvalidData";
+    public const string UserNotFound = "ErrorUserNotFound";
+    public const string InvalidCode = "ErrorInvalidCode";
+    public const string InvalidCredentials = "ErrorInvalidCredentials";
     
 }

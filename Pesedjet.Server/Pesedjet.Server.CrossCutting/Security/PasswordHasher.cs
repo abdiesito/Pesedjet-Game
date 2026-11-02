@@ -14,4 +14,16 @@ public class PasswordHasher : IPasswordHasher
 
         return Convert.ToHexString(hash);
     }
+
+    public bool VerifyPassword(string password, string passwordHash, Guid playerId)
+    {
+        bool isValid = false;
+
+        string computedHash = HashPassword(password, playerId);
+        isValid = CryptographicOperations.FixedTimeEquals(
+            Convert.FromHexString(computedHash),
+            Convert.FromHexString(passwordHash));
+
+        return isValid;
+    }
 }

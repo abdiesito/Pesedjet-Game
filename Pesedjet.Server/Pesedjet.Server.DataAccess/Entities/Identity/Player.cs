@@ -31,9 +31,22 @@ public class Player
     [MaxLength(500)]
     public string? ProfileDescription { get; set; }
 
-    public ICollection<VerificationCode> VerificationCodes { get; set; } = new List<VerificationCode>();
+    [Required]
+    public bool IsGuest { get; set; }
 
-    public ICollection<Session> Sessions { get; set; } = new List<Session>();
+    [Required]
+    [MaxLength(20)]
+    public string Status { get; set; } = "Active";
 
-    public ICollection<Game.MatchResult> MatchResults { get; set; } = new List<Game.MatchResult>();
+    [Required]
+    public int FailedLoginAttempts { get; set; }
+
+    [Required]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public virtual ICollection<VerificationCode> VerificationCodes { get; set; } = new List<VerificationCode>();
+
+    public virtual ICollection<Session> Sessions { get; set; } = new List<Session>();
+
+    public virtual ICollection<Game.MatchResult> MatchResults { get; set; } = new List<Game.MatchResult>();
 }

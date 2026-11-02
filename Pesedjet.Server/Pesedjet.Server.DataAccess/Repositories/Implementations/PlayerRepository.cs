@@ -1,7 +1,3 @@
-#nullable enable
-
-using System;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Pesedjet.Server.DataAccess.Contexts;
 using Pesedjet.Server.DataAccess.Entities.Identity;
@@ -53,5 +49,38 @@ public class PlayerRepository : IPlayerRepository
         int affectedRows = await _context.SaveChangesAsync();
 
         return affectedRows == ExpectedAffectedRows;
+    }
+
+    public async Task<bool> VerifyCodeAsync(string usernameOrEmail, string code, string purpose)
+    {
+        bool isValid = false;
+        await Task.CompletedTask;
+
+        return isValid;
+    }
+
+    public async Task<bool> GeneratePasswordResetCodeAsync(Guid playerId)
+    {
+        bool isGenerated = false;
+        await Task.CompletedTask;
+
+        return isGenerated;
+    }
+
+    public async Task<bool> UpdatePasswordHashAsync(Guid playerId, string newPasswordHash)
+    {
+        bool isUpdated = false;
+
+        Player? player = await _context.Players
+            .FirstOrDefaultAsync(p => p.Id == playerId);
+
+        if (player is not null)
+        {
+            player.PasswordHash = newPasswordHash;
+            int affectedRows = await _context.SaveChangesAsync();
+            isUpdated = affectedRows == ExpectedAffectedRows;
+        }
+
+        return isUpdated;
     }
 }

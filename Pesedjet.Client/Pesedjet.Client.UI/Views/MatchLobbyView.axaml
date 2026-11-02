@@ -1,12 +1,16 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:components="using:Pesedjet.Client.UI.Views.Components"
+             xmlns:conv="using:Pesedjet.Client.UI.Converters"
              xmlns:dto="using:Pesedjet.Server.Contracts.DTOs"
              xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
-             xmlns:conv="using:Pesedjet.Client.UI.Converters"
+             xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
              x:Class="Pesedjet.Client.UI.Views.MatchLobbyView"
-             x:CompileBindings="True"
-             x:DataType="vm:MatchLobbyViewModel">
+             x:DataType="vm:MatchLobbyViewModel"
+             x:CompileBindings="True">
 
     <UserControl.DataTemplates>
         <DataTemplate x:DataType="dto:RoomMember">
@@ -15,6 +19,7 @@
                     <TextBlock Classes="member-name"
                                Text="{Binding Username}" />
 
+                    <!-- Insignia Anfitrión -->
                     <StackPanel Grid.Column="1"
                                 Classes="badge host">
                         <StackPanel.IsVisible>
@@ -26,16 +31,13 @@
                         </StackPanel.IsVisible>
                         <PathIcon Classes="badge-icon"
                                   Data="{DynamicResource IconCrown}" />
-                        <TextBlock>
-                            <TextBlock.Text>
-                                <Binding Path="[Lobby.Host]"
-                                         Source="{x:Static loc:LocalizationManager.Instance}" />
-                            </TextBlock.Text>
-                        </TextBlock>
+                        <TextBlock Text="{Binding [Lobby.Host], Source={x:Static loc:LocalizationManager.Instance}}" />
                     </StackPanel>
 
+                    <!-- Insignia Tú -->
                     <TextBlock Grid.Column="2"
-                               Classes="badge self">
+                               Classes="badge self"
+                               Text="{Binding [Lobby.You], Source={x:Static loc:LocalizationManager.Instance}}">
                         <TextBlock.IsVisible>
                             <MultiBinding Converter="{x:Static conv:GuidEqualityConverter.Instance}">
                                 <Binding Path="PlayerId" />
@@ -43,131 +45,128 @@
                                          RelativeSource="{RelativeSource AncestorType=ItemsControl}" />
                             </MultiBinding>
                         </TextBlock.IsVisible>
-                        <TextBlock.Text>
-                            <Binding Path="[Lobby.You]"
-                                     Source="{x:Static loc:LocalizationManager.Instance}" />
-                        </TextBlock.Text>
                     </TextBlock>
 
+                    <!-- Insignia Invitado -->
                     <TextBlock Grid.Column="3"
                                Classes="badge guest"
-                               IsVisible="{Binding IsGuest}">
-                        <TextBlock.Text>
-                            <Binding Path="[Lobby.Guest]"
-                                     Source="{x:Static loc:LocalizationManager.Instance}" />
-                        </TextBlock.Text>
-                    </TextBlock>
+                               IsVisible="{Binding IsGuest}"
+                               Text="{Binding [Lobby.Guest], Source={x:Static loc:LocalizationManager.Instance}}" />
                 </Grid>
             </Border>
         </DataTemplate>
     </UserControl.DataTemplates>
 
-    <Border Classes="lobby-panel">
-        <Grid RowDefinitions="Auto,Auto,*,Auto">
+    <Grid>
+        <Border Classes="card card-top">
+            <Grid ColumnDefinitions="Auto,*">
 
-            <Border Grid.Row="0"
-                    Classes="lobby-header">
-                <Grid ColumnDefinitions="*,Auto">
-                    <StackPanel Classes="lobby-heading">
-                        <TextBlock Classes="lobby-title">
-                            <TextBlock.Text>
-                                <Binding Path="[Lobby.Title]"
-                                         Source="{x:Static loc:LocalizationManager.Instance}" />
-                            </TextBlock.Text>
-                        </TextBlock>
-                        <StackPanel Classes="lobby-status">
-                            <TextBlock Classes="lobby-subtitle"
-                                       Text="{Binding OccupancyText}" />
-                            <TextBlock Classes="lobby-subtitle"
-                                       Text="·" />
-                            <TextBlock Classes="lobby-subtitle"
-                                       Classes.error="{Binding HasConnectionError}"
-                                       Text="{Binding StatusText}" />
+                <!-- Columna Izquierda: Brand Panel (Identidad Visual y Datos de la Sala) -->
+                <Border Classes="brand-panel">
+                    <StackPanel Classes="brand-stack-top">
+                        
+                        <StackPanel Classes="brand-header">
+                            <Path Classes="icon brand-mark" Data="{DynamicResource IconPyramid}" />
+                            <TextBlock Classes="brand-title compact"
+                                       Text="{Binding [Menu.Title], Source={x:Static loc:LocalizationManager.Instance}}" />
                         </StackPanel>
+
+                        <!-- Código de Sala -->
+                        <Border Classes="room-code-card">
+                            <StackPanel Classes="room-code-block">
+                                <TextBlock Classes="caption"
+                                           Text="{Binding [Lobby.RoomCode], Source={x:Static loc:LocalizationManager.Instance}}" />
+                                <TextBlock Classes="room-code"
+                                           Text="{Binding RoomCode}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Lista de Estado e Información -->
+                        <StackPanel Classes="brand-list">
+                            <TextBlock Classes="brand-section-title"
+                                       Text="{Binding [Lobby.Title], Source={x:Static loc:LocalizationManager.Instance}}" />
+
+                            <HeaderedContentControl Classes="requirement met"
+                                                    Header="{Binding OccupancyText}"
+                                                    Content="·" />
+
+                            <HeaderedContentControl Classes="requirement"
+                                                    Classes.error="{Binding HasConnectionError}"
+                                                    Classes.met="{Binding !HasConnectionError}"
+                                                    Header="{Binding StatusText}" />
+                        </StackPanel>
+
+                        <Border Classes="brand-rule" />
+
+                        <!-- Indicadores/Avisos de Espera -->
+                        <ContentControl Classes="brand-note info"
+                                        Content="{Binding [Lobby.WaitingForHost], Source={x:Static loc:LocalizationManager.Instance}}"
+                                        IsVisible="{Binding IsWaitingForHost}" />
+
+                        <ContentControl Classes="brand-note info"
+                                        Content="{Binding [MSG-ROOM-005], Source={x:Static loc:LocalizationManager.Instance}}"
+                                        IsVisible="{Binding ShowMinimumPlayersHint}" />
+
                     </StackPanel>
+                </Border>
 
-                    <StackPanel Grid.Column="1"
-                                Classes="room-code-block">
-                        <TextBlock Classes="caption">
-                            <TextBlock.Text>
-                                <Binding Path="[Lobby.RoomCode]"
-                                         Source="{x:Static loc:LocalizationManager.Instance}" />
-                            </TextBlock.Text>
-                        </TextBlock>
-                        <TextBlock Classes="room-code"
-                                   Text="{Binding RoomCode}" />
-                    </StackPanel>
-                </Grid>
-            </Border>
+                <!-- Columna Derecha: Form Panel (Jugadores y Botones de Acción) -->
+                <Border Grid.Column="1" Classes="form-panel">
+                    <Grid RowDefinitions="Auto,Auto,*,Auto" Classes="form-stack form-stack-compact">
 
-            <Border Grid.Row="1"
-                    Classes="alert-error"
-                    IsVisible="{Binding HasConnectionError}">
-                <StackPanel Classes="alert-content">
-                    <PathIcon Classes="alert-icon"
-                              Data="{DynamicResource IconAlert}" />
-                    <TextBlock Classes="alert-text"
-                               Text="{Binding ConnectionError}" />
-                </StackPanel>
-            </Border>
+                        <StackPanel Grid.Row="0" Classes="heading-group">
+                            <TextBlock Classes="heading-1"
+                                       Text="{Binding [Lobby.Title], Source={x:Static loc:LocalizationManager.Instance}}" />
+                            <TextBlock Classes="body-secondary"
+                                       Text="{Binding OccupancyText}" />
+                        </StackPanel>
 
-            <Grid Grid.Row="2"
-                  Classes="members-section"
-                  RowDefinitions="Auto,*">
-                <TextBlock Classes="section-title">
-                    <TextBlock.Text>
-                        <Binding Path="[Lobby.Participants]"
-                                 Source="{x:Static loc:LocalizationManager.Instance}" />
-                    </TextBlock.Text>
-                </TextBlock>
-                <ScrollViewer Grid.Row="1">
-                    <ItemsControl Classes="members-list"
-                                  ItemsSource="{Binding Members}" />
-                </ScrollViewer>
+                        <!-- Error de Conexión -->
+                        <HeaderedContentControl Grid.Row="1"
+                                                Classes="alert error"
+                                                Header="{Binding ConnectionError}"
+                                                IsVisible="{Binding HasConnectionError}" />
+
+                        <!-- Lista de Participantes -->
+                        <Grid Grid.Row="2" Classes="members-section" RowDefinitions="Auto,*">
+                            <TextBlock Classes="field-label"
+                                       Text="{Binding [Lobby.Participants], Source={x:Static loc:LocalizationManager.Instance}}" />
+                            
+                            <ScrollViewer Grid.Row="1" Classes="form-scroll">
+                                <ItemsControl Classes="members-list"
+                                              ItemsSource="{Binding Members}" />
+                            </ScrollViewer>
+                        </Grid>
+
+                        <!-- Botones de Acción -->
+                        <StackPanel Grid.Row="3" Spacing="12">
+                            <ProgressBar Classes="busy-indicator"
+                                         IsIndeterminate="True"
+                                         IsVisible="{Binding IsBusy}" />
+
+                            <UniformGrid Classes="button-row">
+                                <Button Classes="secondary-btn"
+                                        Command="{Binding LeaveLobbyCommand}"
+                                        Content="{Binding [Lobby.LeaveRoom], Source={x:Static loc:LocalizationManager.Instance}}" />
+
+                                <Button Classes="primary-btn"
+                                        Classes.loading="{Binding IsBusy}"
+                                        IsVisible="{Binding IsHost}"
+                                        Command="{Binding StartMatchCommand}">
+                                    <StackPanel Classes="inline-icon-text">
+                                        <Path Classes="spinner" IsVisible="{Binding IsBusy}" />
+                                        <TextBlock IsVisible="{Binding !IsBusy}"
+                                                   Text="{Binding [Lobby.StartMatch], Source={x:Static loc:LocalizationManager.Instance}}" />
+                                    </StackPanel>
+                                </Button>
+                            </UniformGrid>
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
             </Grid>
+        </Border>
 
-            <Grid Grid.Row="3"
-                  Classes="lobby-footer"
-                  ColumnDefinitions="Auto,*,Auto">
-                <Button Classes="secondary-btn"
-                        Command="{Binding LeaveLobbyCommand}">
-                    <Button.Content>
-                        <Binding Path="[Lobby.LeaveRoom]"
-                                 Source="{x:Static loc:LocalizationManager.Instance}" />
-                    </Button.Content>
-                </Button>
-
-                <StackPanel Grid.Column="1"
-                            Classes="footer-hints">
-                    <ProgressBar Classes="busy-indicator"
-                                 IsIndeterminate="True"
-                                 IsVisible="{Binding IsBusy}" />
-                    <TextBlock Classes="hint"
-                               IsVisible="{Binding ShowMinimumPlayersHint}">
-                        <TextBlock.Text>
-                            <Binding Path="[MSG-ROOM-005]"
-                                     Source="{x:Static loc:LocalizationManager.Instance}" />
-                        </TextBlock.Text>
-                    </TextBlock>
-                    <TextBlock Classes="hint"
-                               IsVisible="{Binding IsWaitingForHost}">
-                        <TextBlock.Text>
-                            <Binding Path="[Lobby.WaitingForHost]"
-                                     Source="{x:Static loc:LocalizationManager.Instance}" />
-                        </TextBlock.Text>
-                    </TextBlock>
-                </StackPanel>
-
-                <Button Grid.Column="2"
-                        Classes="primary-btn"
-                        IsVisible="{Binding IsHost}"
-                        Command="{Binding StartMatchCommand}">
-                    <Button.Content>
-                        <Binding Path="[Lobby.StartMatch]"
-                                 Source="{x:Static loc:LocalizationManager.Instance}" />
-                    </Button.Content>
-                </Button>
-            </Grid>
-        </Grid>
-    </Border>
+        <components:LanguageSelector />
+    </Grid>
 </UserControl>

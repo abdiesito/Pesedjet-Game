@@ -13,7 +13,7 @@ public class Session
     public Guid PlayerId { get; set; }
 
     [ForeignKey(nameof(PlayerId))]
-    public Player Player { get; set; } = null!;
+    public virtual Player Player { get; set; } = null!;
 
     [Required]
     [MaxLength(256)]
