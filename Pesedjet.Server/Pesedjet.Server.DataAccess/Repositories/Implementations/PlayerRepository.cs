@@ -83,4 +83,47 @@ public class PlayerRepository : IPlayerRepository
 
         return isUpdated;
     }
+
+    public async Task<bool> SaveRememberTokenAsync(Guid playerId, string token)
+    {
+        bool isSaved = false;
+
+        Player? player = await _context.Players
+            .FirstOrDefaultAsync(p => p.Id == playerId);
+
+        if (player is not null)
+        {
+            player.RememberToken = token;
+            int affectedRows = await _context.SaveChangesAsync();
+            isSaved = affectedRows == ExpectedAffectedRows;
+        }
+
+        return isSaved;
+    }
+
+    public async Task<Player?> GetPlayerByRememberTokenAsync(string token)
+    {
+        Player? player = await _context.Players
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.RememberToken == token);
+
+        return player;
+    }
+
+    public async Task<bool> RevokeRememberTokenAsync(string username)
+    {
+        bool isRevoked = false;
+
+        Player? player = await _context.Players
+            .FirstOrDefaultAsync(p => p.Username == username);
+
+        if (player is not null)
+        {
+            player.RememberToken = null;
+            int affectedRows = await _context.SaveChangesAsync();
+            isRevoked = affectedRows == ExpectedAffectedRows;
+        }
+
+        return isRevoked;
+    }
 }

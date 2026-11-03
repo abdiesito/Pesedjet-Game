@@ -1,17 +1,29 @@
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Pesedjet.Client.Networking.Interfaces;
+using Pesedjet.Client.Networking.Results;
 using Pesedjet.Client.UI.Models;
 using Pesedjet.Client.UI.Utilities.Dialogs;
+using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Navigation;
+using Pesedjet.Client.UI.Utilities.Session;
 using Pesedjet.Client.UI.Utilities.Validation;
+using Pesedjet.Server.Contracts.DTOs;
 
 namespace Pesedjet.Client.UI.ViewModels;
 
 public partial class AccessMenuViewModel : ViewModelBase, INavigable
 {
+    private const int MaxFailedAttemptsThreshold = 5;
+
     private readonly INavigator _navigator;
     private readonly IDialogManager _dialogManager;
+    private readonly IAuthClient _authClient;
+    private readonly IPlayerSession _playerSession;
+    private readonly UserSettingsStore _userSettingsStore;
+
+    private int _failedAttemptsCount;
 
     [ObservableProperty]
     private bool _isBusy;
@@ -62,10 +74,20 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
 
     public bool IsServerUnreachable => LoginStatus == LoginStatus.ServerUnreachable;
 
-    public AccessMenuViewModel(INavigator navigator, IDialogManager dialogManager)
+    public AccessMenuViewModel(
+        INavigator navigator,
+        IDialogManager dialogManager,
+        IAuthClient authClient,
+        IPlayerSession playerSession,
+        UserSettingsStore userSettingsStore)
     {
         _navigator = navigator;
         _dialogManager = dialogManager;
+        _authClient = authClient;
+        _playerSession = playerSession;
+        _userSettingsStore = userSettingsStore;
+
+        _ = ResumeSessionIfSavedAsync();
     }
 
     public void OnNavigatedFrom()
@@ -87,22 +109,63 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
     }
 
     [RelayCommand]
-    private void Login()
+    private async Task LoginAsync()
     {
         Username = Username.Trim();
 
-        if (ValidateFields())
+        if (ValidateFields() && !IsBusy)
         {
+            IsBusy = true;
             ClearStatus();
-            // TODO: Authenticate through the player client with a 15 second timeout, show ServerUnreachable on
-            // communication failures (EX-01) and redirect to forgot password after 5 failed attempts.
+
+            try
+            {
+                UserLoginRequest request = new UserLoginRequest
+                {
+                    Username = Username,
+                    Password = Password,
+                    RememberSession = RememberSession
+                };
+
+                (AuthResult result, UserSession? session) = await _authClient.LoginAsync(request);
+
+                if (result == AuthResult.Success && session is not null)
+                {
+                    _failedAttemptsCount = 0;
+
+                    UserSettings currentSettings = _userSettingsStore.Load();
+                    UserSettings updatedSettings = currentSettings with
+                    {
+                        RememberToken = RememberSession ? session.RememberToken : string.Empty
+                    };
+
+                    _userSettingsStore.Save(updatedSettings);
+
+                    PlayerProfile profile = new PlayerProfile(
+                        Username: session.Username,
+                        Points: 0,
+                        Victories: 0
+                    );
+
+                    _playerSession.CurrentPlayer = profile;
+                    _navigator.NavigateTo<MainMenuViewModel>();
+                }
+                else
+                {
+                    HandleLoginFailure(result);
+                }
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
     }
 
     [RelayCommand]
     private void NavigateToForgotPassword()
     {
-        // TODO: Navigate to ForgotPasswordViewModel when it exists.
+        // TODO: Navigate to ForgotPasswordViewModel when implemented.
     }
 
     [RelayCommand]
@@ -117,12 +180,51 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
         await _dialogManager.ShowDialogAsync<GuestNoticeViewModel, GuestNoticeMode>(GuestNoticeMode.Entry);
     }
 
+    private async Task ResumeSessionIfSavedAsync()
+    {
+        UserSettings settings = _userSettingsStore.Load();
+
+        if (!string.IsNullOrWhiteSpace(settings.RememberToken))
+        {
+            IsBusy = true;
+
+            try
+            {
+                (AuthResult result, UserSession? session) = await _authClient.ResumeSessionAsync(settings.RememberToken);
+
+                if (result == AuthResult.Success && session is not null)
+                {
+                    PlayerProfile profile = new PlayerProfile(
+                        Username: session.Username,
+                        Points: 0,
+                        Victories: 0
+                    );
+
+                    _playerSession.CurrentPlayer = profile;
+                    _navigator.NavigateTo<MainMenuViewModel>();
+                }
+                else
+                {
+                    // Si el token es invalido o expiro en el servidor, lo limpiamos localmente
+                    UserSettings resetSettings = settings with { RememberToken = string.Empty };
+                    _userSettingsStore.Save(resetSettings);
+                }
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+    }
+
     private bool ValidateFields()
     {
         UsernameValidationError = UsernameRules.Validate(Username);
         PasswordValidationError = ValidatePassword();
 
-        return !HasUsernameError && !HasPasswordError;
+        bool isValid = !HasUsernameError && !HasPasswordError;
+
+        return isValid;
     }
 
     private FieldValidationError ValidatePassword()
@@ -135,6 +237,31 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
         }
 
         return validationError;
+    }
+
+    private void HandleLoginFailure(AuthResult result)
+    {
+        if (result == AuthResult.ServerUnreachable)
+        {
+            LoginStatus = LoginStatus.ServerUnreachable;
+        }
+        else if (result == AuthResult.InvalidCredentials || result == AuthResult.UserNotFound)
+        {
+            _failedAttemptsCount++;
+
+            if (_failedAttemptsCount >= MaxFailedAttemptsThreshold)
+            {
+                LoginStatus = LoginStatus.TooManyAttempts;
+            }
+            else
+            {
+                LoginStatus = LoginStatus.InvalidCredentials;
+            }
+        }
+        else
+        {
+            LoginStatus = LoginStatus.InvalidCredentials;
+        }
     }
 
     private void ClearStatus()

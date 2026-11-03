@@ -1,28 +1,128 @@
-using System.Threading.Tasks;
+using System.ServiceModel;
 using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.Faults;
 using Pesedjet.Server.Contracts.Interfaces;
+using Pesedjet.Server.CrossCutting.Security;
+using Pesedjet.Server.DataAccess.Entities.Identity;
+using Pesedjet.Server.DataAccess.Repositories.Interfaces;
 
 namespace Pesedjet.Server.PlayerManagement.Authentication;
 
 public class AuthService : IAuthService
 {
-    public Task<UserSession> LoginAsync(UserLoginRequest request)
+    private readonly IPlayerRepository _playerRepository;
+    private readonly IPasswordHasher _passwordHasher;
+    private readonly ITokenGenerator _tokenGenerator;
+
+    public AuthService(
+        IPlayerRepository playerRepository,
+        IPasswordHasher passwordHasher,
+        ITokenGenerator tokenGenerator)
     {
-        throw new System.NotImplementedException();
+        _playerRepository = playerRepository;
+        _passwordHasher = passwordHasher;
+        _tokenGenerator = tokenGenerator;
     }
 
-    public Task<UserSession> ResumeSessionAsync(string rememberToken)
+    public async Task<UserSession> LoginAsync(UserLoginRequest request)
     {
-        throw new System.NotImplementedException();
+        UserSession session = null!;
+
+        if (request is null || string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
+        {
+            throw CreateFault(ServiceErrorCodes.InvalidData, ServiceMessageKeys.InvalidData);
+        }
+
+        Player? player = await _playerRepository.GetPlayerByUsernameAsync(request.Username);
+        if (player is null)
+        {
+            throw CreateFault(ServiceErrorCodes.InvalidCredentials, ServiceMessageKeys.InvalidCredentials);
+        }
+
+        bool isPasswordValid = _passwordHasher.VerifyPassword(request.Password, player.PasswordHash, player.Id);
+        if (!isPasswordValid)
+        {
+            throw CreateFault(ServiceErrorCodes.InvalidCredentials, ServiceMessageKeys.InvalidCredentials);
+        }
+
+        string rememberToken = string.Empty;
+        if (request.RememberSession)
+        {
+            rememberToken = _tokenGenerator.GenerateSessionToken();
+            await _playerRepository.SaveRememberTokenAsync(player.Id, rememberToken);
+        }
+
+        session = new UserSession
+        {
+            Username = player.Username,
+            RememberToken = rememberToken,
+            PreferredLanguage = "es-MX",
+            IsGuest = false
+        };
+
+        return session;
     }
 
-    public Task<UserSession> CreateGuestSessionAsync()
+    public async Task<UserSession> ResumeSessionAsync(string rememberToken)
     {
-        throw new System.NotImplementedException();
+        UserSession session = null!;
+
+        if (string.IsNullOrWhiteSpace(rememberToken))
+        {
+            throw CreateFault(ServiceErrorCodes.InvalidData, ServiceMessageKeys.InvalidData);
+        }
+
+        Player? player = await _playerRepository.GetPlayerByRememberTokenAsync(rememberToken);
+        if (player is null)
+        {
+            throw CreateFault(ServiceErrorCodes.UserNotFound, ServiceMessageKeys.UserNotFound);
+        }
+
+        session = new UserSession
+        {
+            Username = player.Username,
+            RememberToken = rememberToken,
+            PreferredLanguage = "es-MX",
+            IsGuest = false
+        };
+
+        return session;
     }
 
-    public Task LogoutAsync(string username)
+    public async Task<UserSession> CreateGuestSessionAsync()
     {
-        throw new System.NotImplementedException();
+        UserSession guestSession = null!;
+        string guestCode = _tokenGenerator.GenerateVerificationCode();
+
+        guestSession = new UserSession
+        {
+            Username = $"Guest_{guestCode}",
+            RememberToken = string.Empty,
+            PreferredLanguage = "es-MX",
+            IsGuest = true
+        };
+
+        await Task.CompletedTask;
+
+        return guestSession;
+    }
+
+    public async Task LogoutAsync(string username)
+    {
+        if (!string.IsNullOrWhiteSpace(username))
+        {
+            await _playerRepository.RevokeRememberTokenAsync(username);
+        }
+    }
+
+    private static FaultException<ServiceFault> CreateFault(string errorCode, string messageKey)
+    {
+        ServiceFault fault = new ServiceFault 
+        { 
+            ErrorCode = errorCode, 
+            MessageKey = messageKey 
+        };
+
+        return new FaultException<ServiceFault>(fault, new FaultReason(errorCode));
     }
 }

@@ -14,4 +14,8 @@ public interface IPlayerRepository
     Task<bool> VerifyCodeAsync(string usernameOrEmail, string code, string purpose);
     Task<bool> GeneratePasswordResetCodeAsync(Guid playerId);
     Task<bool> UpdatePasswordHashAsync(Guid playerId, string newPasswordHash);
+    
+    Task<bool> SaveRememberTokenAsync(Guid playerId, string token);
+    Task<Player?> GetPlayerByRememberTokenAsync(string token);
+    Task<bool> RevokeRememberTokenAsync(string username);
 }
