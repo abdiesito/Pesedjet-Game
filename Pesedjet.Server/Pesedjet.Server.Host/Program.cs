@@ -1,6 +1,3 @@
-#nullable enable
-
-using System;
 using CoreWCF;
 using CoreWCF.Configuration;
 using Microsoft.AspNetCore.Builder;
@@ -14,6 +11,7 @@ using Pesedjet.Server.DataAccess.Contexts;
 using Pesedjet.Server.DataAccess.Repositories.Implementations;
 using Pesedjet.Server.DataAccess.Repositories.Interfaces;
 using Pesedjet.Server.Matchmaking.Services;
+using Pesedjet.Server.PlayerManagement.Authentication;
 using Pesedjet.Server.PlayerManagement.Registration;
 
 const string ConnectionStringName = "DefaultConnection";
@@ -30,8 +28,10 @@ builder.Services.AddServiceModelServices();
 builder.Services.AddDbContext<PesedjetDatabaseContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
+builder.Services.AddSingleton<ITokenGenerator, TokenGenerator>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddTransient<AccountService>();
+builder.Services.AddTransient<AuthService>();
 builder.Services.AddSingleton<RoomService>();
 
 WebApplication app = builder.Build();
@@ -42,6 +42,9 @@ WebApplication app = builder.Build();
 
     serviceBuilder.AddService<AccountService>()
         .AddServiceEndpoint<AccountService, IAccountService>(tcpBinding, ServiceEndpoints.AccountServiceAddress);
+
+    serviceBuilder.AddService<AuthService>()
+        .AddServiceEndpoint<AuthService, IAuthService>(tcpBinding, ServiceEndpoints.AuthServiceAddress);
 
     serviceBuilder.AddService<RoomService>()
         .AddServiceEndpoint<RoomService, IRoomService>(tcpBinding, ServiceEndpoints.RoomServiceAddress);

@@ -148,6 +148,10 @@ namespace Pesedjet.Server.DataAccess.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("RememberToken")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(20)

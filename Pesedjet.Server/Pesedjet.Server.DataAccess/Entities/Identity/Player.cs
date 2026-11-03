@@ -43,6 +43,9 @@ public class Player
 
     [Required]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    
+    [MaxLength(128)]
+    public string? RememberToken { get; set; }
 
     public virtual ICollection<VerificationCode> VerificationCodes { get; set; } = new List<VerificationCode>();
 
