@@ -18,7 +18,8 @@ namespace Pesedjet.Server.Contracts.Interfaces
         [FaultContract(typeof(ServiceFault))]
         Task<UserSession> CreateGuestSessionAsync();
 
-        [OperationContract(IsOneWay = true)]
-        Task LogoutAsync(string username);
+        [OperationContract]
+        [FaultContract(typeof(ServiceFault))]
+        Task<bool> LogoutAsync(LogoutRequest request);
     }
 }

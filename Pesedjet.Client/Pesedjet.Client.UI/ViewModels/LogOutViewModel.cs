@@ -1,6 +1,10 @@
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Pesedjet.Client.Networking.Interfaces;
+using Pesedjet.Client.Networking.Results;
+using Pesedjet.Client.UI.Models;
+using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Navigation;
 using Pesedjet.Client.UI.Utilities.Session;
 
@@ -10,18 +14,25 @@ public partial class LogOutViewModel : DialogViewModelBase
 {
     private readonly INavigator _navigator;
     private readonly IPlayerSession _playerSession;
+    private readonly IAuthClient _authClient;
+    private readonly UserSettingsStore _userSettingsStore;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CancelCommand), nameof(ConfirmLogOutCommand))]
     private bool _isBusy;
 
-    public LogOutViewModel(INavigator navigator, IPlayerSession playerSession)
+    public LogOutViewModel(
+        INavigator navigator,
+        IPlayerSession playerSession,
+        IAuthClient authClient,
+        UserSettingsStore userSettingsStore)
     {
         _navigator = navigator;
         _playerSession = playerSession;
+        _authClient = authClient;
+        _userSettingsStore = userSettingsStore;
     }
 
-    // The dialog cannot be dismissed while the server request is in flight.
     public override void Dismiss()
     {
         if (!IsBusy)
@@ -50,6 +61,10 @@ public partial class LogOutViewModel : DialogViewModelBase
             IsBusy = false;
         }
 
+        UserSettings currentSettings = _userSettingsStore.Load();
+        UserSettings updatedSettings = currentSettings with { RememberToken = string.Empty };
+        _userSettingsStore.Save(updatedSettings);
+
         _playerSession.CurrentPlayer = null;
         RequestClose();
         _navigator.NavigateAndClear<AccessMenuViewModel>();
@@ -60,10 +75,14 @@ public partial class LogOutViewModel : DialogViewModelBase
         return !IsBusy;
     }
 
-    private static Task RequestServerLogOutAsync()
+    private async Task RequestServerLogOutAsync()
     {
-        // TODO: Send LOGOUT_REQUEST to the server with the 15 second timeout (CU-019), forget the remembered session of
-        // this device (RN18) and, if the server does not answer, clear the session locally anyway (RNF-13).
-        return Task.CompletedTask;
+        UserSettings settings = _userSettingsStore.Load();
+
+        if (!string.IsNullOrWhiteSpace(settings.RememberToken))
+        {
+            AuthResult result = await _authClient.LogoutAsync(settings.RememberToken);
+            _ = result;
+        }
     }
 }

@@ -133,16 +133,18 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
                 {
                     _failedAttemptsCount = 0;
 
+                    string rememberToken = RememberSession ? (session.RememberToken ?? string.Empty) : string.Empty;
+
                     UserSettings currentSettings = _userSettingsStore.Load();
                     UserSettings updatedSettings = currentSettings with
                     {
-                        RememberToken = RememberSession ? session.RememberToken : string.Empty
+                        RememberToken = rememberToken
                     };
 
                     _userSettingsStore.Save(updatedSettings);
 
                     PlayerProfile profile = new PlayerProfile(
-                        Username: session.Username,
+                        Username: session.Username ?? string.Empty,
                         Points: 0,
                         Victories: 0
                     );
@@ -195,7 +197,7 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
                 if (result == AuthResult.Success && session is not null)
                 {
                     PlayerProfile profile = new PlayerProfile(
-                        Username: session.Username,
+                        Username: session.Username ?? string.Empty,
                         Points: 0,
                         Victories: 0
                     );
@@ -205,7 +207,6 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
                 }
                 else
                 {
-                    // Si el token es invalido o expiro en el servidor, lo limpiamos localmente
                     UserSettings resetSettings = settings with { RememberToken = string.Empty };
                     _userSettingsStore.Save(resetSettings);
                 }

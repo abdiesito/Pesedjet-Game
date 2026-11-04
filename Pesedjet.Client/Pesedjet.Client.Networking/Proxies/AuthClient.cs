@@ -19,7 +19,7 @@ public class AuthClient : IAuthClient
         AuthResult result = AuthResult.Failed;
         UserSession? session = null;
 
-        var channelFactory = new ChannelFactory<IAuthService>(CreateBinding(), CreateEndpointAddress());
+        ChannelFactory<IAuthService> channelFactory = new ChannelFactory<IAuthService>(CreateBinding(), CreateEndpointAddress());
         IAuthService channel = channelFactory.CreateChannel();
 
         try
@@ -53,7 +53,7 @@ public class AuthClient : IAuthClient
         AuthResult result = AuthResult.Failed;
         UserSession? session = null;
 
-        var channelFactory = new ChannelFactory<IAuthService>(CreateBinding(), CreateEndpointAddress());
+        ChannelFactory<IAuthService> channelFactory = new ChannelFactory<IAuthService>(CreateBinding(), CreateEndpointAddress());
         IAuthService channel = channelFactory.CreateChannel();
 
         try
@@ -87,7 +87,7 @@ public class AuthClient : IAuthClient
         AuthResult result = AuthResult.Failed;
         UserSession? session = null;
 
-        var channelFactory = new ChannelFactory<IAuthService>(CreateBinding(), CreateEndpointAddress());
+        ChannelFactory<IAuthService> channelFactory = new ChannelFactory<IAuthService>(CreateBinding(), CreateEndpointAddress());
         IAuthService channel = channelFactory.CreateChannel();
 
         try
@@ -116,17 +116,22 @@ public class AuthClient : IAuthClient
         return (result, session);
     }
 
-    public async Task<AuthResult> LogoutAsync(string username)
+    public async Task<AuthResult> LogoutAsync(string sessionToken)
     {
         AuthResult result = AuthResult.Failed;
 
-        var channelFactory = new ChannelFactory<IAuthService>(CreateBinding(), CreateEndpointAddress());
+        ChannelFactory<IAuthService> channelFactory = new ChannelFactory<IAuthService>(CreateBinding(), CreateEndpointAddress());
         IAuthService channel = channelFactory.CreateChannel();
+
+        LogoutRequest request = new LogoutRequest
+        {
+            SessionToken = sessionToken
+        };
 
         try
         {
-            await channel.LogoutAsync(username);
-            result = AuthResult.Success;
+            bool isSuccess = await channel.LogoutAsync(request);
+            result = isSuccess ? AuthResult.Success : AuthResult.Failed;
         }
         catch (FaultException<ServiceFault> ex)
         {
