@@ -1,9 +1,6 @@
 using CoreWCF;
 using CoreWCF.Configuration;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Pesedjet.Server.Contracts.Endpoints;
 using Pesedjet.Server.Contracts.Interfaces;
 using Pesedjet.Server.CrossCutting.Security;
@@ -26,10 +23,14 @@ string connectionString = builder.Configuration.GetConnectionString(ConnectionSt
 builder.WebHost.UseNetTcp(ServiceEndpoints.TcpPort);
 builder.Services.AddServiceModelServices();
 builder.Services.AddDbContext<PesedjetDatabaseContext>(options => options.UseSqlServer(connectionString));
+
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 builder.Services.AddSingleton<ITokenGenerator, TokenGenerator>();
+
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<ITokenInvalidator, TokenInvalidator>();
+
 builder.Services.AddTransient<AccountService>();
 builder.Services.AddTransient<AuthService>();
 builder.Services.AddSingleton<RoomService>();

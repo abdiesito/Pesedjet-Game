@@ -1,4 +1,5 @@
 using System.ServiceModel;
+using System.Threading.Tasks;
 using Pesedjet.Server.Contracts.DTOs;
 using Pesedjet.Server.Contracts.Faults;
 using Pesedjet.Server.Contracts.Interfaces;
@@ -13,15 +14,18 @@ public class AuthService : IAuthService
     private readonly IPlayerRepository _playerRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly ITokenGenerator _tokenGenerator;
+    private readonly ITokenInvalidator _tokenInvalidator;
 
     public AuthService(
         IPlayerRepository playerRepository,
         IPasswordHasher passwordHasher,
-        ITokenGenerator tokenGenerator)
+        ITokenGenerator tokenGenerator,
+        ITokenInvalidator tokenInvalidator)
     {
         _playerRepository = playerRepository;
         _passwordHasher = passwordHasher;
         _tokenGenerator = tokenGenerator;
+        _tokenInvalidator = tokenInvalidator;
     }
 
     public async Task<UserSession> LoginAsync(UserLoginRequest request)
@@ -107,12 +111,18 @@ public class AuthService : IAuthService
         return guestSession;
     }
 
-    public async Task LogoutAsync(string username)
+    public async Task<bool> LogoutAsync(LogoutRequest request)
     {
-        if (!string.IsNullOrWhiteSpace(username))
+        bool isLogoutSuccessful = false;
+
+        if (request is null || string.IsNullOrWhiteSpace(request.SessionToken))
         {
-            await _playerRepository.RevokeRememberTokenAsync(username);
+            throw CreateFault(ServiceErrorCodes.InvalidData, ServiceMessageKeys.InvalidData);
         }
+
+        isLogoutSuccessful = await _tokenInvalidator.InvalidateTokenAsync(request.SessionToken);
+
+        return isLogoutSuccessful;
     }
 
     private static FaultException<ServiceFault> CreateFault(string errorCode, string messageKey)
