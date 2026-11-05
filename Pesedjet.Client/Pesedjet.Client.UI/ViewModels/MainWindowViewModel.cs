@@ -34,7 +34,7 @@ public partial class MainWindowViewModel : ViewModelBase
         TopBar = topBar;
         Navigator.PropertyChanged += HandleNavigatorPropertyChanged;
         TopBar.PropertyChanged += HandleTopBarPropertyChanged;
-        Navigator.NavigateAndClear<MainMenuViewModel>();
+        Navigator.NavigateAndClear<AccessMenuViewModel>();
     }
 
     [RelayCommand]

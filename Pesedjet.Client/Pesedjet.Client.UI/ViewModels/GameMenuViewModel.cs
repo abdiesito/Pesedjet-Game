@@ -22,9 +22,6 @@ namespace Pesedjet.Client.UI.ViewModels;
 public partial class GameMenuViewModel : ViewModelBase, INavigable
 {
     private const string InvalidFormatKey = "GameMenu.CodeInvalidFormat";
-    private const string NotFoundKey = "GameMenu.CodeNotFound";
-    private const string FullKey = "GameMenu.CodeFull";
-    private const string StartedKey = "GameMenu.CodeStarted";
 
     private readonly INavigator _navigator;
     private readonly IDialogManager _dialogManager;
@@ -49,6 +46,8 @@ public partial class GameMenuViewModel : ViewModelBase, INavigable
     [ObservableProperty]
     private bool _hasConnectionError;
 
+    public PublicRoomListViewModel PublicRooms { get; }
+
     public bool ShowsTopBar => true;
 
     public bool IsGuest => _playerSession.IsGuest;
@@ -64,13 +63,21 @@ public partial class GameMenuViewModel : ViewModelBase, INavigable
         IDialogManager dialogManager,
         IPlayerSession playerSession,
         IRoomGateway roomGateway,
-        IRoomSession roomSession)
+        IRoomSession roomSession,
+        PublicRoomListViewModel publicRooms)
     {
+        PublicRooms = publicRooms;
         _roomGateway = roomGateway;
         _roomSession = roomSession;
         _navigator = navigator;
         _dialogManager = dialogManager;
         _playerSession = playerSession;
+    }
+
+    // The list is read again every time the menu is shown, so it never keeps rooms that closed in the meantime.
+    public void OnNavigatedTo()
+    {
+        _ = PublicRooms.LoadAsync();
     }
 
     partial void OnRoomCodeChanged(string value)
@@ -130,7 +137,7 @@ public partial class GameMenuViewModel : ViewModelBase, INavigable
         }
         catch (FaultException<ServiceFault> ex)
         {
-            _lastJoinError = MapMessageKeyToJoinResult(ex.Detail.MessageKey);
+            _lastJoinError = RoomJoinErrors.FromMessageKey(ex.Detail.MessageKey);
             RefreshCodeError();
         }
         catch (CommunicationException)
@@ -180,42 +187,8 @@ public partial class GameMenuViewModel : ViewModelBase, INavigable
 
     private string BuildCodeError()
     {
-        string text = string.Empty;
-
-        if (_hasInvalidFormat)
-        {
-            text = LocalizationManager.Instance[InvalidFormatKey];
-        }
-        else if (_lastJoinError?.Error == RoomCodeError.NotFound)
-        {
-            text = LocalizationManager.Instance[NotFoundKey];
-        }
-        else if (_lastJoinError?.Error == RoomCodeError.Full)
-        {
-            text = string.Format(
-                CultureInfo.CurrentCulture,
-                LocalizationManager.Instance[FullKey],
-                _lastJoinError.Occupancy,
-                _lastJoinError.Capacity);
-        }
-        else if (_lastJoinError?.Error == RoomCodeError.Started)
-        {
-            text = LocalizationManager.Instance[StartedKey];
-        }
-
-        return text;
-    }
-
-    private static RoomJoinResult MapMessageKeyToJoinResult(string messageKey)
-    {
-        RoomCodeError error = messageKey switch
-        {
-            ServiceMessageKeys.RoomNotFound => RoomCodeError.NotFound,
-            ServiceMessageKeys.RoomFull => RoomCodeError.Full,
-            ServiceMessageKeys.RoomAlreadyStarted => RoomCodeError.Started,
-            _ => RoomCodeError.NotFound
-        };
-
-        return new RoomJoinResult(error, 0, 0, null);
+        return _hasInvalidFormat
+            ? LocalizationManager.Instance[InvalidFormatKey]
+            : RoomJoinErrors.Describe(_lastJoinError);
     }
 }

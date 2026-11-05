@@ -64,6 +64,22 @@ public sealed class SimulatedRoomGateway : IRoomGateway
         return new RoomSnapshot(CreatedCode, capacity, visibility, true, members, chat);
     }
 
+    // Rooms that are open to anyone; LLENA1 is full on purpose so the full state can be seen.
+    public async Task<IReadOnlyList<PublicRoomSummary>> GetPublicRoomsAsync()
+    {
+        await Task.Delay(SimulatedDelayMilliseconds);
+
+
+        return
+        [
+            new PublicRoomSummary("K7Q2PX", "Anubis77", 2, 4),
+            new PublicRoomSummary("M3N8RT", "IsisVera", 1, 2),
+            new PublicRoomSummary(FullCode, "HorusX", 4, 4),
+            new PublicRoomSummary("B5C6D7", "TotEscriba", 5, 6),
+            new PublicRoomSummary("W9X2YZ", "NombreDeUsuarioMuyLargoParaProbarElTruncado1234567", 3, 6)
+        ];
+    }
+
     public async Task<RoomJoinResult> JoinRoomAsync(string code)
     {
         await Task.Delay(SimulatedDelayMilliseconds);

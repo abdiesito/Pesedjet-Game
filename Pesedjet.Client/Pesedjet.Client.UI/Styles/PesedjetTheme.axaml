@@ -2475,6 +2475,21 @@
     <Style Selector="Grid.choice-grid > Border.choice-card:nth-child(2)">
         <Setter Property="Margin" Value="10,0,0,0"/>
     </Style>
+    <Style Selector="StackPanel.choice-column">
+        <Setter Property="Margin" Value="10,0,0,0"/>
+        <Setter Property="Spacing" Value="16"/>
+    </Style>
+    <Style Selector="Border.choice-card.compact">
+        <Setter Property="Padding" Value="18"/>
+    </Style>
+    <Style Selector="TextBlock.public-room-code">
+        <Setter Property="FontFamily" Value="{DynamicResource FontMono}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="LetterSpacing" Value="2"/>
+        <Setter Property="Foreground" Value="{DynamicResource ColorAccentHover}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
     <Style Selector="StackPanel.choice-header">
         <Setter Property="Orientation" Value="Horizontal"/>
         <Setter Property="Spacing" Value="14"/>

@@ -7,7 +7,7 @@ using Pesedjet.Server.CrossCutting.Security;
 using Pesedjet.Server.DataAccess.Contexts;
 using Pesedjet.Server.DataAccess.Repositories.Implementations;
 using Pesedjet.Server.DataAccess.Repositories.Interfaces;
-using Pesedjet.Server.Matchmaking.Services;
+using Pesedjet.Server.Matchmaking;
 using Pesedjet.Server.PlayerManagement.Authentication;
 using Pesedjet.Server.PlayerManagement.Registration;
 
@@ -27,6 +27,7 @@ builder.Services.AddDbContext<PesedjetDatabaseContext>(options => options.UseSql
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 builder.Services.AddSingleton<ITokenGenerator, TokenGenerator>();
+builder.Services.AddSingleton<IActivePlayers, ActivePlayers>();
 
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<ITokenInvalidator, TokenInvalidator>();

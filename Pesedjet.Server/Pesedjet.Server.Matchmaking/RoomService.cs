@@ -1,10 +1,4 @@
-#nullable enable
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 using CoreWCF;
 using Pesedjet.Server.Contracts.Callbacks;
 using Pesedjet.Server.Contracts.DTOs;
@@ -12,7 +6,7 @@ using Pesedjet.Server.Contracts.Faults;
 using Pesedjet.Server.Contracts.Interfaces;
 using Pesedjet.Server.Matchmaking.Rooms;
 
-namespace Pesedjet.Server.Matchmaking.Services;
+namespace Pesedjet.Server.Matchmaking;
 
 [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
 public sealed class RoomService : IRoomService

@@ -6,6 +6,7 @@
              xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
              xmlns:models="using:Pesedjet.Client.UI.Models"
              xmlns:rules="using:Pesedjet.Client.UI.Utilities.Validation"
+             xmlns:views="using:Pesedjet.Client.UI.Views"
              xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
              x:Class="Pesedjet.Client.UI.Views.GameMenuView"
@@ -63,132 +64,104 @@
                         <Grid Grid.Row="1" Classes="choice-grid" ColumnDefinitions="*,*">
 
                             <Border Classes="choice-card">
-                                <Grid RowDefinitions="Auto,Auto,*,Auto">
-                                    <StackPanel Classes="choice-header">
-                                        <Border Classes="card-icon">
-                                            <Path Classes="icon" Data="{DynamicResource IconCrown}"/>
-                                        </Border>
-                                        <TextBlock Classes="card-title"
-                                                   Text="{Binding [GameMenu.CreateRoomTitle],
-                                                           Source={x:Static
-                                                               loc:LocalizationManager.Instance}}"/>
-                                    </StackPanel>
-                                    <TextBlock Classes="body-secondary"
-                                               Grid.Row="1" Margin="0,14,0,0"
-                                               Text="{Binding [GameMenu.CreateRoomDescription],
-                                                       Source={x:Static
-                                                           loc:LocalizationManager.Instance}}"/>
-                                    <StackPanel Grid.Row="2" Classes="step-list" VerticalAlignment="Center">
-                                        <StackPanel Classes="step">
-                                            <Border Classes="step-badge">
-                                                <TextBlock Classes="step-number" Text="1"/>
-                                            </Border>
-                                            <TextBlock
-                                                       Text="{Binding [GameMenu.Step1],
-                                                               Source={x:Static
-                                                                   loc:LocalizationManager.Instance}}"/>
-                                        </StackPanel>
-                                        <StackPanel Classes="step">
-                                            <Border Classes="step-badge">
-                                                <TextBlock Classes="step-number" Text="2"/>
-                                            </Border>
-                                            <TextBlock
-                                                       Text="{Binding [GameMenu.Step2],
-                                                               Source={x:Static
-                                                                   loc:LocalizationManager.Instance}}"/>
-                                        </StackPanel>
-                                        <StackPanel Classes="step">
-                                            <Border Classes="step-badge">
-                                                <TextBlock Classes="step-number" Text="3"/>
-                                            </Border>
-                                            <TextBlock
-                                                       Text="{Binding [GameMenu.Step3],
-                                                               Source={x:Static
-                                                                   loc:LocalizationManager.Instance}}"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <Button Grid.Row="3" Classes="primary-btn"
-                                            behaviors:InitialFocus.IsEnabled="True"
-                                            Command="{Binding CreateRoomCommand}"
-                                            Content="{Binding [GameMenu.CreateRoomTitle],
-                                                           Source={x:Static
-                                                               loc:LocalizationManager.Instance}}"/>
-                                </Grid>
+                                <views:PublicRoomListView DataContext="{Binding PublicRooms}"/>
                             </Border>
 
-                            <Border Grid.Column="1" Classes="choice-card">
-                                <Grid RowDefinitions="Auto,Auto,*,Auto">
-                                    <StackPanel Classes="choice-header">
-                                        <Border Classes="card-icon">
-                                            <Path Classes="icon" Data="{DynamicResource IconDoor}"/>
-                                        </Border>
-                                        <TextBlock Classes="card-title"
-                                                   Text="{Binding [GameMenu.JoinTitle],
-                                                           Source={x:Static
-                                                               loc:LocalizationManager.Instance}}"/>
-                                    </StackPanel>
-                                    <TextBlock Classes="body-secondary"
-                                               Grid.Row="1" Margin="0,14,0,0"
-                                               Text="{Binding [GameMenu.JoinDescription],
-                                                       Source={x:Static
-                                                           loc:LocalizationManager.Instance}}"/>
-                                    <StackPanel Grid.Row="2" Classes="field" VerticalAlignment="Bottom">
-                                        <TextBlock Classes="field-label" Classes.error="{Binding HasCodeError}">
-                                            <Run Text="{Binding [GameMenu.CodeLabel],
+                            <StackPanel Grid.Column="1" Classes="choice-column">
+                                <Border Classes="choice-card compact">
+                                    <Grid RowDefinitions="Auto,Auto,Auto">
+                                        <StackPanel Classes="choice-header">
+                                            <Border Classes="card-icon">
+                                                <Path Classes="icon" Data="{DynamicResource IconCrown}"/>
+                                            </Border>
+                                            <TextBlock Classes="card-title"
+                                                       Text="{Binding [GameMenu.CreateRoomTitle],
                                                                Source={x:Static
                                                                    loc:LocalizationManager.Instance}}"/>
-                                            <Run Classes="required"/>
-                                        </TextBlock>
-                                        <TextBox Classes="input-field code-field"
-                                                 Classes.error="{Binding HasCodeError}"
-                                                 IsReadOnly="{Binding IsJoining}"
-                                                 MaxLength="{x:Static rules:RoomRules.CodeLength}"
-                                                 Text="{Binding RoomCode}">
-                                            <TextBox.KeyBindings>
-                                                <KeyBinding Gesture="Enter" Command="{Binding JoinRoomCommand}"/>
-                                            </TextBox.KeyBindings>
-                                        </TextBox>
-                                        <ContentControl Classes="field-message"
-                                                        IsVisible="{Binding HasCodeError}"
-                                                        Content="{Binding CodeErrorText}"/>
-                                        <TextBlock Classes="field-hint"
-                                                   Text="{Binding [GameMenu.CodeHint],
+                                        </StackPanel>
+                                        <TextBlock Classes="body-secondary"
+                                                   Grid.Row="1" Margin="0,14,0,0"
+                                                   Text="{Binding [GameMenu.CreateRoomDescription],
                                                            Source={x:Static
                                                                loc:LocalizationManager.Instance}}"/>
-                                        <HeaderedContentControl Classes="alert error"
-                                                                IsVisible="{Binding HasConnectionError}"
-                                                                Header="{Binding [Common.ConnectionError],
-                                                                               Source={x:Static
-                                                                                   loc:LocalizationManager.Instance}}">
-                                            <Button Classes="alert-action" Command="{Binding JoinRoomCommand}">
-                                                <StackPanel Classes="inline-icon-text">
-                                                    <Path Classes="icon" Data="{DynamicResource IconRefresh}"/>
-                                                    <TextBlock
-                                                               Text="{Binding [Common.Retry],
-                                                                       Source={x:Static
-                                                                           loc:LocalizationManager.Instance}}"/>
-                                                </StackPanel>
-                                            </Button>
-                                        </HeaderedContentControl>
-                                    </StackPanel>
-                                    <Button Grid.Row="3" Classes="primary-btn"
-                                            Classes.loading="{Binding IsJoining}"
-                                            Margin="0,14,0,0"
-                                            Command="{Binding JoinRoomCommand}">
-                                        <StackPanel Classes="inline-icon-text">
-                                            <Path Classes="spinner" IsVisible="{Binding IsJoining}"/>
-                                            <TextBlock IsVisible="{Binding !IsJoining}"
-                                                       Text="{Binding [GameMenu.Join],
-                                                                      Source={x:Static
-                                                                          loc:LocalizationManager.Instance}}"/>
-                                            <TextBlock IsVisible="{Binding IsJoining}"
-                                                       Text="{Binding [GameMenu.Joining],
-                                                                      Source={x:Static
-                                                                          loc:LocalizationManager.Instance}}"/>
+                                        <Button Grid.Row="2" Classes="primary-btn"
+                                                Margin="0,14,0,0"
+                                                Command="{Binding CreateRoomCommand}"
+                                                Content="{Binding [GameMenu.CreateRoomTitle],
+                                                               Source={x:Static
+                                                                   loc:LocalizationManager.Instance}}"/>
+                                    </Grid>
+                                </Border>
+
+                                <Border Classes="choice-card compact">
+                                    <Grid RowDefinitions="Auto,Auto,Auto">
+                                        <StackPanel Classes="choice-header">
+                                            <Border Classes="card-icon">
+                                                <Path Classes="icon" Data="{DynamicResource IconDoor}"/>
+                                            </Border>
+                                            <TextBlock Classes="card-title"
+                                                       Text="{Binding [GameMenu.JoinTitle],
+                                                               Source={x:Static
+                                                                   loc:LocalizationManager.Instance}}"/>
                                         </StackPanel>
-                                    </Button>
-                                </Grid>
-                            </Border>
+                                        <StackPanel Grid.Row="1" Classes="field" Margin="0,14,0,0">
+                                            <TextBlock Classes="field-label" Classes.error="{Binding HasCodeError}">
+                                                <Run Text="{Binding [GameMenu.CodeLabel],
+                                                                   Source={x:Static
+                                                                       loc:LocalizationManager.Instance}}"/>
+                                                <Run Classes="required"/>
+                                            </TextBlock>
+                                            <TextBox Classes="input-field code-field"
+                                                     Classes.error="{Binding HasCodeError}"
+                                                     IsReadOnly="{Binding IsJoining}"
+                                                     MaxLength="{x:Static rules:RoomRules.CodeLength}"
+                                                     Text="{Binding RoomCode}">
+                                                <TextBox.KeyBindings>
+                                                    <KeyBinding Gesture="Enter" Command="{Binding JoinRoomCommand}"/>
+                                                </TextBox.KeyBindings>
+                                            </TextBox>
+                                            <ContentControl Classes="field-message"
+                                                            IsVisible="{Binding HasCodeError}"
+                                                            Content="{Binding CodeErrorText}"/>
+                                            <TextBlock Classes="field-hint"
+                                                       Text="{Binding [GameMenu.CodeHint],
+                                                               Source={x:Static
+                                                                   loc:LocalizationManager.Instance}}"/>
+                                            <HeaderedContentControl Classes="alert error"
+                                                                    IsVisible="{Binding HasConnectionError}"
+                                                                    Header="{Binding [Common.ConnectionError],
+                                                                                   Source={x:Static
+                                                                                       loc:LocalizationManager.Instance}}">
+                                                <Button Classes="alert-action" Command="{Binding JoinRoomCommand}">
+                                                    <StackPanel Classes="inline-icon-text">
+                                                        <Path Classes="icon" Data="{DynamicResource IconRefresh}"/>
+                                                        <TextBlock
+                                                                   Text="{Binding [Common.Retry],
+                                                                           Source={x:Static
+                                                                               loc:LocalizationManager.Instance}}"/>
+                                                    </StackPanel>
+                                                </Button>
+                                            </HeaderedContentControl>
+                                        </StackPanel>
+                                        <Button Grid.Row="2" Classes="primary-btn"
+                                                Classes.loading="{Binding IsJoining}"
+                                                Margin="0,14,0,0"
+                                                Command="{Binding JoinRoomCommand}">
+                                            <StackPanel Classes="inline-icon-text">
+                                                <Path Classes="spinner" IsVisible="{Binding IsJoining}"/>
+                                                <TextBlock IsVisible="{Binding !IsJoining}"
+                                                           Text="{Binding [GameMenu.Join],
+                                                                          Source={x:Static
+                                                                              loc:LocalizationManager.Instance}}"/>
+                                                <TextBlock IsVisible="{Binding IsJoining}"
+                                                           Text="{Binding [GameMenu.Joining],
+                                                                          Source={x:Static
+                                                                              loc:LocalizationManager.Instance}}"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
 
                         </Grid>
                     </Grid>

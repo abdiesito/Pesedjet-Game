@@ -1,8 +1,10 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Pesedjet.Client.Networking.Proxies;
+using Pesedjet.Client.Networking.Interfaces;
 using Pesedjet.Client.UI.Utilities.Dialogs;
 using Pesedjet.Client.UI.Utilities.Clipboard;
+using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Matches;
 using Pesedjet.Client.UI.Utilities.Notifications;
 using Pesedjet.Client.UI.Utilities.Rooms;
@@ -19,19 +21,48 @@ public static class ViewDependencyInjectionSetup
     public static IServiceProvider ConfigureServices()
     {
         var services = new ServiceCollection();
+        
+        services.AddCoreUtilities()
+                .AddNetworkingClients()
+                .AddDialogSystem()
+                .AddViews()
+                .AddViewModels();
+
+        return services.BuildServiceProvider();
+    }
+
+    private static IServiceCollection AddCoreUtilities(this IServiceCollection services)
+    {
         services.AddSingleton<INavigator, Navigator>();
         services.AddSingleton(TimeProvider.System);
-        services.AddSingleton<IAccountClient, AccountClient>();
         services.AddSingleton<IPlayerSession, PlayerSession>();
         services.AddSingleton<INotificationInbox, NotificationInbox>();
         services.AddSingleton<ISocialCircle, SocialCircle>();
         services.AddSingleton<IRoomSession, RoomSession>();
-        services.AddSingleton<IRoomGateway, SimulatedRoomGateway>();
-        services.AddSingleton<IMatchGateway, SimulatedMatchGateway>();
         services.AddSingleton<IClipboardManager, ClipboardManager>();
         services.AddSingleton<IToastManager, ToastManager>();
+        services.AddSingleton<UserSettingsStore>();
+        services.AddSingleton<ISettingsProtector, AesGcmSettingsProtector>();
+        
+        return services;
+    }
 
+    private static IServiceCollection AddNetworkingClients(this IServiceCollection services)
+    {
+        services.AddSingleton<IAuthClient, AuthClient>(); 
+        services.AddSingleton<IAccountClient, AccountClient>();
+        
+        //TODO: This are simulated gateways only for testing. Must remove
+        services.AddSingleton<IRoomGateway, SimulatedRoomGateway>();
+        services.AddSingleton<IMatchGateway, SimulatedMatchGateway>();
+        
+        return services;
+    }
+
+    private static IServiceCollection AddDialogSystem(this IServiceCollection services)
+    {
         DialogRegistry dialogRegistry = new();
+        
         dialogRegistry.Register<SettingsViewModel, SettingsView>();
         dialogRegistry.Register<LogOutViewModel, LogOutView>();
         dialogRegistry.Register<ProfileEditorViewModel, ProfileEditorView>();
@@ -51,7 +82,12 @@ public static class ViewDependencyInjectionSetup
 
         services.AddSingleton(dialogRegistry);
         services.AddSingleton<IDialogManager, DialogManager>();
+        
+        return services;
+    }
 
+    private static IServiceCollection AddViews(this IServiceCollection services)
+    {
         services.AddTransient<SettingsView>();
         services.AddTransient<LogOutView>();
         services.AddTransient<ProfileEditorView>();
@@ -68,6 +104,14 @@ public static class ViewDependencyInjectionSetup
         services.AddTransient<InviteFriendsView>();
         services.AddTransient<GuestExitView>();
         services.AddTransient<HamburgerMenuView>();
+        
+        return services;
+    }
+
+    private static IServiceCollection AddViewModels(this IServiceCollection services)
+    {
+        services.AddSingleton<TopBarViewModel>();
+        services.AddSingleton<MainWindowViewModel>();
 
         services.AddTransient<AccessMenuViewModel>();
         services.AddTransient<RegisterAccountViewModel>();
@@ -81,6 +125,7 @@ public static class ViewDependencyInjectionSetup
         services.AddTransient<GuestExitViewModel>();
         services.AddTransient<HamburgerMenuViewModel>();
         services.AddTransient<GameMenuViewModel>();
+        services.AddTransient<PublicRoomListViewModel>();
         services.AddTransient<GameSetupViewModel>();
         services.AddTransient<WaitingRoomViewModel>();
         services.AddTransient<MatchViewModel>();
@@ -101,11 +146,7 @@ public static class ViewDependencyInjectionSetup
         services.AddTransient<DisplaySettingsViewModel>();
         services.AddTransient<LanguageSettingsViewModel>();
         services.AddTransient<AccountSettingsViewModel>();
-        services.AddTransient<AccessMenuViewModel>();
-
-        services.AddSingleton<TopBarViewModel>();
-        services.AddSingleton<MainWindowViewModel>();
-
-        return services.BuildServiceProvider();
+        
+        return services;
     }
 }
