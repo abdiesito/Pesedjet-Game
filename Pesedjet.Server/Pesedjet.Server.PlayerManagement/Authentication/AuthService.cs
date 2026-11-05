@@ -15,17 +15,20 @@ public class AuthService : IAuthService
     private readonly IPasswordHasher _passwordHasher;
     private readonly ITokenGenerator _tokenGenerator;
     private readonly ITokenInvalidator _tokenInvalidator;
+    private readonly IActivePlayers _activePlayers;
 
     public AuthService(
         IPlayerRepository playerRepository,
         IPasswordHasher passwordHasher,
         ITokenGenerator tokenGenerator,
-        ITokenInvalidator tokenInvalidator)
+        ITokenInvalidator tokenInvalidator,
+        IActivePlayers activePlayers)
     {
         _playerRepository = playerRepository;
         _passwordHasher = passwordHasher;
         _tokenGenerator = tokenGenerator;
         _tokenInvalidator = tokenInvalidator;
+        _activePlayers = activePlayers;
     }
 
     public async Task<UserSession> LoginAsync(UserLoginRequest request)
@@ -49,7 +52,7 @@ public class AuthService : IAuthService
             throw CreateFault(ServiceErrorCodes.InvalidCredentials, ServiceMessageKeys.InvalidCredentials);
         }
 
-        string rememberToken = string.Empty;
+        string rememberToken = String.Empty;
         if (request.RememberSession)
         {
             rememberToken = _tokenGenerator.GenerateSessionToken();
