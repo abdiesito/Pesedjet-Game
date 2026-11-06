@@ -14,5 +14,9 @@ public static class ServiceMessageKeys
     public const string InvalidCode = "ErrorInvalidCode";
     public const string InvalidCredentials = "ErrorInvalidCredentials";
     public const string SessionAlreadyActive = "AccessMenu.SessionAlreadyActive";
+    public const string FriendRequestAlreadySent = "Friends.RequestSent";
+    public const string AlreadyFriends = "Friends.AlreadyFriends";
+    public const string FriendshipBlocked = "Friends.RequestBlocked";
+    public const string FriendRequestNotFound = "Notifications.FriendRequestNotFound";
     
 }

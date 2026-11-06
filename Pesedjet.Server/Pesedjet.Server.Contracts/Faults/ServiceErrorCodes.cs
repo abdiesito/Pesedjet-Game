@@ -14,5 +14,9 @@ public static class ServiceErrorCodes
     public const string InvalidCode = "INVALID_CODE";
     public const string InvalidCredentials = "INVALID_CREDENTIALS";
     public const string SessionAlreadyActive = "SESSION_ALREADY_ACTIVE";
+    public const string FriendRequestAlreadySent = "FRIEND_REQUEST_ALREADY_SENT";
+    public const string AlreadyFriends = "ALREADY_FRIENDS";
+    public const string FriendshipBlocked = "FRIENDSHIP_BLOCKED";
+    public const string FriendRequestNotFound = "FRIEND_REQUEST_NOT_FOUND";
     
 }

@@ -43,6 +43,18 @@ public class PlayerRepository : IPlayerRepository
         return player;
     }
 
+    public List<Player> SearchPlayersByUsername(string searchTerm, Guid excludedPlayerId, int maximumResults)
+    {
+        List<Player> players = _context.Players
+            .AsNoTracking()
+            .Where(p => !p.IsGuest && p.Id != excludedPlayerId && p.Username.Contains(searchTerm))
+            .OrderBy(p => p.Username)
+            .Take(maximumResults)
+            .ToList();
+
+        return players;
+    }
+
     public bool CreatePlayer(Player player)
     {
         _context.Players.Add(player);

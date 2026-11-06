@@ -9,6 +9,8 @@ public interface IPlayerRepository
 
     Player? GetPlayerByEmail(string email);
 
+    List<Player> SearchPlayersByUsername(string searchTerm, Guid excludedPlayerId, int maximumResults);
+
     bool CreatePlayer(Player player);
     
     bool VerifyCode(string usernameOrEmail, string code, string purpose);

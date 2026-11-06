@@ -1,3 +1,4 @@
+using Pesedjet.Server.Contracts.Internal;
 using CoreWCF;
 using CoreWCF.Configuration;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Pesedjet.Server.DataAccess.Repositories.Implementations;
 using Pesedjet.Server.DataAccess.Repositories.Interfaces;
 using Pesedjet.Server.Matchmaking;
 using Pesedjet.Server.PlayerManagement.Authentication;
+using Pesedjet.Server.PlayerManagement.Friendships;
 using Pesedjet.Server.PlayerManagement.Registration;
 
 const string ConnectionStringName = "DefaultConnection";
@@ -30,10 +32,16 @@ builder.Services.AddSingleton<ITokenGenerator, TokenGenerator>();
 builder.Services.AddSingleton<IActivePlayers, ActivePlayers>();
 
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<IFriendshipRepository, FriendshipRepository>();
+builder.Services.AddScoped<IBlockedPlayerRepository, BlockedPlayerRepository>();
 
 builder.Services.AddTransient<AccountService>();
 builder.Services.AddTransient<AuthServiceDependencies>();
 builder.Services.AddTransient<AuthService>();
+builder.Services.AddSingleton<IFriendshipNotifier, FriendshipNotifier>();
+builder.Services.AddTransient<FriendshipServiceDependencies>();
+builder.Services.AddTransient<FriendshipService>();
+builder.Services.AddSingleton<FriendshipNotificationService>();
 builder.Services.AddSingleton<LobbyService>();
 
 WebApplication app = builder.Build();
@@ -51,6 +59,14 @@ static void ConfigureServiceModel(IServiceBuilder serviceBuilder)
 
     serviceBuilder.AddService<AuthService>()
         .AddServiceEndpoint<AuthService, IAuthService>(tcpBinding, ServiceEndpoints.AuthServiceAddress);
+
+    serviceBuilder.AddService<FriendshipService>()
+        .AddServiceEndpoint<FriendshipService, IFriendshipService>(tcpBinding, ServiceEndpoints.FriendshipServiceAddress);
+
+    serviceBuilder.AddService<FriendshipNotificationService>()
+        .AddServiceEndpoint<FriendshipNotificationService, IFriendshipNotificationService>(
+            tcpBinding,
+            ServiceEndpoints.FriendshipNotificationServiceAddress);
 
     serviceBuilder.AddService<LobbyService>()
         .AddServiceEndpoint<LobbyService, ILobbyService>(tcpBinding, ServiceEndpoints.LobbyServiceAddress);
