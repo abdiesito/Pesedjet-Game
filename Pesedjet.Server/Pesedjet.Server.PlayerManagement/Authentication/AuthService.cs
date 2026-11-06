@@ -61,6 +61,7 @@ public class AuthService : IAuthService
 
         session = new UserSession
         {
+            PlayerId = player.Id,
             Username = player.Username,
             RememberToken = rememberToken,
             PreferredLanguage = "es-MX",
@@ -87,6 +88,7 @@ public class AuthService : IAuthService
 
         session = new UserSession
         {
+            PlayerId = player.Id,
             Username = player.Username,
             RememberToken = rememberToken,
             PreferredLanguage = "es-MX",
@@ -103,6 +105,7 @@ public class AuthService : IAuthService
 
         guestSession = new UserSession
         {
+            PlayerId = Guid.NewGuid(),
             Username = $"Guest_{guestCode}",
             RememberToken = string.Empty,
             PreferredLanguage = "es-MX",

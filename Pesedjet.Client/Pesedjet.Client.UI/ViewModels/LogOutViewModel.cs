@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -66,6 +67,7 @@ public partial class LogOutViewModel : DialogViewModelBase
         _userSettingsStore.Save(updatedSettings);
 
         _playerSession.CurrentPlayer = null;
+        _playerSession.PlayerId = Guid.Empty;
         RequestClose();
         _navigator.NavigateAndClear<AccessMenuViewModel>();
     }

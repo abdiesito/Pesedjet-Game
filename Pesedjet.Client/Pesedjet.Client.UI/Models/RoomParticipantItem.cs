@@ -11,6 +11,8 @@ public sealed class RoomParticipantItem
 
     public ICommand? ProposeKickCommand { get; set; }
 
+    public required Guid PlayerId { get; init; }
+
     public required string Username { get; init; }
 
     public int? AvatarId { get; init; }

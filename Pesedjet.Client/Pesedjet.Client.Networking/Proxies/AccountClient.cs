@@ -1,4 +1,5 @@
 using System.ServiceModel;
+using Pesedjet.Client.Networking.Interfaces;
 using Pesedjet.Client.Networking.Results;
 using Pesedjet.Server.Contracts.DTOs;
 using Pesedjet.Server.Contracts.Endpoints;

@@ -5,6 +5,9 @@ namespace Pesedjet.Server.Contracts.DTOs
     [DataContract]
     public class UserSession
     {
+        [DataMember]
+        public Guid PlayerId { get; set; }
+
         [DataMember] 
         public string Username { get; set; } = string.Empty;
         

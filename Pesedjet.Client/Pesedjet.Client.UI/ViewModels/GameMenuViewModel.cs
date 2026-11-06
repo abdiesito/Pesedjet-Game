@@ -7,6 +7,7 @@ using System.ServiceModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Pesedjet.Client.Networking.Interfaces;
 using Pesedjet.Client.UI.Models;
 using Pesedjet.Client.UI.Utilities.Dialogs;
 using Pesedjet.Client.UI.Utilities.Localization;
@@ -26,7 +27,7 @@ public partial class GameMenuViewModel : ViewModelBase, INavigable
     private readonly INavigator _navigator;
     private readonly IDialogManager _dialogManager;
     private readonly IPlayerSession _playerSession;
-    private readonly IRoomGateway _roomGateway;
+    private readonly IRoomClient _roomClient;
     private readonly IRoomSession _roomSession;
 
     [ObservableProperty]
@@ -62,12 +63,12 @@ public partial class GameMenuViewModel : ViewModelBase, INavigable
         INavigator navigator,
         IDialogManager dialogManager,
         IPlayerSession playerSession,
-        IRoomGateway roomGateway,
+        IRoomClient roomClient,
         IRoomSession roomSession,
         PublicRoomListViewModel publicRooms)
     {
         PublicRooms = publicRooms;
-        _roomGateway = roomGateway;
+        _roomClient = roomClient;
         _roomSession = roomSession;
         _navigator = navigator;
         _dialogManager = dialogManager;
@@ -125,15 +126,12 @@ public partial class GameMenuViewModel : ViewModelBase, INavigable
 
         try
         {
-            RoomJoinResult result = await _roomGateway.JoinRoomAsync(RoomCode);
+            RoomJoinResponse response = await _roomClient.JoinRoomAsync(
+                RoomCode,
+                RoomModelFactory.CreateLocalMember(_playerSession));
 
-            ShowJoinError(result);
-
-            if (result.Room is not null)
-            {
-                _roomSession.Current = result.Room;
-                _navigator.NavigateTo<WaitingRoomViewModel>();
-            }
+            _roomSession.Current = RoomModelFactory.CreateJoinedRoom(response, _playerSession);
+            _navigator.NavigateTo<WaitingRoomViewModel>();
         }
         catch (FaultException<ServiceFault> ex)
         {
@@ -168,13 +166,6 @@ public partial class GameMenuViewModel : ViewModelBase, INavigable
         _lastJoinError = null;
         _hasInvalidFormat = isComplete && hasInvalidCharacters;
         CanJoin = isComplete && !hasInvalidCharacters;
-
-        RefreshCodeError();
-    }
-
-    private void ShowJoinError(RoomJoinResult result)
-    {
-        _lastJoinError = result.Error == RoomCodeError.None ? null : result;
 
         RefreshCodeError();
     }

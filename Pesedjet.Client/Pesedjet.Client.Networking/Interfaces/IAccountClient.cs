@@ -1,7 +1,7 @@
 using Pesedjet.Client.Networking.Results;
 using Pesedjet.Server.Contracts.DTOs;
 
-namespace Pesedjet.Client.Networking.Proxies;
+namespace Pesedjet.Client.Networking.Interfaces;
 
 public interface IAccountClient
 {

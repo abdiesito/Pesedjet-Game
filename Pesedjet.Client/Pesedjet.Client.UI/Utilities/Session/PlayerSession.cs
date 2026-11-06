@@ -1,3 +1,4 @@
+using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Pesedjet.Client.UI.Models;
 
@@ -5,6 +6,9 @@ namespace Pesedjet.Client.UI.Utilities.Session;
 
 public sealed partial class PlayerSession : ObservableObject, IPlayerSession
 {
+    [ObservableProperty]
+    private Guid _playerId;
+
     [ObservableProperty]
     private PlayerProfile? _currentPlayer;
 

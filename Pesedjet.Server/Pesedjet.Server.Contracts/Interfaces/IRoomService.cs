@@ -14,7 +14,7 @@ public interface IRoomService
 {
     [OperationContract]
     [FaultContract(typeof(ServiceFault))]
-    string CreateRoom(RoomMember host, bool isPublic, int maxPlayers);
+    Task<string> CreateRoomAsync(RoomMember host, bool isPublic, int maxPlayers);
 
     [OperationContract]
     [FaultContract(typeof(ServiceFault))]
@@ -22,9 +22,9 @@ public interface IRoomService
 
     [OperationContract]
     [FaultContract(typeof(ServiceFault))]
-    void LeaveRoom(string roomCode, Guid playerId);
+    Task LeaveRoomAsync(string roomCode, Guid playerId);
 
     [OperationContract]
     [FaultContract(typeof(ServiceFault))]
-    List<RoomSummary> GetPublicRooms();
+    Task<List<RoomSummary>> GetPublicRoomsAsync();
 }

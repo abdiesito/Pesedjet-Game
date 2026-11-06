@@ -2,33 +2,43 @@ using System.ServiceModel;
 using Pesedjet.Client.Networking.Callbacks;
 using Pesedjet.Client.Networking.Interfaces;
 using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.Endpoints;
+using Pesedjet.Server.Contracts.Interfaces;
 
 namespace Pesedjet.Client.Networking.Proxies;
 
 public sealed class RoomClient : IRoomClient
 {
+    private const int OperationTimeoutSeconds = 15;
+
+    private static readonly TimeSpan OperationTimeout = TimeSpan.FromSeconds(OperationTimeoutSeconds);
+
     private readonly RoomCallbackHandler _callbackHandler;
-    private readonly DuplexChannelFactory<IRoomServiceAsync> _channelFactory;
+    private readonly DuplexChannelFactory<IRoomService> _channelFactory;
     private readonly object _syncRoot = new();
     private readonly object _eventLock = new();
     private readonly Queue<Action> _pendingEvents = new();
     private EventHandler<RoomMember>? _playerJoined;
     private EventHandler<Guid>? _playerLeft;
-    private IRoomServiceAsync? _channel;
+    private IRoomService? _channel;
     private bool _isDisposed;
 
-    public RoomClient(Uri serviceAddress)
+    public RoomClient()
     {
         _callbackHandler = new RoomCallbackHandler();
         _callbackHandler.PlayerJoined += OnPlayerJoined;
         _callbackHandler.PlayerLeft += OnPlayerLeft;
 
-        NetTcpBinding binding = new(SecurityMode.None);
+        NetTcpBinding binding = new(SecurityMode.None)
+        {
+            OpenTimeout = OperationTimeout,
+            SendTimeout = OperationTimeout
+        };
         InstanceContext callbackContext = new(_callbackHandler);
-        _channelFactory = new DuplexChannelFactory<IRoomServiceAsync>(
+        _channelFactory = new DuplexChannelFactory<IRoomService>(
             callbackContext,
             binding,
-            new EndpointAddress(serviceAddress));
+            new EndpointAddress(ServiceEndpoints.RoomServiceAddress));
     }
 
     public event EventHandler<RoomMember>? PlayerJoined
@@ -110,7 +120,7 @@ public sealed class RoomClient : IRoomClient
 
     public async ValueTask DisposeAsync()
     {
-        IRoomServiceAsync? channel;
+        IRoomService? channel;
         bool wasDisposed;
 
         lock (_syncRoot)
@@ -136,9 +146,9 @@ public sealed class RoomClient : IRoomClient
         }
     }
 
-    private async Task<TResult> ExecuteAsync<TResult>(Func<IRoomServiceAsync, Task<TResult>> operation)
+    private async Task<TResult> ExecuteAsync<TResult>(Func<IRoomService, Task<TResult>> operation)
     {
-        IRoomServiceAsync channel = GetOrCreateChannel();
+        IRoomService channel = GetOrCreateChannel();
         TResult result;
 
         try
@@ -159,7 +169,7 @@ public sealed class RoomClient : IRoomClient
         return result;
     }
 
-    private async Task ExecuteAsync(Func<IRoomServiceAsync, Task> operation)
+    private async Task ExecuteAsync(Func<IRoomService, Task> operation)
     {
         await ExecuteAsync(async channel =>
         {
@@ -168,9 +178,9 @@ public sealed class RoomClient : IRoomClient
         }).ConfigureAwait(false);
     }
 
-    private IRoomServiceAsync GetOrCreateChannel()
+    private IRoomService GetOrCreateChannel()
     {
-        IRoomServiceAsync channel;
+        IRoomService channel;
 
         lock (_syncRoot)
         {
@@ -192,7 +202,7 @@ public sealed class RoomClient : IRoomClient
         return channel;
     }
 
-    private void AbortChannel(IRoomServiceAsync channel)
+    private void AbortChannel(IRoomService channel)
     {
         ((ICommunicationObject)channel).Abort();
 

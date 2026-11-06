@@ -18,6 +18,7 @@ public sealed class RoomService : IRoomService
 
     private readonly Dictionary<string, RoomState> _rooms = new(StringComparer.OrdinalIgnoreCase);
     private readonly object _roomLock = new();
+    private readonly HashSet<string> _watchedSessions = new();
     private readonly TimeProvider _timeProvider;
 
     public RoomService(TimeProvider timeProvider)
@@ -25,19 +26,21 @@ public sealed class RoomService : IRoomService
         _timeProvider = timeProvider;
     }
 
-    public string CreateRoom(RoomMember host, bool isPublic, int maxPlayers)
+    public Task<string> CreateRoomAsync(RoomMember host, bool isPublic, int maxPlayers)
     {
-        string roomCode = string.Empty;
-        ServiceFault? fault = null;
+        Task<string> result;
 
         if (maxPlayers < MinimumMaxPlayers || maxPlayers > MaximumMaxPlayers)
         {
-            fault = CreateFault(ServiceErrorCodes.InvalidRoomCapacity, ServiceMessageKeys.InvalidRoomCapacity);
+            result = CreateFaultedTask<string>(
+                ServiceErrorCodes.InvalidRoomCapacity,
+                ServiceMessageKeys.InvalidRoomCapacity);
         }
         else
         {
-            RoomConnection hostConnection = new(host, GetCurrentCallback());
+            RoomConnection hostConnection = new(host, GetCurrentCallback(), WatchCurrentSession());
             DateTimeOffset createdAtUtc = _timeProvider.GetUtcNow();
+            string roomCode;
 
             lock (_roomLock)
             {
@@ -46,16 +49,16 @@ public sealed class RoomService : IRoomService
                 room.AddOrReplace(hostConnection);
                 _rooms.Add(roomCode, room);
             }
+
+            result = Task.FromResult(roomCode);
         }
 
-        ThrowIfFaulted(fault);
-
-        return roomCode;
+        return result;
     }
 
     public Task<RoomJoinResponse> JoinRoomAsync(string roomCode, RoomMember player)
     {
-        RoomConnection connection = new(player, GetCurrentCallback());
+        RoomConnection connection = new(player, GetCurrentCallback(), WatchCurrentSession());
         string normalizedCode = roomCode?.Trim() ?? string.Empty;
         List<IRoomCallback> callbacksToNotify = new();
         Task<RoomJoinResponse> result;
@@ -99,17 +102,17 @@ public sealed class RoomService : IRoomService
         return result;
     }
 
-    public void LeaveRoom(string roomCode, Guid playerId)
+    public Task LeaveRoomAsync(string roomCode, Guid playerId)
     {
         string normalizedCode = roomCode?.Trim() ?? string.Empty;
         List<IRoomCallback> callbacksToNotify = new();
-        ServiceFault? fault = null;
+        Task result = Task.CompletedTask;
 
         lock (_roomLock)
         {
             if (!_rooms.TryGetValue(normalizedCode, out RoomState? room))
             {
-                fault = CreateFault(ServiceErrorCodes.RoomNotFound, ServiceMessageKeys.RoomNotFound);
+                result = CreateFaultedTask<bool>(ServiceErrorCodes.RoomNotFound, ServiceMessageKeys.RoomNotFound);
             }
             else if (room.Remove(playerId))
             {
@@ -125,10 +128,11 @@ public sealed class RoomService : IRoomService
         }
 
         Notify(callbacksToNotify, callback => callback.PlayerLeft(playerId));
-        ThrowIfFaulted(fault);
+
+        return result;
     }
 
-    public List<RoomSummary> GetPublicRooms()
+    public Task<List<RoomSummary>> GetPublicRoomsAsync()
     {
         List<RoomSummary> publicRooms;
 
@@ -141,7 +145,61 @@ public sealed class RoomService : IRoomService
                 .ToList();
         }
 
-        return publicRooms;
+        return Task.FromResult(publicRooms);
+    }
+
+    // A closed or faulted channel means the client left or dropped: its players are removed from every room.
+    private string WatchCurrentSession()
+    {
+        IContextChannel channel = (IContextChannel)GetCurrentCallback();
+        string sessionId = OperationContext.Current.SessionId ?? string.Empty;
+        bool isNewSession;
+
+        lock (_roomLock)
+        {
+            isNewSession = _watchedSessions.Add(sessionId);
+        }
+
+        if (isNewSession)
+        {
+            channel.Closed += OnChannelClosed;
+            channel.Faulted += OnChannelClosed;
+        }
+
+        return sessionId;
+    }
+
+    private void OnChannelClosed(object? sender, EventArgs eventArgs)
+    {
+        string sessionId = (sender as IContextChannel)?.SessionId ?? string.Empty;
+        List<(List<IRoomCallback> Callbacks, List<Guid> LeftIds)> notifications = new();
+
+        lock (_roomLock)
+        {
+            _watchedSessions.Remove(sessionId);
+
+            foreach (RoomState room in _rooms.Values.ToList())
+            {
+                List<Guid> leftIds = room.RemoveSession(sessionId);
+
+                if (room.IsEmpty)
+                {
+                    _rooms.Remove(room.RoomCode);
+                }
+                else if (leftIds.Count > 0)
+                {
+                    notifications.Add((room.GetCallbacksExcept(Guid.Empty), leftIds));
+                }
+            }
+        }
+
+        foreach ((List<IRoomCallback> callbacks, List<Guid> leftIds) in notifications)
+        {
+            foreach (Guid leftId in leftIds)
+            {
+                Notify(callbacks, callback => callback.PlayerLeft(leftId));
+            }
+        }
     }
 
     private string GenerateUniqueRoomCode()
@@ -163,6 +221,7 @@ public sealed class RoomService : IRoomService
         {
             RoomCode = room.RoomCode,
             HostPlayerId = room.HostPlayerId,
+            IsPublic = room.IsPublic,
             MaxPlayers = room.MaxPlayers,
             ExistingMembers = room.GetMembersExcept(joiningPlayerId)
         };
@@ -205,14 +264,6 @@ public sealed class RoomService : IRoomService
         FaultException<ServiceFault> exception = new(CreateFault(errorCode, messageKey));
 
         return Task.FromException<TResult>(exception);
-    }
-
-    private static void ThrowIfFaulted(ServiceFault? fault)
-    {
-        if (fault is not null)
-        {
-            throw new FaultException<ServiceFault>(fault);
-        }
     }
 
     private static ServiceFault CreateFault(string errorCode, string messageKey)

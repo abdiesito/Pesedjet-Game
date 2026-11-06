@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Pesedjet.Client.Networking.Interfaces;
 using Pesedjet.Client.UI.Models;
 using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Navigation;
 using Pesedjet.Client.UI.Utilities.Rooms;
 using Pesedjet.Client.UI.Utilities.Session;
+using Pesedjet.Server.Contracts.DTOs;
 
 namespace Pesedjet.Client.UI.ViewModels;
 
@@ -24,7 +27,7 @@ public partial class GameSetupViewModel : ViewModelBase, INavigable
 
     private readonly INavigator _navigator;
     private readonly IPlayerSession _playerSession;
-    private readonly IRoomGateway _roomGateway;
+    private readonly IRoomClient _roomClient;
     private readonly IRoomSession _roomSession;
 
     [ObservableProperty]
@@ -67,10 +70,10 @@ public partial class GameSetupViewModel : ViewModelBase, INavigable
     public GameSetupViewModel(
         INavigator navigator,
         IPlayerSession playerSession,
-        IRoomGateway roomGateway,
+        IRoomClient roomClient,
         IRoomSession roomSession)
     {
-        _roomGateway = roomGateway;
+        _roomClient = roomClient;
         _roomSession = roomSession;
         _navigator = navigator;
         _playerSession = playerSession;
@@ -131,15 +134,31 @@ public partial class GameSetupViewModel : ViewModelBase, INavigable
 
         try
         {
-            // TODO: On a communication failure (EX-01) set HasConnectionError and keep what was chosen.
-            _roomSession.Current = await _roomGateway.CreateRoomAsync(Capacity, Visibility);
+            string roomCode = await _roomClient.CreateRoomAsync(
+                RoomModelFactory.CreateLocalMember(_playerSession),
+                Visibility == RoomVisibility.Public,
+                Capacity);
+
+            _roomSession.Current = RoomModelFactory.CreateCreatedRoom(roomCode, Capacity, Visibility, _playerSession);
+            _navigator.NavigateTo<WaitingRoomViewModel>();
+        }
+        catch (FaultException<ServiceFault>)
+        {
+            // The capacity is limited by the screen, so a refusal from the server is shown as a failed request.
+            HasConnectionError = true;
+        }
+        catch (CommunicationException)
+        {
+            HasConnectionError = true;
+        }
+        catch (TimeoutException)
+        {
+            HasConnectionError = true;
         }
         finally
         {
             IsBusy = false;
         }
-
-        _navigator.NavigateTo<WaitingRoomViewModel>();
     }
 
     private bool CanRespond()

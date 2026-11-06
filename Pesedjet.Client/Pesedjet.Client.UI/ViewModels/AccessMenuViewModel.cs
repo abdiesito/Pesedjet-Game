@@ -149,6 +149,7 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
                         Victories: 0
                     );
 
+                    _playerSession.PlayerId = session.PlayerId;
                     _playerSession.CurrentPlayer = profile;
                     _navigator.NavigateTo<MainMenuViewModel>();
                 }
@@ -202,6 +203,7 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
                         Victories: 0
                     );
 
+                    _playerSession.PlayerId = session.PlayerId;
                     _playerSession.CurrentPlayer = profile;
                     _navigator.NavigateTo<MainMenuViewModel>();
                 }
