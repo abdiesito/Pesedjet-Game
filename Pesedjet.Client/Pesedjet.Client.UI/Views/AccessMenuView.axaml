@@ -130,6 +130,11 @@
                                                                          Source={x:Static
                                                                              loc:LocalizationManager.Instance}}"
                                                         IsVisible="{Binding IsTooManyAttempts}"/>
+                                <HeaderedContentControl Classes="alert warning"
+                                                        Header="{Binding [AccessMenu.SessionAlreadyActive],
+                                                                         Source={x:Static
+                                                                             loc:LocalizationManager.Instance}}"
+                                                        IsVisible="{Binding IsSessionAlreadyActive}"/>
                                 <HeaderedContentControl Classes="alert error"
                                                         Header="{Binding [AccessMenu.CouldntReachServer],
                                                                          Source={x:Static

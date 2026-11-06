@@ -15,7 +15,7 @@ public interface IPlayerRepository
     bool GeneratePasswordResetCode(Guid playerId);
     bool UpdatePasswordHash(Guid playerId, string newPasswordHash);
     
-    bool SaveRememberToken(Guid playerId, string token);
+    bool TryClaimRememberToken(Guid playerId, string token);
     Player? GetPlayerByRememberToken(string token);
-    bool RevokeRememberToken(string username);
+    bool RevokeRememberToken(string token);
 }

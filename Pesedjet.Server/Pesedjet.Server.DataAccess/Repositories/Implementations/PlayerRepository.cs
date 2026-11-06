@@ -82,21 +82,14 @@ public class PlayerRepository : IPlayerRepository
         return isUpdated;
     }
 
-    public bool SaveRememberToken(Guid playerId, string token)
+    // Stores the token only while the player has none, in a single statement so two devices cannot both win.
+    public bool TryClaimRememberToken(Guid playerId, string token)
     {
-        bool isSaved = false;
+        int affectedRows = _context.Players
+            .Where(p => p.Id == playerId && (p.RememberToken == null || p.RememberToken == string.Empty))
+            .ExecuteUpdate(setters => setters.SetProperty(p => p.RememberToken, token));
 
-        Player? player = _context.Players
-            .FirstOrDefault(p => p.Id == playerId);
-
-        if (player is not null)
-        {
-            player.RememberToken = token;
-            int affectedRows = _context.SaveChanges();
-            isSaved = affectedRows == ExpectedAffectedRows;
-        }
-
-        return isSaved;
+        return affectedRows == ExpectedAffectedRows;
     }
 
     public Player? GetPlayerByRememberToken(string token)
@@ -108,20 +101,12 @@ public class PlayerRepository : IPlayerRepository
         return player;
     }
 
-    public bool RevokeRememberToken(string username)
+    public bool RevokeRememberToken(string token)
     {
-        bool isRevoked = false;
+        int affectedRows = _context.Players
+            .Where(p => p.RememberToken == token)
+            .ExecuteUpdate(setters => setters.SetProperty(p => p.RememberToken, (string?)null));
 
-        Player? player = _context.Players
-            .FirstOrDefault(p => p.Username == username);
-
-        if (player is not null)
-        {
-            player.RememberToken = null;
-            int affectedRows = _context.SaveChanges();
-            isRevoked = affectedRows == ExpectedAffectedRows;
-        }
-
-        return isRevoked;
+        return affectedRows == ExpectedAffectedRows;
     }
 }

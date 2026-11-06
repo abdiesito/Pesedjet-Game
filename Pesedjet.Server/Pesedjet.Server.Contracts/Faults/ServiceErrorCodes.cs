@@ -13,5 +13,6 @@ public static class ServiceErrorCodes
     public const string UserNotFound = "USER_NOT_FOUND";
     public const string InvalidCode = "INVALID_CODE";
     public const string InvalidCredentials = "INVALID_CREDENTIALS";
+    public const string SessionAlreadyActive = "SESSION_ALREADY_ACTIVE";
     
 }

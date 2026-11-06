@@ -30,7 +30,6 @@ builder.Services.AddSingleton<ITokenGenerator, TokenGenerator>();
 builder.Services.AddSingleton<IActivePlayers, ActivePlayers>();
 
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
-builder.Services.AddScoped<ITokenInvalidator, TokenInvalidator>();
 
 builder.Services.AddTransient<AccountService>();
 builder.Services.AddTransient<AuthServiceDependencies>();

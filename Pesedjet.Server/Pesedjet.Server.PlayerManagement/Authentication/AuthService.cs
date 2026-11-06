@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using CoreWCF;
 using Pesedjet.Server.Contracts.DTOs;
 using Pesedjet.Server.Contracts.Faults;
@@ -13,7 +15,6 @@ public class AuthService : IAuthService
     private readonly IPlayerRepository _playerRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly ITokenGenerator _tokenGenerator;
-    private readonly ITokenInvalidator _tokenInvalidator;
     private readonly IActivePlayers _activePlayers;
 
     public AuthService(AuthServiceDependencies dependencies)
@@ -21,7 +22,6 @@ public class AuthService : IAuthService
         _playerRepository = dependencies.PlayerRepository;
         _passwordHasher = dependencies.PasswordHasher;
         _tokenGenerator = dependencies.TokenGenerator;
-        _tokenInvalidator = dependencies.TokenInvalidator;
         _activePlayers = dependencies.ActivePlayers;
     }
 
@@ -46,18 +46,13 @@ public class AuthService : IAuthService
             throw CreateFault(ServiceErrorCodes.InvalidCredentials, ServiceMessageKeys.InvalidCredentials);
         }
 
-        string rememberToken = String.Empty;
-        if (request.RememberSession)
-        {
-            rememberToken = _tokenGenerator.GenerateSessionToken();
-            _playerRepository.SaveRememberToken(player.Id, rememberToken);
-        }
+        string sessionToken = ResolveSessionToken(player, request.DeviceToken);
 
         session = new UserSession
         {
             PlayerId = player.Id,
             Username = player.Username,
-            RememberToken = rememberToken,
+            RememberToken = sessionToken,
             PreferredLanguage = "es-MX",
             IsGuest = false
         };
@@ -118,9 +113,44 @@ public class AuthService : IAuthService
             throw CreateFault(ServiceErrorCodes.InvalidData, ServiceMessageKeys.InvalidData);
         }
 
-        isLogoutSuccessful = _tokenInvalidator.InvalidateToken(request.SessionToken);
+        isLogoutSuccessful = _playerRepository.RevokeRememberToken(request.SessionToken);
 
         return isLogoutSuccessful;
+    }
+
+    // One active session per player: the token in the database says which device holds it.
+    private string ResolveSessionToken(Player player, string? deviceToken)
+    {
+        string sessionToken = string.Empty;
+
+        if (string.IsNullOrEmpty(player.RememberToken))
+        {
+            sessionToken = _tokenGenerator.GenerateSessionToken();
+
+            bool isClaimed = _playerRepository.TryClaimRememberToken(player.Id, sessionToken);
+            if (!isClaimed)
+            {
+                throw CreateFault(ServiceErrorCodes.SessionAlreadyActive, ServiceMessageKeys.SessionAlreadyActive);
+            }
+        }
+        else if (AreTokensEqual(player.RememberToken, deviceToken))
+        {
+            sessionToken = player.RememberToken;
+        }
+        else
+        {
+            throw CreateFault(ServiceErrorCodes.SessionAlreadyActive, ServiceMessageKeys.SessionAlreadyActive);
+        }
+
+        return sessionToken;
+    }
+
+    private static bool AreTokensEqual(string storedToken, string? candidateToken)
+    {
+        byte[] storedBytes = Encoding.UTF8.GetBytes(storedToken);
+        byte[] candidateBytes = Encoding.UTF8.GetBytes(candidateToken ?? string.Empty);
+
+        return CryptographicOperations.FixedTimeEquals(storedBytes, candidateBytes);
     }
 
     private static FaultException<ServiceFault> CreateFault(string errorCode, string messageKey)

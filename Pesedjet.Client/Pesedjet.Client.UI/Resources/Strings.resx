@@ -25,6 +25,7 @@
   <data name="AccessMenu.IncorrectCredentials" xml:space="preserve"><value>Nombre de usuario o contraseña incorrectos.</value></data>
   <data name="AccessMenu.TooManyAttempts" xml:space="preserve"><value>Demasiados intentos fallidos. Te llevaremos a la recuperación de contraseña.</value></data>
   <data name="Common.UsernameFormatInvalid" xml:space="preserve"><value>Usa de 3 a 50 letras o números, sin espacios.</value></data>
+  <data name="AccessMenu.SessionAlreadyActive" xml:space="preserve"><value>Esta cuenta ya tiene una sesión iniciada en otro dispositivo.</value></data>
   <data name="AccessMenu.CouldntReachServer" xml:space="preserve"><value>No se pudo conectar con el servidor. Inténtalo de nuevo.</value></data>
   <data name="RegisterAccount.Back" xml:space="preserve"><value>Volver</value></data>
   <data name="RegisterAccount.Title" xml:space="preserve"><value>Crear cuenta</value></data>

@@ -5,5 +5,6 @@ public enum LoginStatus
     None,
     InvalidCredentials,
     TooManyAttempts,
+    SessionAlreadyActive,
     ServerUnreachable
 }

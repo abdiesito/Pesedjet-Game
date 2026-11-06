@@ -13,5 +13,6 @@ public static class ServiceMessageKeys
     public const string UserNotFound = "ErrorUserNotFound";
     public const string InvalidCode = "ErrorInvalidCode";
     public const string InvalidCredentials = "ErrorInvalidCredentials";
+    public const string SessionAlreadyActive = "AccessMenu.SessionAlreadyActive";
     
 }

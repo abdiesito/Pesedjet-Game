@@ -61,6 +61,7 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
     [NotifyPropertyChangedFor(
         nameof(IsInvalidCredentials),
         nameof(IsTooManyAttempts),
+        nameof(IsSessionAlreadyActive),
         nameof(IsServerUnreachable))]
     private LoginStatus _loginStatus;
 
@@ -77,6 +78,8 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
     public bool IsInvalidCredentials => LoginStatus == LoginStatus.InvalidCredentials;
 
     public bool IsTooManyAttempts => LoginStatus == LoginStatus.TooManyAttempts;
+
+    public bool IsSessionAlreadyActive => LoginStatus == LoginStatus.SessionAlreadyActive;
 
     public bool IsServerUnreachable => LoginStatus == LoginStatus.ServerUnreachable;
 
@@ -123,7 +126,7 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
             {
                 Username = Username,
                 Password = Password,
-                RememberSession = RememberSession
+                DeviceToken = _userSettingsStore.Load().RememberToken
             };
 
             BackgroundJob<UserLoginRequest, ClientResult<UserSession>> job = new()
@@ -158,12 +161,12 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
 
             _failedAttemptsCount = 0;
 
-            string rememberToken = RememberSession ? (session.RememberToken ?? string.Empty) : string.Empty;
-
+            // The token always stays on this machine: it is what proves to the server that this device owns the session.
             UserSettings currentSettings = _userSettingsStore.Load();
             UserSettings updatedSettings = currentSettings with
             {
-                RememberToken = rememberToken
+                RememberToken = session.RememberToken ?? string.Empty,
+                AutoResume = RememberSession
             };
 
             _userSettingsStore.Save(updatedSettings);
@@ -206,7 +209,7 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
     {
         UserSettings settings = _userSettingsStore.Load();
 
-        if (!string.IsNullOrWhiteSpace(settings.RememberToken))
+        if (settings.AutoResume && !string.IsNullOrWhiteSpace(settings.RememberToken))
         {
             IsBusy = true;
 
@@ -255,9 +258,10 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
             _playerSession.CurrentPlayer = profile;
             _navigator.NavigateTo<MainMenuViewModel>();
         }
-        else
+        else if (result.Failure == FailureKind.Business)
         {
-            UserSettings resetSettings = settings with { RememberToken = string.Empty };
+            // Only a refusal from the server proves the token is dead; a network failure keeps it for the next try.
+            UserSettings resetSettings = settings with { RememberToken = string.Empty, AutoResume = false };
             _userSettingsStore.Save(resetSettings);
         }
     }
@@ -286,6 +290,8 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
 
     private void HandleLoginFailure(ClientResult<UserSession> result)
     {
+        bool isSessionAlreadyActive = result.Failure == FailureKind.Business
+                                      && result.ErrorCode == ServiceErrorCodes.SessionAlreadyActive;
         bool isRejectedCredentials = result.Failure == FailureKind.Business
                                      && (result.ErrorCode == ServiceErrorCodes.InvalidCredentials
                                          || result.ErrorCode == ServiceErrorCodes.UserNotFound);
@@ -293,6 +299,10 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
         if (result.IsConnectionFailure)
         {
             LoginStatus = LoginStatus.ServerUnreachable;
+        }
+        else if (isSessionAlreadyActive)
+        {
+            LoginStatus = LoginStatus.SessionAlreadyActive;
         }
         else if (isRejectedCredentials)
         {

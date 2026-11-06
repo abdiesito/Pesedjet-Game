@@ -55,7 +55,7 @@ public partial class LogOutViewModel : DialogViewModelBase
 
         if (string.IsNullOrWhiteSpace(rememberToken))
         {
-            FinishLogOut();
+            FinishLogOut(true);
         }
         else
         {
@@ -73,20 +73,23 @@ public partial class LogOutViewModel : DialogViewModelBase
 
     private void OnLogOutCompleted(ClientResult<bool> result, string rememberToken)
     {
-        FinishLogOut();
+        FinishLogOut(result.IsSuccess);
     }
 
     private void OnLogOutFailed(Exception error, string rememberToken)
     {
-        FinishLogOut();
+        FinishLogOut(false);
     }
 
-    private void FinishLogOut()
+    // When the server could not be reached the token stays on this machine: the server still holds the session for
+    // it, and the token is what lets this device log in again.
+    private void FinishLogOut(bool isTokenReleased)
     {
         IsBusy = false;
 
         UserSettings currentSettings = _userSettingsStore.Load();
-        UserSettings updatedSettings = currentSettings with { RememberToken = string.Empty };
+        string keptToken = isTokenReleased ? string.Empty : currentSettings.RememberToken;
+        UserSettings updatedSettings = currentSettings with { RememberToken = keptToken, AutoResume = false };
         _userSettingsStore.Save(updatedSettings);
 
         _playerSession.CurrentPlayer = null;

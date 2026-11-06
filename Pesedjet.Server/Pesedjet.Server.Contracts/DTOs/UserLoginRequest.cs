@@ -11,7 +11,8 @@ namespace Pesedjet.Server.Contracts.DTOs
         [DataMember] 
         public string Password { get; set; } = string.Empty;
         
-        [DataMember] 
-        public bool RememberSession { get; set; }
+        // Token this machine received on its last login; empty when the machine has none.
+        [DataMember]
+        public string DeviceToken { get; set; } = string.Empty;
     }
 }

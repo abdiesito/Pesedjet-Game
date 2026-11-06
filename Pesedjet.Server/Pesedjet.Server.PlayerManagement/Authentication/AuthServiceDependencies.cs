@@ -8,5 +8,4 @@ public sealed record AuthServiceDependencies(
     IPlayerRepository PlayerRepository,
     IPasswordHasher PasswordHasher,
     ITokenGenerator TokenGenerator,
-    ITokenInvalidator TokenInvalidator,
     IActivePlayers ActivePlayers);
