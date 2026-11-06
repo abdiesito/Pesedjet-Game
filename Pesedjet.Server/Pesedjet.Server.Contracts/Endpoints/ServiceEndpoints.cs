@@ -8,5 +8,6 @@ public static class ServiceEndpoints
     public static readonly string AuthServiceAddress = $"net.tcp://localhost:{TcpPort}/AuthService";
     public static readonly string FriendshipServiceAddress = $"net.tcp://localhost:{TcpPort}/FriendshipService";
     public static readonly string FriendshipNotificationServiceAddress = $"net.tcp://localhost:{TcpPort}/FriendshipNotificationService";
+    public static readonly string LobbyInvitationServiceAddress = $"net.tcp://localhost:{TcpPort}/LobbyInvitationService";
     public static readonly string LobbyServiceAddress = $"net.tcp://localhost:{TcpPort}/LobbyService";
 }

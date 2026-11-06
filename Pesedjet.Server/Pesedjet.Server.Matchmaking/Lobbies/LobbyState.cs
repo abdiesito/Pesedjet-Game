@@ -1,5 +1,6 @@
 #nullable enable
 
+using Pesedjet.Server.Contracts.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace Pesedjet.Server.Matchmaking.Lobbies;
 public sealed class LobbyState
 {
     private readonly List<LobbyConnection> _connections = new();
+    private readonly Dictionary<Guid, Guid> _invitations = new();
 
     public LobbyState(LobbySettings settings)
     {
@@ -84,6 +86,47 @@ public sealed class LobbyState
         }
 
         return removedIds;
+    }
+
+    public bool Invite(Guid targetPlayerId, Guid senderPlayerId)
+    {
+        bool isInvited = _invitations.TryAdd(targetPlayerId, senderPlayerId);
+
+        return isInvited;
+    }
+
+    public bool CancelInvitation(Guid targetPlayerId)
+    {
+        bool isCancelled = _invitations.Remove(targetPlayerId);
+
+        return isCancelled;
+    }
+
+    public bool IsInvited(Guid playerId)
+    {
+        bool isInvited = _invitations.ContainsKey(playerId);
+
+        return isInvited;
+    }
+
+    public List<Guid> GetInvitedPlayerIds()
+    {
+        List<Guid> invitedIds = _invitations.Keys.ToList();
+
+        return invitedIds;
+    }
+
+    public LobbyOverview ToOverview()
+    {
+        LobbyOverview overview = new(
+            LobbyCode,
+            HostPlayerId,
+            MaxPlayers,
+            Status == LobbyStatus.Waiting,
+            GetMembersExcept(Guid.Empty),
+            new Dictionary<Guid, Guid>(_invitations));
+
+        return overview;
     }
 
     public void StartMatch()

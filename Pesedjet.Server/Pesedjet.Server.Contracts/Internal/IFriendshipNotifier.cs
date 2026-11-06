@@ -14,4 +14,10 @@ public interface IFriendshipNotifier
     void NotifyFriendRequestReceived(Guid targetPlayerId, FriendRequestEntry request);
 
     void NotifyFriendshipEstablished(Guid targetPlayerId, FriendEntry friend);
+
+    void NotifyLobbyInvitationReceived(Guid targetPlayerId, LobbyInvitationEntry invitation);
+
+    void NotifyLobbyInvitationWithdrawn(Guid targetPlayerId, string lobbyCode);
+
+    bool IsOnline(Guid playerId);
 }

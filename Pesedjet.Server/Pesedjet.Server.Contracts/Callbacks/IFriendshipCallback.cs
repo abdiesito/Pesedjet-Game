@@ -11,4 +11,11 @@ public interface IFriendshipCallback
 
     [OperationContract(IsOneWay = true)]
     void OnFriendshipEstablished(FriendEntry friend);
+
+    // TODO: evaluate renaming this channel or create a new channel.
+    [OperationContract(IsOneWay = true)]
+    void OnLobbyInvitationReceived(LobbyInvitationEntry invitation);
+
+    [OperationContract(IsOneWay = true)]
+    void OnLobbyInvitationWithdrawn(string lobbyCode);
 }

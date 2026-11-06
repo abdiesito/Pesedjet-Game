@@ -18,5 +18,6 @@ public static class ServiceErrorCodes
     public const string AlreadyFriends = "ALREADY_FRIENDS";
     public const string FriendshipBlocked = "FRIENDSHIP_BLOCKED";
     public const string FriendRequestNotFound = "FRIEND_REQUEST_NOT_FOUND";
+    public const string LobbyInviteNotAllowed = "LOBBY_INVITE_NOT_ALLOWED";
     
 }

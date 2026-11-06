@@ -43,6 +43,33 @@ public sealed class FriendshipNotifier : IFriendshipNotifier
         Send(targetPlayerId, SendFriendshipEstablished, friend);
     }
 
+    public void NotifyLobbyInvitationReceived(Guid targetPlayerId, LobbyInvitationEntry invitation)
+    {
+        Send(targetPlayerId, SendLobbyInvitationReceived, invitation);
+    }
+
+    public void NotifyLobbyInvitationWithdrawn(Guid targetPlayerId, string lobbyCode)
+    {
+        Send(targetPlayerId, SendLobbyInvitationWithdrawn, lobbyCode);
+    }
+
+    public bool IsOnline(Guid playerId)
+    {
+        bool isOnline = _subscriptions.ContainsKey(playerId);
+
+        return isOnline;
+    }
+
+    private static void SendLobbyInvitationReceived(IFriendshipCallback callback, LobbyInvitationEntry invitation)
+    {
+        callback.OnLobbyInvitationReceived(invitation);
+    }
+
+    private static void SendLobbyInvitationWithdrawn(IFriendshipCallback callback, string lobbyCode)
+    {
+        callback.OnLobbyInvitationWithdrawn(lobbyCode);
+    }
+
     private static void SendFriendRequestReceived(IFriendshipCallback callback, FriendRequestEntry request)
     {
         callback.OnFriendRequestReceived(request);

@@ -9,6 +9,7 @@ using Pesedjet.Server.DataAccess.Contexts;
 using Pesedjet.Server.DataAccess.Repositories.Implementations;
 using Pesedjet.Server.DataAccess.Repositories.Interfaces;
 using Pesedjet.Server.Matchmaking;
+using Pesedjet.Server.Matchmaking.Invitations;
 using Pesedjet.Server.PlayerManagement.Authentication;
 using Pesedjet.Server.PlayerManagement.Friendships;
 using Pesedjet.Server.PlayerManagement.Registration;
@@ -43,12 +44,20 @@ builder.Services.AddTransient<FriendshipServiceDependencies>();
 builder.Services.AddTransient<FriendshipService>();
 builder.Services.AddSingleton<FriendshipNotificationService>();
 builder.Services.AddSingleton<LobbyService>();
+builder.Services.AddSingleton<ILobbyDirectory>(ResolveLobbyDirectory);
+builder.Services.AddTransient<LobbyInvitationServiceDependencies>();
+builder.Services.AddTransient<LobbyInvitationService>();
 
 WebApplication app = builder.Build();
 
 ((IApplicationBuilder)app).UseServiceModel(ConfigureServiceModel);
 
 app.Run();
+
+static ILobbyDirectory ResolveLobbyDirectory(IServiceProvider serviceProvider)
+{
+    return serviceProvider.GetRequiredService<LobbyService>();
+}
 
 static void ConfigureServiceModel(IServiceBuilder serviceBuilder)
 {
@@ -70,4 +79,9 @@ static void ConfigureServiceModel(IServiceBuilder serviceBuilder)
 
     serviceBuilder.AddService<LobbyService>()
         .AddServiceEndpoint<LobbyService, ILobbyService>(tcpBinding, ServiceEndpoints.LobbyServiceAddress);
+
+    serviceBuilder.AddService<LobbyInvitationService>()
+        .AddServiceEndpoint<LobbyInvitationService, ILobbyInvitationService>(
+            tcpBinding,
+            ServiceEndpoints.LobbyInvitationServiceAddress);
 }

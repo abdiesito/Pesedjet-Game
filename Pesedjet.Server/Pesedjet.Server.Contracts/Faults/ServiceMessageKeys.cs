@@ -18,5 +18,6 @@ public static class ServiceMessageKeys
     public const string AlreadyFriends = "Friends.AlreadyFriends";
     public const string FriendshipBlocked = "Friends.RequestBlocked";
     public const string FriendRequestNotFound = "Notifications.FriendRequestNotFound";
+    public const string LobbyInviteNotAllowed = "InviteFriends.NotAllowed";
     
 }

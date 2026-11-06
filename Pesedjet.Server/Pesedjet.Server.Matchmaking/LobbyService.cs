@@ -1,3 +1,4 @@
+using Pesedjet.Server.Contracts.Internal;
 using System.Security.Cryptography;
 using CoreWCF;
 using Pesedjet.Server.Contracts.Callbacks;
@@ -9,7 +10,7 @@ using Pesedjet.Server.Matchmaking.Lobbies;
 namespace Pesedjet.Server.Matchmaking;
 
 [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
-public sealed class LobbyService : ILobbyService
+public sealed class LobbyService : ILobbyService, ILobbyDirectory
 {
     private const string LobbyCodeAlphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
     private const int LobbyCodeLength = 6;
@@ -20,10 +21,12 @@ public sealed class LobbyService : ILobbyService
     private readonly object _lobbyLock = new();
     private readonly HashSet<string> _watchedSessions = new();
     private readonly TimeProvider _timeProvider;
+    private readonly IFriendshipNotifier _notifier;
 
-    public LobbyService(TimeProvider timeProvider)
+    public LobbyService(TimeProvider timeProvider, IFriendshipNotifier notifier)
     {
         _timeProvider = timeProvider;
+        _notifier = notifier;
     }
 
     public string CreateLobby(LobbyMember host, bool isPublic, int maxPlayers)
@@ -70,6 +73,7 @@ public sealed class LobbyService : ILobbyService
 
             if (lobby.Contains(player.PlayerId))
             {
+                lobby.CancelInvitation(player.PlayerId);
                 lobby.AddOrReplace(connection);
                 response = CreateJoinResponse(lobby, player.PlayerId);
             }
@@ -81,6 +85,7 @@ public sealed class LobbyService : ILobbyService
             {
                 response = CreateJoinResponse(lobby, player.PlayerId);
                 callbacksToNotify = lobby.GetCallbacksExcept(player.PlayerId);
+                lobby.CancelInvitation(player.PlayerId);
                 lobby.AddOrReplace(connection);
             }
         }
@@ -95,6 +100,7 @@ public sealed class LobbyService : ILobbyService
     {
         string normalizedCode = lobbyCode?.Trim() ?? string.Empty;
         List<ILobbyCallback> callbacksToNotify = new();
+        List<Guid> withdrawnInvitedIds = new();
 
         lock (_lobbyLock)
         {
@@ -102,6 +108,7 @@ public sealed class LobbyService : ILobbyService
             {
                 if (lobby.IsEmpty)
                 {
+                    withdrawnInvitedIds = lobby.GetInvitedPlayerIds();
                     _lobbies.Remove(lobby.LobbyCode);
                 }
                 else
@@ -112,6 +119,7 @@ public sealed class LobbyService : ILobbyService
         }
 
         Notify(callbacksToNotify, SendPlayerLeft, playerId);
+        WithdrawInvitations(normalizedCode, withdrawnInvitedIds);
     }
 
     public List<LobbySummary> GetPublicLobbies()
@@ -128,6 +136,83 @@ public sealed class LobbyService : ILobbyService
         }
 
         return publicLobbies;
+    }
+
+    public LobbyOverview? FindLobby(string lobbyCode)
+    {
+        string normalizedCode = lobbyCode?.Trim() ?? string.Empty;
+        LobbyOverview? overview = null;
+
+        lock (_lobbyLock)
+        {
+            if (_lobbies.TryGetValue(normalizedCode, out LobbyState? lobby))
+            {
+                overview = lobby.ToOverview();
+            }
+        }
+
+        return overview;
+    }
+
+    public bool IsInAnyLobby(Guid playerId)
+    {
+        bool isInLobby;
+
+        lock (_lobbyLock)
+        {
+            isInLobby = _lobbies.Values.Any(lobby => lobby.Contains(playerId));
+        }
+
+        return isInLobby;
+    }
+
+    public bool RegisterInvitation(string lobbyCode, Guid targetPlayerId, Guid senderPlayerId)
+    {
+        string normalizedCode = lobbyCode?.Trim() ?? string.Empty;
+        bool isRegistered = false;
+
+        lock (_lobbyLock)
+        {
+            if (_lobbies.TryGetValue(normalizedCode, out LobbyState? lobby)
+                && lobby.Status == LobbyStatus.Waiting
+                && !lobby.Contains(targetPlayerId))
+            {
+                isRegistered = lobby.Invite(targetPlayerId, senderPlayerId);
+            }
+        }
+
+        return isRegistered;
+    }
+
+    public bool CancelInvitation(string lobbyCode, Guid targetPlayerId)
+    {
+        string normalizedCode = lobbyCode?.Trim() ?? string.Empty;
+        bool isCancelled = false;
+
+        lock (_lobbyLock)
+        {
+            if (_lobbies.TryGetValue(normalizedCode, out LobbyState? lobby))
+            {
+                isCancelled = lobby.CancelInvitation(targetPlayerId);
+            }
+        }
+
+        return isCancelled;
+    }
+
+    public List<LobbyOverview> FindLobbiesInviting(Guid playerId)
+    {
+        List<LobbyOverview> overviews;
+
+        lock (_lobbyLock)
+        {
+            overviews = _lobbies.Values
+                .Where(lobby => lobby.Status == LobbyStatus.Waiting && lobby.IsInvited(playerId))
+                .Select(lobby => lobby.ToOverview())
+                .ToList();
+        }
+
+        return overviews;
     }
 
     // A closed or faulted channel means the client left or dropped: its players are removed from every lobby.
@@ -155,6 +240,7 @@ public sealed class LobbyService : ILobbyService
     {
         string sessionId = (sender as IContextChannel)?.SessionId ?? string.Empty;
         List<(List<ILobbyCallback> Callbacks, List<Guid> LeftIds)> notifications = new();
+        List<(string LobbyCode, List<Guid> InvitedIds)> withdrawals = new();
 
         lock (_lobbyLock)
         {
@@ -166,6 +252,7 @@ public sealed class LobbyService : ILobbyService
 
                 if (lobby.IsEmpty)
                 {
+                    withdrawals.Add((lobby.LobbyCode, lobby.GetInvitedPlayerIds()));
                     _lobbies.Remove(lobby.LobbyCode);
                 }
                 else if (leftIds.Count > 0)
@@ -181,6 +268,19 @@ public sealed class LobbyService : ILobbyService
             {
                 Notify(callbacks, SendPlayerLeft, leftId);
             }
+        }
+
+        foreach ((string lobbyCode, List<Guid> invitedIds) in withdrawals)
+        {
+            WithdrawInvitations(lobbyCode, invitedIds);
+        }
+    }
+
+    private void WithdrawInvitations(string lobbyCode, List<Guid> invitedIds)
+    {
+        foreach (Guid invitedId in invitedIds)
+        {
+            _notifier.NotifyLobbyInvitationWithdrawn(invitedId, lobbyCode);
         }
     }
 
