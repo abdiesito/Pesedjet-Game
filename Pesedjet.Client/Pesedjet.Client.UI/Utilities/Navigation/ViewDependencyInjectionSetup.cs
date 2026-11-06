@@ -51,9 +51,9 @@ public static class ViewDependencyInjectionSetup
     {
         services.AddSingleton<IAuthClient, AuthClient>(); 
         services.AddSingleton<IAccountClient, AccountClient>();
+        services.AddSingleton<IRoomClient, RoomClient>();
         
-        //TODO: This are simulated gateways only for testing. Must remove
-        services.AddSingleton<IRoomGateway, SimulatedRoomGateway>();
+        //TODO: This is a simulated gateway only for testing. Must remove
         services.AddSingleton<IMatchGateway, SimulatedMatchGateway>();
         
         return services;

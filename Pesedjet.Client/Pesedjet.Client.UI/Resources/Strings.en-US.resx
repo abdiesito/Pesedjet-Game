@@ -271,6 +271,7 @@
   <data name="GameMenu.CodeInvalidFormat" xml:space="preserve"><value>Use only letters and numbers: 6 in total.</value></data>
   <data name="GameMenu.CodeNotFound" xml:space="preserve"><value>There is no room with that code. Check that it is spelled correctly.</value></data>
   <data name="GameMenu.CodeFull" xml:space="preserve"><value>That room is already full ({0} of {1}).</value></data>
+  <data name="GameMenu.CodeFullWithoutCount" xml:space="preserve"><value>That room is already full.</value></data>
   <data name="GameMenu.CodeStarted" xml:space="preserve"><value>That match has already started; it admits no more players.</value></data>
   <data name="GameSetup.Title" xml:space="preserve"><value>Set up the match</value></data>
   <data name="GameSetup.Subtitle" xml:space="preserve"><value>Create room · you will be the host</value></data>
@@ -312,6 +313,7 @@
   <data name="WaitingRoom.WaitingForHost" xml:space="preserve"><value>Waiting for {0} to start the match…</value></data>
   <data name="WaitingRoom.GuestCannotInvite" xml:space="preserve"><value>As a guest you have no friends to invite.</value></data>
   <data name="WaitingRoom.JoinedNotice" xml:space="preserve"><value>{0} joined the room.</value></data>
+  <data name="WaitingRoom.LeftNotice" xml:space="preserve"><value>{0} left the room.</value></data>
   <data name="WaitingRoom.SampleHostMessage" xml:space="preserve"><value>Ready? As soon as one more arrives we start.</value></data>
   <data name="WaitingRoom.SampleJoinerMessage" xml:space="preserve"><value>Yes! I always start with Osiris.</value></data>
   <data name="WaitingRoom.SampleSecondJoinerMessage" xml:space="preserve"><value>Hi everyone</value></data>

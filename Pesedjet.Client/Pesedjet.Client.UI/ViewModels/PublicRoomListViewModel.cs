@@ -7,9 +7,11 @@ using System.ServiceModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Pesedjet.Client.Networking.Interfaces;
 using Pesedjet.Client.UI.Models;
 using Pesedjet.Client.UI.Utilities.Navigation;
 using Pesedjet.Client.UI.Utilities.Rooms;
+using Pesedjet.Client.UI.Utilities.Session;
 using Pesedjet.Server.Contracts.DTOs;
 
 namespace Pesedjet.Client.UI.ViewModels;
@@ -18,7 +20,8 @@ namespace Pesedjet.Client.UI.ViewModels;
 public partial class PublicRoomListViewModel : ViewModelBase
 {
     private readonly INavigator _navigator;
-    private readonly IRoomGateway _roomGateway;
+    private readonly IRoomClient _roomClient;
+    private readonly IPlayerSession _playerSession;
     private readonly IRoomSession _roomSession;
 
     private int _lastLoadNumber;
@@ -49,11 +52,16 @@ public partial class PublicRoomListViewModel : ViewModelBase
 
     public bool HasJoinError => JoinErrorText.Length > 0;
 
-    public PublicRoomListViewModel(INavigator navigator, IRoomGateway roomGateway, IRoomSession roomSession)
+    public PublicRoomListViewModel(
+        INavigator navigator,
+        IRoomClient roomClient,
+        IRoomSession roomSession,
+        IPlayerSession playerSession)
     {
         _navigator = navigator;
-        _roomGateway = roomGateway;
+        _roomClient = roomClient;
         _roomSession = roomSession;
+        _playerSession = playerSession;
     }
 
     // A newer load makes the previous one obsolete: only the last answer is shown.
@@ -67,7 +75,7 @@ public partial class PublicRoomListViewModel : ViewModelBase
 
         try
         {
-            IReadOnlyList<PublicRoomSummary> summaries = await _roomGateway.GetPublicRoomsAsync();
+            List<RoomSummary> summaries = await _roomClient.GetPublicRoomsAsync();
 
             if (loadNumber == _lastLoadNumber)
             {
@@ -113,19 +121,16 @@ public partial class PublicRoomListViewModel : ViewModelBase
 
         try
         {
-            RoomJoinResult result = await _roomGateway.JoinRoomAsync(room.Code);
+            RoomJoinResponse response = await _roomClient.JoinRoomAsync(
+                room.Code,
+                RoomModelFactory.CreateLocalMember(_playerSession));
 
-            ShowJoinError(result.Error == RoomCodeError.None ? null : result);
-
-            if (result.Room is not null)
-            {
-                _roomSession.Current = result.Room;
-                _navigator.NavigateTo<WaitingRoomViewModel>();
-            }
+            _roomSession.Current = RoomModelFactory.CreateJoinedRoom(response, _playerSession);
+            _navigator.NavigateTo<WaitingRoomViewModel>();
         }
         catch (FaultException<ServiceFault> ex)
         {
-            ShowJoinError(RoomJoinErrors.FromMessageKey(ex.Detail.MessageKey));
+            ShowJoinError(RoomJoinErrors.FromMessageKey(ex.Detail.MessageKey, room.CurrentPlayers, room.MaxPlayers));
         }
         catch (Exception ex) when (ex is CommunicationException or TimeoutException)
         {
@@ -143,15 +148,15 @@ public partial class PublicRoomListViewModel : ViewModelBase
         return room is not null && !room.IsFull && !IsJoining;
     }
 
-    private void ShowRooms(IReadOnlyList<PublicRoomSummary> summaries)
+    private void ShowRooms(List<RoomSummary> summaries)
     {
         Rooms.Clear();
 
-        foreach (PublicRoomSummary summary in summaries)
+        foreach (RoomSummary summary in summaries)
         {
             Rooms.Add(new PublicRoomItem
             {
-                Code = summary.Code,
+                Code = summary.RoomCode,
                 HostUsername = summary.HostUsername,
                 CurrentPlayers = summary.CurrentPlayers,
                 MaxPlayers = summary.MaxPlayers,

@@ -271,6 +271,7 @@
   <data name="GameMenu.CodeInvalidFormat" xml:space="preserve"><value>Usa solo letras y números: 6 en total.</value></data>
   <data name="GameMenu.CodeNotFound" xml:space="preserve"><value>No hay ninguna sala con ese código. Revisa que esté bien escrito.</value></data>
   <data name="GameMenu.CodeFull" xml:space="preserve"><value>Esa sala ya está llena ({0} de {1}).</value></data>
+  <data name="GameMenu.CodeFullWithoutCount" xml:space="preserve"><value>Esa sala ya está llena.</value></data>
   <data name="GameMenu.CodeStarted" xml:space="preserve"><value>Esa partida ya empezó; no admite más jugadores.</value></data>
   <data name="GameSetup.Title" xml:space="preserve"><value>Configurar partida</value></data>
   <data name="GameSetup.Subtitle" xml:space="preserve"><value>Crear sala · serás el anfitrión</value></data>
@@ -312,6 +313,7 @@
   <data name="WaitingRoom.WaitingForHost" xml:space="preserve"><value>Esperando a que {0} inicie la partida…</value></data>
   <data name="WaitingRoom.GuestCannotInvite" xml:space="preserve"><value>Como invitado no tienes amigos a quién invitar.</value></data>
   <data name="WaitingRoom.JoinedNotice" xml:space="preserve"><value>{0} se unió a la sala.</value></data>
+  <data name="WaitingRoom.LeftNotice" xml:space="preserve"><value>{0} salió de la sala.</value></data>
   <data name="WaitingRoom.SampleHostMessage" xml:space="preserve"><value>¿Listos? En cuanto llegue uno más empezamos.</value></data>
   <data name="WaitingRoom.SampleJoinerMessage" xml:space="preserve"><value>¡Sí! Yo siempre empiezo con Osiris.</value></data>
   <data name="WaitingRoom.SampleSecondJoinerMessage" xml:space="preserve"><value>Hola a todos</value></data>

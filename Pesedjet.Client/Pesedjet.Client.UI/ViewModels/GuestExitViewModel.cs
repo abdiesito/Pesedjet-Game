@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using CommunityToolkit.Mvvm.Input;
 using Pesedjet.Client.UI.Utilities.Localization;
@@ -52,5 +53,6 @@ public partial class GuestExitViewModel : DialogViewModelBase
         // TODO: Tell the server to discard the guest identity (CU-003 FA-04); the points of a guest never pass to a
         // new account (RP-05).
         _playerSession.GuestAlias = null;
+        _playerSession.PlayerId = Guid.Empty;
     }
 }

@@ -7,11 +7,14 @@ namespace Pesedjet.Server.Matchmaking.Rooms;
 
 public sealed class RoomConnection
 {
-    public RoomConnection(RoomMember member, IRoomCallback callback)
+    public RoomConnection(RoomMember member, IRoomCallback callback, string sessionId)
     {
         Member = member;
         Callback = callback;
+        SessionId = sessionId;
     }
+
+    public string SessionId { get; }
 
     public RoomMember Member { get; }
 

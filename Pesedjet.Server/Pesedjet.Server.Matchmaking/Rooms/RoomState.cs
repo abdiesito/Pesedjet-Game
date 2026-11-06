@@ -29,7 +29,7 @@ public sealed class RoomState
 
     public string RoomCode { get; }
 
-    public Guid HostPlayerId { get; }
+    public Guid HostPlayerId { get; private set; }
 
     public bool IsPublic { get; }
 
@@ -67,7 +67,28 @@ public sealed class RoomState
     {
         int removedCount = _connections.RemoveAll(connection => connection.Member.PlayerId == playerId);
 
+        // The role passes to the participant who has been longest in the room (CU-014 FA-04).
+        if (removedCount > 0 && playerId == HostPlayerId && _connections.Count > 0)
+        {
+            HostPlayerId = _connections[0].Member.PlayerId;
+        }
+
         return removedCount > 0;
+    }
+
+    public List<Guid> RemoveSession(string sessionId)
+    {
+        List<Guid> removedIds = _connections
+            .Where(connection => connection.SessionId == sessionId)
+            .Select(connection => connection.Member.PlayerId)
+            .ToList();
+
+        foreach (Guid playerId in removedIds)
+        {
+            Remove(playerId);
+        }
+
+        return removedIds;
     }
 
     public void StartMatch()

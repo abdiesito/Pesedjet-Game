@@ -16,6 +16,9 @@ public class RoomJoinResponse
     public Guid HostPlayerId { get; set; }
 
     [DataMember]
+    public bool IsPublic { get; set; }
+
+    [DataMember]
     public int MaxPlayers { get; set; }
 
     [DataMember]
