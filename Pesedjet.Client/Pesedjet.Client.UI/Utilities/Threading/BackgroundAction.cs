@@ -1,12 +1,14 @@
 using System;
-using System.Diagnostics;
+using Pesedjet.Client.UI.Utilities.Logging;
 
 namespace Pesedjet.Client.UI.Utilities.Threading;
 
 // A call on a worker thread whose outcome nobody waits for (for example a one-way operation).
-// A failure is only written to the debug output because the caller has nothing left to do with it.
+// A failure is only written to the application log because the caller has nothing left to do with it.
 public sealed class BackgroundAction<TState>
 {
+    private const string FailureSource = "BackgroundAction";
+
     public required Action<TState> Work { get; init; }
 
     public required TState State { get; init; }
@@ -20,7 +22,7 @@ public sealed class BackgroundAction<TState>
         }
         catch (Exception exception)
         {
-            Debug.WriteLine($"BackgroundAction failed: {exception}");
+            ApplicationLog.Error(FailureSource, exception);
         }
     }
 }

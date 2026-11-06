@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using Avalonia.Threading;
+using Pesedjet.Client.UI.Utilities.Logging;
 
 namespace Pesedjet.Client.UI.Utilities.Threading;
 
@@ -12,6 +13,8 @@ namespace Pesedjet.Client.UI.Utilities.Threading;
 // Set a breakpoint in Execute, Complete or any of the callbacks to follow a call from start to finish.
 public sealed class BackgroundJob<TState, TResult>
 {
+    private const string FailureSource = "BackgroundJob";
+
     private TResult? _result;
     private Exception? _error;
 
@@ -47,7 +50,7 @@ public sealed class BackgroundJob<TState, TResult>
         catch (Exception exception)
         {
             _error = exception;
-            Debug.WriteLine($"BackgroundJob failed: {exception}");
+            ApplicationLog.Error(FailureSource, exception);
         }
 
         Dispatcher.UIThread.Post(Complete);
