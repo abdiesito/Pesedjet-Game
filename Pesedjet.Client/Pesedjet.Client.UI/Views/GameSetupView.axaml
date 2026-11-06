@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
              xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
-             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:modelsLobbies="using:Pesedjet.Client.UI.Models.Lobbies"
              xmlns:rules="using:Pesedjet.Client.UI.Utilities.Validation"
              xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
@@ -58,7 +58,7 @@
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
-                                        <DataTemplate x:DataType="models:CapacityOption">
+                                        <DataTemplate x:DataType="modelsLobbies:CapacityOption">
                                             <Button Classes="secondary-btn capacity-btn"
                                                     Classes.selected="{Binding IsSelected}"
                                                     Command="{Binding SelectCommand}"
@@ -146,7 +146,7 @@
                                                         Header="{Binding [Common.ConnectionError],
                                                                        Source={x:Static
                                                                            loc:LocalizationManager.Instance}}">
-                                    <Button Classes="alert-action" Command="{Binding CreateRoomCommand}">
+                                    <Button Classes="alert-action" Command="{Binding CreateLobbyCommand}">
                                         <StackPanel Classes="inline-icon-text">
                                             <Path Classes="icon" Data="{DynamicResource IconRefresh}"/>
                                                 <TextBlock
@@ -168,11 +168,11 @@
                                                            loc:LocalizationManager.Instance}}"/>
                             <Button Classes="primary-btn compact"
                                     Classes.loading="{Binding IsBusy}"
-                                    Command="{Binding CreateRoomCommand}">
+                                    Command="{Binding CreateLobbyCommand}">
                                 <StackPanel Classes="inline-icon-text">
                                     <Path Classes="spinner" IsVisible="{Binding IsBusy}"/>
                                     <TextBlock IsVisible="{Binding !IsBusy}"
-                                               Text="{Binding [GameMenu.CreateRoomTitle],
+                                               Text="{Binding [GameMenu.CreateLobbyTitle],
                                                               Source={x:Static
                                                                   loc:LocalizationManager.Instance}}"/>
                                     <TextBlock IsVisible="{Binding IsBusy}"

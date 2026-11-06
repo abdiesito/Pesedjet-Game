@@ -4,11 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
              xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
-             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:modelsLobbies="using:Pesedjet.Client.UI.Models.Lobbies"
              xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
-             x:Class="Pesedjet.Client.UI.Views.WaitingRoomView"
-             x:DataType="vm:WaitingRoomViewModel"
+             x:Class="Pesedjet.Client.UI.Views.LobbyView"
+             x:DataType="vm:LobbyViewModel"
              x:CompileBindings="True">
 
     <Viewbox Classes="fit-down">
@@ -19,14 +19,14 @@
                     <Grid ColumnDefinitions="*,Auto">
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock Classes="panel-title"
-                                       Text="{Binding [WaitingRoom.Title],
+                                       Text="{Binding [Lobby.Title],
                                                       Source={x:Static
                                                           loc:LocalizationManager.Instance}}"/>
                             <TextBlock Classes="panel-subtitle" Text="{Binding Subtitle}"/>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Classes="panel-header-actions">
                             <TextBlock Classes="panel-header-note"
-                                       Text="{Binding [WaitingRoom.CodeLabel],
+                                       Text="{Binding [Lobby.CodeLabel],
                                                       Source={x:Static
                                                           loc:LocalizationManager.Instance}}"/>
                             <Border Classes="code-box">
@@ -37,14 +37,14 @@
                                     <StackPanel Classes="inline-icon-text" IsVisible="{Binding !IsCodeCopied}">
                                         <Path Classes="icon" Data="{DynamicResource IconCopy}"/>
                                         <TextBlock
-                                                   Text="{Binding [WaitingRoom.Copy],
+                                                   Text="{Binding [Lobby.Copy],
                                                                   Source={x:Static
                                                                       loc:LocalizationManager.Instance}}"/>
                                     </StackPanel>
                                     <StackPanel Classes="inline-icon-text" IsVisible="{Binding IsCodeCopied}">
                                         <Path Classes="icon" Data="{DynamicResource IconCheck}"/>
                                         <TextBlock
-                                                   Text="{Binding [WaitingRoom.Copied],
+                                                   Text="{Binding [Lobby.Copied],
                                                                   Source={x:Static
                                                                       loc:LocalizationManager.Instance}}"/>
                                     </StackPanel>
@@ -61,7 +61,7 @@
                             <Grid ColumnDefinitions="Auto,Auto,*,Auto">
                                 <StackPanel Classes="strip-group" IsVisible="{Binding IsHost}">
                                     <TextBlock Classes="field-label"
-                                               Text="{Binding [WaitingRoom.MaxPlayers],
+                                               Text="{Binding [Lobby.MaxPlayers],
                                                               Source={x:Static
                                                                   loc:LocalizationManager.Instance}}"/>
                                     <ItemsControl ItemsSource="{Binding Capacities}">
@@ -71,7 +71,7 @@
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
-                                            <DataTemplate x:DataType="models:CapacityOption">
+                                            <DataTemplate x:DataType="modelsLobbies:CapacityOption">
                                                 <Button Classes="secondary-btn capacity-btn small struck"
                                                         Classes.selected="{Binding IsSelected}"
                                                         IsEnabled="{Binding IsAvailable}"
@@ -86,7 +86,7 @@
                                             Margin="24,0,0,0"
                                             IsVisible="{Binding IsHost}">
                                     <TextBlock Classes="field-label"
-                                               Text="{Binding [WaitingRoom.Visibility],
+                                               Text="{Binding [Lobby.Visibility],
                                                               Source={x:Static
                                                                   loc:LocalizationManager.Instance}}"/>
                                     <Border Classes="visibility-toggle">
@@ -114,14 +114,14 @@
                                 <StackPanel Classes="strip-group" IsVisible="{Binding IsParticipant}">
                                     <Path Classes="icon" Data="{DynamicResource IconLock}"/>
                                     <TextBlock Classes="field-hint"
-                                               Text="{Binding [WaitingRoom.HostOnlyNotice],
+                                               Text="{Binding [Lobby.HostOnlyNotice],
                                                               Source={x:Static
                                                                   loc:LocalizationManager.Instance}}"/>
                                     <TextBlock Classes="field-label" Text="{Binding ReadOnlySettings}"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="3" Classes="strip-group">
                                     <TextBlock Classes="field-label"
-                                               Text="{Binding [WaitingRoom.Goal],
+                                               Text="{Binding [Lobby.Goal],
                                                               Source={x:Static
                                                                   loc:LocalizationManager.Instance}}"/>
                                     <ItemsControl ItemsSource="{Binding AmuletSlots}">
@@ -148,7 +148,7 @@
                             <Grid Margin="0,0,10,0" RowDefinitions="Auto,*">
                                 <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
                                     <TextBlock Classes="section-heading"
-                                               Text="{Binding [WaitingRoom.Participants],
+                                               Text="{Binding [Lobby.Participants],
                                                               Source={x:Static
                                                                   loc:LocalizationManager.Instance}}"/>
                                     <TextBlock Grid.Column="1" Classes="field-hint"
@@ -158,8 +158,8 @@
                                     <StackPanel>
                                         <ItemsControl ItemsSource="{Binding Participants}">
                                             <ItemsControl.ItemTemplate>
-                                                <DataTemplate x:DataType="models:RoomParticipantItem">
-                                                    <Border Classes="room-row" Classes.own="{Binding IsCurrentPlayer}">
+                                                <DataTemplate x:DataType="modelsLobbies:LobbyParticipantItem">
+                                                    <Border Classes="lobby-row" Classes.own="{Binding IsCurrentPlayer}">
                                                         <Grid ColumnDefinitions="Auto,*,Auto">
                                                             <Border Classes="avatar score-avatar">
                                                                 <Panel>
@@ -180,14 +180,14 @@
                                                                 <Border Classes="tag"
                                                                         IsVisible="{Binding IsHost}">
                                                                     <TextBlock Classes="tag-text"
-                                                                               Text="{Binding [WaitingRoom.HostBadge],
+                                                                               Text="{Binding [Lobby.HostBadge],
                                                                                               Source={x:Static
                                                                                                     loc:LocalizationManager.Instance}}"/>
                                                                 </Border>
                                                                 <Border Classes="tag light"
                                                                         IsVisible="{Binding IsCurrentPlayer}">
                                                                     <TextBlock Classes="tag-text"
-                                                                               Text="{Binding [WaitingRoom.You],
+                                                                               Text="{Binding [Lobby.You],
                                                                                               Source={x:Static
                                                                                                     loc:LocalizationManager.Instance}}"/>
                                                                 </Border>
@@ -200,7 +200,7 @@
                                                                     <Path Classes="icon"
                                                                           Data="{DynamicResource IconClose}"/>
                                                                     <TextBlock
-                                                                               Text="{Binding [WaitingRoom.Kick],
+                                                                               Text="{Binding [Lobby.Kick],
                                                                                               Source={x:Static
                                                                                                     loc:LocalizationManager.Instance}}"/>
                                                                 </StackPanel>
@@ -210,7 +210,7 @@
                                                                     Command="{Binding ProposeKickCommand}"
                                                                     CommandParameter="{Binding}">
                                                                     <TextBlock
-                                                                               Text="{Binding [WaitingRoom.ProposeKick],
+                                                                               Text="{Binding [Lobby.ProposeKick],
                                                                                               Source={x:Static
                                                                                                     loc:LocalizationManager.Instance}}"/>
                                                             </Button>
@@ -222,11 +222,11 @@
                                         <ItemsControl ItemsSource="{Binding EmptySlots}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate x:DataType="x:Int32">
-                                                    <Border Classes="room-row empty">
+                                                    <Border Classes="lobby-row empty">
                                                         <StackPanel Classes="inline-icon-text">
                                                             <Path Classes="spinner field-icon-spin"/>
                                                             <TextBlock Classes="empty-slot-text"
-                                                                       Text="{Binding [WaitingRoom.WaitingPlayer],
+                                                                       Text="{Binding [Lobby.WaitingPlayer],
                                                                                       Source={x:Static
                                                                                                     loc:LocalizationManager.Instance}}"/>
                                                         </StackPanel>
@@ -241,14 +241,14 @@
                             <Grid Grid.Column="1" Margin="10,0,0,0" RowDefinitions="Auto,*,Auto">
                                 <TextBlock Classes="section-heading"
                                            Margin="0,0,0,8"
-                                           Text="{Binding [WaitingRoom.Chat],
+                                           Text="{Binding [Lobby.Chat],
                                                           Source={x:Static
                                                               loc:LocalizationManager.Instance}}"/>
                                 <Border Grid.Row="1" Classes="chat-box">
                                     <ScrollViewer Classes="notifications-scroll">
                                         <ItemsControl ItemsSource="{Binding Messages}">
                                             <ItemsControl.ItemTemplate>
-                                                <DataTemplate x:DataType="models:RoomChatEntry">
+                                                <DataTemplate x:DataType="modelsLobbies:LobbyChatEntry">
                                                     <StackPanel Classes="chat-line">
                                                         <StackPanel Classes="strip-group"
                                                                     IsVisible="{Binding IsSystem}">
@@ -275,7 +275,7 @@
                                              Height="38"
                                              MaxLength="200"
                                              Text="{Binding ChatText}"
-                                             Watermark="{Binding [WaitingRoom.ChatPlaceholder],
+                                             Watermark="{Binding [Lobby.ChatPlaceholder],
                                                                  Source={x:Static
                                                                      loc:LocalizationManager.Instance}}">
                                         <TextBox.KeyBindings>
@@ -288,7 +288,7 @@
                                         <StackPanel Classes="inline-icon-text">
                                             <Path Classes="icon" Data="{DynamicResource IconSend}"/>
                                             <TextBlock
-                                                       Text="{Binding [WaitingRoom.Send],
+                                                       Text="{Binding [Lobby.Send],
                                                                       Source={x:Static
                                                                           loc:LocalizationManager.Instance}}"/>
                                         </StackPanel>
@@ -300,11 +300,11 @@
 
                         <Grid Grid.Row="2" Classes="footer-bar" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
                             <Button Classes="secondary-btn compact"
-                                    Command="{Binding LeaveRoomCommand}">
+                                    Command="{Binding LeaveLobbyCommand}">
                                 <StackPanel Classes="inline-icon-text">
                                     <Path Classes="icon" Data="{DynamicResource IconDoor}"/>
                                     <TextBlock
-                                               Text="{Binding [WaitingRoom.Leave],
+                                               Text="{Binding [Lobby.Leave],
                                                               Source={x:Static
                                                                   loc:LocalizationManager.Instance}}"/>
                                 </StackPanel>
@@ -319,7 +319,7 @@
                                 <StackPanel Classes="inline-icon-text">
                                     <Path Classes="icon" Data="{DynamicResource IconFriends}"/>
                                     <TextBlock
-                                               Text="{Binding [WaitingRoom.InviteFriends],
+                                               Text="{Binding [Lobby.InviteFriends],
                                                               Source={x:Static
                                                                   loc:LocalizationManager.Instance}}"/>
                                 </StackPanel>
@@ -329,7 +329,7 @@
                                     behaviors:InitialFocus.IsEnabled="True"
                                     Command="{Binding StartMatchCommand}">
                                     <TextBlock
-                                               Text="{Binding [WaitingRoom.StartMatch],
+                                               Text="{Binding [Lobby.StartMatch],
                                                               Source={x:Static
                                                                   loc:LocalizationManager.Instance}}"/>
                             </Button>

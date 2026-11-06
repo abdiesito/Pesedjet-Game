@@ -5,9 +5,9 @@ using System.Globalization;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Pesedjet.Client.UI.Models;
 using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Toasts;
+using Pesedjet.Client.UI.Models.Social;
 
 namespace Pesedjet.Client.UI.ViewModels;
 

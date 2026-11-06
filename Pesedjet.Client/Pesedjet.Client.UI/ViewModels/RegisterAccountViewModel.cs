@@ -8,11 +8,13 @@ using CommunityToolkit.Mvvm.Input;
 using Pesedjet.Client.Networking.Interfaces;
 using Pesedjet.Client.Networking.Proxies;
 using Pesedjet.Client.Networking.Results;
-using Pesedjet.Client.UI.Models;
 using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Navigation;
 using Pesedjet.Client.UI.Utilities.Validation;
 using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Client.UI.Utilities.Threading;
+using Pesedjet.Server.Contracts.Faults;
+using Pesedjet.Client.UI.Models.Account;
 
 namespace Pesedjet.Client.UI.ViewModels;
 
@@ -218,25 +220,42 @@ public partial class RegisterAccountViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task RegisterAsync()
+    private void Register()
     {
         TrimTextFields();
         RegistrationStatus = RegistrationStatus.None;
 
-        if (ValidateFields())
+        if (!IsBusy && ValidateFields())
         {
             IsBusy = true;
+            UserRegisterRequest request = CreateRegisterRequest();
 
-            try
+            BackgroundJob<UserRegisterRequest, ClientResult<bool>> job = new()
             {
-                AccountRegistrationResult result = await _accountClient.RegisterAccountAsync(CreateRegisterRequest());
-                ApplyRegistrationResult(result);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+                Work = _accountClient.RegisterAccount,
+                State = request,
+                OnCompleted = OnRegisterCompleted,
+                OnFailed = OnRegisterFailed
+            };
+
+            BackgroundWork.Start(job);
         }
+    }
+
+    private void OnRegisterCompleted(ClientResult<bool> result, UserRegisterRequest request)
+    {
+        FinishRegistration(result);
+    }
+
+    private void OnRegisterFailed(Exception error, UserRegisterRequest request)
+    {
+        FinishRegistration(ClientResult<bool>.TechnicalFailure(FailureKind.Unexpected));
+    }
+
+    private void FinishRegistration(ClientResult<bool> result)
+    {
+        IsBusy = false;
+        ApplyRegistrationResult(result);
     }
 
     [RelayCommand]
@@ -260,26 +279,28 @@ public partial class RegisterAccountViewModel : ViewModelBase
         };
     }
 
-    private void ApplyRegistrationResult(AccountRegistrationResult result)
+    private void ApplyRegistrationResult(ClientResult<bool> result)
     {
-        switch (result)
+        if (result.IsSuccess && result.Value)
         {
-            case AccountRegistrationResult.Registered:
-                // TODO: Navigate to the verification code screen when it exists.
-                _navigator.NavigateAndClear<AccessMenuViewModel>();
-                break;
-            case AccountRegistrationResult.UsernameAlreadyRegistered:
-                UsernameValidationError = FieldValidationError.AlreadyRegistered;
-                break;
-            case AccountRegistrationResult.EmailAlreadyRegistered:
-                EmailValidationError = FieldValidationError.AlreadyRegistered;
-                break;
-            case AccountRegistrationResult.ServerUnreachable:
-                RegistrationStatus = RegistrationStatus.ServerUnreachable;
-                break;
-            default:
-                RegistrationStatus = RegistrationStatus.Failed;
-                break;
+            // TODO: Navigate to the verification code screen when it exists.
+            _navigator.NavigateAndClear<AccessMenuViewModel>();
+        }
+        else if (result.Failure == FailureKind.Business && result.ErrorCode == ServiceErrorCodes.UsernameAlreadyRegistered)
+        {
+            UsernameValidationError = FieldValidationError.AlreadyRegistered;
+        }
+        else if (result.Failure == FailureKind.Business && result.ErrorCode == ServiceErrorCodes.EmailAlreadyRegistered)
+        {
+            EmailValidationError = FieldValidationError.AlreadyRegistered;
+        }
+        else if (result.IsConnectionFailure)
+        {
+            RegistrationStatus = RegistrationStatus.ServerUnreachable;
+        }
+        else
+        {
+            RegistrationStatus = RegistrationStatus.Failed;
         }
     }
 

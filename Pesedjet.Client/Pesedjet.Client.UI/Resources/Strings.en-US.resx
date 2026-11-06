@@ -134,7 +134,7 @@
   <data name="Notifications.PendingOne" xml:space="preserve"><value>1 pending</value></data>
   <data name="Notifications.PendingMany" xml:space="preserve"><value>{0} pending</value></data>
   <data name="Notifications.FriendRequest" xml:space="preserve"><value>sent you a friend request.</value></data>
-  <data name="Notifications.RoomInvitation" xml:space="preserve"><value>invites you to room {0} · {1}/{2} players.</value></data>
+  <data name="Notifications.LobbyInvitation" xml:space="preserve"><value>invites you to room {0} · {1}/{2} players.</value></data>
   <data name="Notifications.Accept" xml:space="preserve"><value>Accept</value></data>
   <data name="Notifications.Accepting" xml:space="preserve"><value>Accepting…</value></data>
   <data name="Notifications.Join" xml:space="preserve"><value>Join</value></data>
@@ -229,8 +229,8 @@
   <data name="Common.ConnectionError" xml:space="preserve"><value>Could not reach the server. Check your connection and try again.</value></data>
   <data name="Guest.NoticeTitle" xml:space="preserve"><value>Play as guest</value></data>
   <data name="Guest.CanDoTitle" xml:space="preserve"><value>WHAT YOU CAN DO</value></data>
-  <data name="Guest.CanCreateRoom" xml:space="preserve"><value>Create a game room</value></data>
-  <data name="Guest.CanJoinRoom" xml:space="preserve"><value>Join a room with its code</value></data>
+  <data name="Guest.CanCreateLobby" xml:space="preserve"><value>Create a game room</value></data>
+  <data name="Guest.CanJoinLobby" xml:space="preserve"><value>Join a room with its code</value></data>
   <data name="Guest.CanPlayFull" xml:space="preserve"><value>Play full matches</value></data>
   <data name="Guest.CannotTitle" xml:space="preserve"><value>NOT AVAILABLE AS A GUEST</value></data>
   <data name="Guest.CannotProfile" xml:space="preserve"><value>Profile, friends and notifications</value></data>
@@ -257,8 +257,8 @@
   <data name="GameMenu.Back" xml:space="preserve"><value>Menu</value></data>
   <data name="GameMenu.Question" xml:space="preserve"><value>How do you want to play?</value></data>
   <data name="GameMenu.GuestIntro" xml:space="preserve"><value>As a guest you can create a room or join one with its code.</value></data>
-  <data name="GameMenu.CreateRoomTitle" xml:space="preserve"><value>Create room</value></data>
-  <data name="GameMenu.CreateRoomDescription" xml:space="preserve"><value>Choose how many will play and whether the room is public or private. You will be the host and share the code.</value></data>
+  <data name="GameMenu.CreateLobbyTitle" xml:space="preserve"><value>Create room</value></data>
+  <data name="GameMenu.CreateLobbyDescription" xml:space="preserve"><value>Choose how many will play and whether the room is public or private. You will be the host and share the code.</value></data>
   <data name="GameMenu.Step1" xml:space="preserve"><value>Choose 2 to 6 players and the visibility.</value></data>
   <data name="GameMenu.Step2" xml:space="preserve"><value>Share the code we give you.</value></data>
   <data name="GameMenu.Step3" xml:space="preserve"><value>Start when there are at least 2.</value></data>
@@ -285,38 +285,38 @@
   <data name="GameSetup.PrivateHint" xml:space="preserve"><value>Only those you invite enter; the code is not enough.</value></data>
   <data name="GameSetup.PrivateGuestHint" xml:space="preserve"><value>As a guest you have no friends to invite</value></data>
   <data name="GameSetup.Creating" xml:space="preserve"><value>Creating room…</value></data>
-  <data name="WaitingRoom.Title" xml:space="preserve"><value>Waiting room</value></data>
-  <data name="WaitingRoom.Subtitle" xml:space="preserve"><value>{0} · {1} of {2} players</value></data>
-  <data name="WaitingRoom.CodeLabel" xml:space="preserve"><value>Code</value></data>
-  <data name="WaitingRoom.Copy" xml:space="preserve"><value>Copy</value></data>
-  <data name="WaitingRoom.Copied" xml:space="preserve"><value>Copied</value></data>
-  <data name="WaitingRoom.MaxPlayers" xml:space="preserve"><value>Max. players</value></data>
-  <data name="WaitingRoom.Visibility" xml:space="preserve"><value>Visibility</value></data>
-  <data name="WaitingRoom.GoalAmulets" xml:space="preserve"><value>{0} amulets</value></data>
-  <data name="WaitingRoom.Goal" xml:space="preserve"><value>Goal:</value></data>
-  <data name="WaitingRoom.ReadOnlyNotice" xml:space="preserve"><value>Max. players: {0} · {1}</value></data>
-  <data name="WaitingRoom.HostOnlyNotice" xml:space="preserve"><value>Only the host changes these settings.</value></data>
-  <data name="WaitingRoom.Participants" xml:space="preserve"><value>Participants</value></data>
-  <data name="WaitingRoom.ParticipantsCount" xml:space="preserve"><value>{0} of {1}</value></data>
-  <data name="WaitingRoom.HostBadge" xml:space="preserve"><value>Host</value></data>
-  <data name="WaitingRoom.You" xml:space="preserve"><value>You</value></data>
-  <data name="WaitingRoom.Kick" xml:space="preserve"><value>Remove</value></data>
-  <data name="WaitingRoom.ProposeKick" xml:space="preserve"><value>Propose removal</value></data>
-  <data name="WaitingRoom.WaitingPlayer" xml:space="preserve"><value>Waiting for player…</value></data>
-  <data name="WaitingRoom.Chat" xml:space="preserve"><value>Room chat</value></data>
-  <data name="WaitingRoom.ChatPlaceholder" xml:space="preserve"><value>Type a message…</value></data>
-  <data name="WaitingRoom.Send" xml:space="preserve"><value>Send</value></data>
-  <data name="WaitingRoom.Leave" xml:space="preserve"><value>Leave room</value></data>
-  <data name="WaitingRoom.InviteFriends" xml:space="preserve"><value>Invite friends</value></data>
-  <data name="WaitingRoom.StartMatch" xml:space="preserve"><value>Start match</value></data>
-  <data name="WaitingRoom.NeedMorePlayers" xml:space="preserve"><value>At least 2 players are needed to start.</value></data>
-  <data name="WaitingRoom.WaitingForHost" xml:space="preserve"><value>Waiting for {0} to start the match…</value></data>
-  <data name="WaitingRoom.GuestCannotInvite" xml:space="preserve"><value>As a guest you have no friends to invite.</value></data>
-  <data name="WaitingRoom.JoinedNotice" xml:space="preserve"><value>{0} joined the room.</value></data>
-  <data name="WaitingRoom.LeftNotice" xml:space="preserve"><value>{0} left the room.</value></data>
-  <data name="WaitingRoom.SampleHostMessage" xml:space="preserve"><value>Ready? As soon as one more arrives we start.</value></data>
-  <data name="WaitingRoom.SampleJoinerMessage" xml:space="preserve"><value>Yes! I always start with Osiris.</value></data>
-  <data name="WaitingRoom.SampleSecondJoinerMessage" xml:space="preserve"><value>Hi everyone</value></data>
+  <data name="Lobby.Title" xml:space="preserve"><value>Waiting room</value></data>
+  <data name="Lobby.Subtitle" xml:space="preserve"><value>{0} · {1} of {2} players</value></data>
+  <data name="Lobby.CodeLabel" xml:space="preserve"><value>Code</value></data>
+  <data name="Lobby.Copy" xml:space="preserve"><value>Copy</value></data>
+  <data name="Lobby.Copied" xml:space="preserve"><value>Copied</value></data>
+  <data name="Lobby.MaxPlayers" xml:space="preserve"><value>Max. players</value></data>
+  <data name="Lobby.Visibility" xml:space="preserve"><value>Visibility</value></data>
+  <data name="Lobby.GoalAmulets" xml:space="preserve"><value>{0} amulets</value></data>
+  <data name="Lobby.Goal" xml:space="preserve"><value>Goal:</value></data>
+  <data name="Lobby.ReadOnlyNotice" xml:space="preserve"><value>Max. players: {0} · {1}</value></data>
+  <data name="Lobby.HostOnlyNotice" xml:space="preserve"><value>Only the host changes these settings.</value></data>
+  <data name="Lobby.Participants" xml:space="preserve"><value>Participants</value></data>
+  <data name="Lobby.ParticipantsCount" xml:space="preserve"><value>{0} of {1}</value></data>
+  <data name="Lobby.HostBadge" xml:space="preserve"><value>Host</value></data>
+  <data name="Lobby.You" xml:space="preserve"><value>You</value></data>
+  <data name="Lobby.Kick" xml:space="preserve"><value>Remove</value></data>
+  <data name="Lobby.ProposeKick" xml:space="preserve"><value>Propose removal</value></data>
+  <data name="Lobby.WaitingPlayer" xml:space="preserve"><value>Waiting for player…</value></data>
+  <data name="Lobby.Chat" xml:space="preserve"><value>Room chat</value></data>
+  <data name="Lobby.ChatPlaceholder" xml:space="preserve"><value>Type a message…</value></data>
+  <data name="Lobby.Send" xml:space="preserve"><value>Send</value></data>
+  <data name="Lobby.Leave" xml:space="preserve"><value>Leave room</value></data>
+  <data name="Lobby.InviteFriends" xml:space="preserve"><value>Invite friends</value></data>
+  <data name="Lobby.StartMatch" xml:space="preserve"><value>Start match</value></data>
+  <data name="Lobby.NeedMorePlayers" xml:space="preserve"><value>At least 2 players are needed to start.</value></data>
+  <data name="Lobby.WaitingForHost" xml:space="preserve"><value>Waiting for {0} to start the match…</value></data>
+  <data name="Lobby.GuestCannotInvite" xml:space="preserve"><value>As a guest you have no friends to invite.</value></data>
+  <data name="Lobby.JoinedNotice" xml:space="preserve"><value>{0} joined the room.</value></data>
+  <data name="Lobby.LeftNotice" xml:space="preserve"><value>{0} left the room.</value></data>
+  <data name="Lobby.SampleHostMessage" xml:space="preserve"><value>Ready? As soon as one more arrives we start.</value></data>
+  <data name="Lobby.SampleJoinerMessage" xml:space="preserve"><value>Yes! I always start with Osiris.</value></data>
+  <data name="Lobby.SampleSecondJoinerMessage" xml:space="preserve"><value>Hi everyone</value></data>
   <data name="PlayerAction.KickTitle" xml:space="preserve"><value>Remove {0} from the room?</value></data>
   <data name="PlayerAction.KickMessage" xml:space="preserve"><value>They will leave immediately and see that the host removed them. They can come back with the code if the room is still open.</value></data>
   <data name="PlayerAction.KickConfirm" xml:space="preserve"><value>Remove</value></data>
@@ -408,7 +408,7 @@
   <data name="MatchResult.SavedNotice" xml:space="preserve"><value>Result recorded in the scoreboard.</value></data>
   <data name="MatchResult.GuestNotice" xml:space="preserve"><value>You play as a guest: this result is not saved.</value></data>
   <data name="MatchResult.MainMenu" xml:space="preserve"><value>Main menu</value></data>
-  <data name="MatchResult.BackToRoom" xml:space="preserve"><value>Back to the room</value></data>
+  <data name="MatchResult.BackToLobby" xml:space="preserve"><value>Back to the room</value></data>
   <data name="MatchResult.Scoreboard" xml:space="preserve"><value>View scoreboard</value></data>
   <data name="MatchResult.Continue" xml:space="preserve"><value>Continue ({0} s)</value></data>
   <data name="AreYouThere.Title" xml:space="preserve"><value>Are you still there?</value></data>
@@ -457,28 +457,15 @@
   <data name="Card.Effect.2" xml:space="preserve"><value>Secretly look at another player's hand.</value></data>
   <data name="Card.Effect.1" xml:space="preserve"><value>Name a deity; if the rival has it, they are eliminated.</value></data>
   <data name="Card.Effect.0" xml:space="preserve"><value>Does nothing when played; it may give you an extra point at the end of the round.</value></data>
-  <data name="Lobby.Title" xml:space="preserve"><value>Match Lobby</value></data>
-  <data name="Lobby.RoomCode" xml:space="preserve"><value>ROOM CODE</value></data>
-  <data name="Lobby.Participants" xml:space="preserve"><value>PLAYERS IN ROOM</value></data>
-  <data name="Lobby.Host" xml:space="preserve"><value>Host</value></data>
-  <data name="Lobby.You" xml:space="preserve"><value>You</value></data>
-  <data name="Lobby.Guest" xml:space="preserve"><value>Guest</value></data>
-  <data name="Lobby.Occupancy" xml:space="preserve"><value>{0} of {1} players</value></data>
-  <data name="Lobby.StatusWaiting" xml:space="preserve"><value>Waiting for players…</value></data>
-  <data name="Lobby.StatusFull" xml:space="preserve"><value>Room full</value></data>
-  <data name="Lobby.StatusDisconnected" xml:space="preserve"><value>Connection lost</value></data>
-  <data name="Lobby.WaitingForHost" xml:space="preserve"><value>Waiting for host to start the match…</value></data>
-  <data name="Lobby.LeaveRoom" xml:space="preserve"><value>Leave room</value></data>
-  <data name="Lobby.StartMatch" xml:space="preserve"><value>Start match</value></data>
   <data name="Messages.MSG-ROOM-005" xml:space="preserve"><value>At least 2 players are required to start.</value></data>
   <data name="Messages.MSG-GEN-001" xml:space="preserve"><value>A communication error occurred with the server.</value></data>
-  <data name="PublicRooms.Title" xml:space="preserve"><value>Public rooms</value></data>
-  <data name="PublicRooms.Subtitle" xml:space="preserve"><value>Join a public room to play with players who are already connected.</value></data>
-  <data name="PublicRooms.Refresh" xml:space="preserve"><value>Refresh</value></data>
-  <data name="PublicRooms.HostedBy" xml:space="preserve"><value>Host: {0}</value></data>
-  <data name="PublicRooms.Occupancy" xml:space="preserve"><value>{0} of {1} players</value></data>
-  <data name="PublicRooms.Full" xml:space="preserve"><value>Full</value></data>
-  <data name="PublicRooms.EmptyTitle" xml:space="preserve"><value>There are no public rooms right now</value></data>
-  <data name="PublicRooms.EmptyHint" xml:space="preserve"><value>Create a room or join with a code.</value></data>
-  <data name="PublicRooms.LoadError" xml:space="preserve"><value>We could not load the public rooms. Please try again.</value></data>
+  <data name="PublicLobbies.Title" xml:space="preserve"><value>Public rooms</value></data>
+  <data name="PublicLobbies.Subtitle" xml:space="preserve"><value>Join a public room to play with players who are already connected.</value></data>
+  <data name="PublicLobbies.Refresh" xml:space="preserve"><value>Refresh</value></data>
+  <data name="PublicLobbies.HostedBy" xml:space="preserve"><value>Host: {0}</value></data>
+  <data name="PublicLobbies.Occupancy" xml:space="preserve"><value>{0} of {1} players</value></data>
+  <data name="PublicLobbies.Full" xml:space="preserve"><value>Full</value></data>
+  <data name="PublicLobbies.EmptyTitle" xml:space="preserve"><value>There are no public rooms right now</value></data>
+  <data name="PublicLobbies.EmptyHint" xml:space="preserve"><value>Create a room or join with a code.</value></data>
+  <data name="PublicLobbies.LoadError" xml:space="preserve"><value>We could not load the public rooms. Please try again.</value></data>
 </root>

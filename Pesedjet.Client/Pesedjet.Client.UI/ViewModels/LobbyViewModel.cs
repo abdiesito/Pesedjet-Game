@@ -9,35 +9,40 @@ using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Pesedjet.Client.Networking.Interfaces;
-using Pesedjet.Client.UI.Models;
 using Pesedjet.Client.UI.Utilities.Clipboard;
 using Pesedjet.Client.UI.Utilities.Dialogs;
 using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Navigation;
-using Pesedjet.Client.UI.Utilities.Rooms;
+using Pesedjet.Client.UI.Utilities.Lobbies;
 using Pesedjet.Client.UI.Utilities.Session;
 using Pesedjet.Client.UI.Utilities.Social;
-using RoomMemberDto = Pesedjet.Server.Contracts.DTOs.RoomMember;
+using LobbyMemberDto = Pesedjet.Server.Contracts.DTOs.LobbyMember;
 using ServiceFaultDto = Pesedjet.Server.Contracts.DTOs.ServiceFault;
+using Pesedjet.Client.UI.Utilities.Threading;
+using Pesedjet.Client.UI.ViewModels.Dependencies;
+using Pesedjet.Client.UI.ViewModels.Dialogs;
+using Pesedjet.Client.UI.Models.Common;
+using Pesedjet.Client.UI.Models.DialogParameters;
+using Pesedjet.Client.UI.Models.Lobbies;
 
 namespace Pesedjet.Client.UI.ViewModels;
 
-public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposable
+public partial class LobbyViewModel : ViewModelBase, INavigable, IDisposable
 {
     private const int MinimumPlayersToStart = 2;
     private const int MinimumCapacity = 2;
     private const int MaximumCapacity = 6;
     private const int MaximumMessageLength = 200;
-    private const string SubtitleKey = "WaitingRoom.Subtitle";
+    private const string SubtitleKey = "Lobby.Subtitle";
     private const string PublicKey = "GameSetup.Public";
     private const string PrivateKey = "GameSetup.Private";
-    private const string ParticipantsCountKey = "WaitingRoom.ParticipantsCount";
-    private const string WaitingForHostKey = "WaitingRoom.WaitingForHost";
-    private const string ReadOnlyKey = "WaitingRoom.ReadOnlyNotice";
-    private const string GoalKey = "WaitingRoom.GoalAmulets";
-    private const string NeedMorePlayersKey = "WaitingRoom.NeedMorePlayers";
-    private const string GuestCannotInviteKey = "WaitingRoom.GuestCannotInvite";
-    private const string LeftNoticeKey = "WaitingRoom.LeftNotice";
+    private const string ParticipantsCountKey = "Lobby.ParticipantsCount";
+    private const string WaitingForHostKey = "Lobby.WaitingForHost";
+    private const string ReadOnlyKey = "Lobby.ReadOnlyNotice";
+    private const string GoalKey = "Lobby.GoalAmulets";
+    private const string NeedMorePlayersKey = "Lobby.NeedMorePlayers";
+    private const string GuestCannotInviteKey = "Lobby.GuestCannotInvite";
+    private const string LeftNoticeKey = "Lobby.LeftNotice";
 
     // Amulets needed to win for each capacity from 2 to 6 players (RJ-03).
     private static readonly int[] AmuletGoals = [6, 5, 4, 3, 3];
@@ -47,19 +52,19 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
     private readonly INavigator _navigator;
     private readonly IDialogManager _dialogManager;
     private readonly IPlayerSession _playerSession;
-    private readonly IRoomSession _roomSession;
+    private readonly ILobbySession _lobbySession;
     private readonly IClipboardManager _clipboardManager;
     private readonly ISocialCircle _socialCircle;
     private readonly TimeProvider _timeProvider;
-    private readonly IRoomClient _roomClient;
-    private readonly RoomSnapshot _room;
-    private readonly ConcurrentQueue<RoomChange> _pendingChanges = new();
+    private readonly ILobbyClient _lobbyClient;
+    private readonly LobbySnapshot _lobby;
+    private readonly ConcurrentQueue<LobbyChange> _pendingChanges = new();
     private bool _isHost;
     private bool _isDisposed;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(Subtitle), nameof(IsPublicSelected), nameof(IsPrivateSelected))]
-    private RoomVisibility _visibility;
+    private LobbyVisibility _visibility;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(Subtitle), nameof(ReadOnlySettings), nameof(GoalText), nameof(AmuletSlots))]
@@ -75,9 +80,9 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
     [ObservableProperty]
     private bool _isStarting;
 
-    public ObservableCollection<RoomParticipantItem> Participants { get; } = new();
+    public ObservableCollection<LobbyParticipantItem> Participants { get; } = new();
 
-    public ObservableCollection<RoomChatEntry> Messages { get; } = new();
+    public ObservableCollection<LobbyChatEntry> Messages { get; } = new();
 
     public IReadOnlyList<CapacityOption> Capacities { get; }
 
@@ -85,7 +90,7 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
 
     public bool ShowsTopBar => true;
 
-    public string Code => _room.Code;
+    public string Code => _lobby.Code;
 
     public bool IsHost => _isHost;
 
@@ -99,9 +104,9 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
 
     public bool IsPrivateAvailable => !_playerSession.IsGuest;
 
-    public bool IsPublicSelected => Visibility == RoomVisibility.Public;
+    public bool IsPublicSelected => Visibility == LobbyVisibility.Public;
 
-    public bool IsPrivateSelected => Visibility == RoomVisibility.Private;
+    public bool IsPrivateSelected => Visibility == LobbyVisibility.Private;
 
     public int AmuletGoal => AmuletGoals[Capacity - MinimumCapacity];
 
@@ -114,7 +119,7 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
     public string Subtitle => string.Format(
         CultureInfo.CurrentCulture,
         LocalizationManager.Instance[SubtitleKey],
-        LocalizationManager.Instance[Visibility == RoomVisibility.Public ? PublicKey : PrivateKey],
+        LocalizationManager.Instance[Visibility == LobbyVisibility.Public ? PublicKey : PrivateKey],
         Participants.Count,
         Capacity);
 
@@ -139,45 +144,37 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
         CultureInfo.CurrentCulture,
         LocalizationManager.Instance[ReadOnlyKey],
         Capacity,
-        LocalizationManager.Instance[Visibility == RoomVisibility.Public ? PublicKey : PrivateKey]);
+        LocalizationManager.Instance[Visibility == LobbyVisibility.Public ? PublicKey : PrivateKey]);
 
     public string GoalText => string.Format(
         CultureInfo.CurrentCulture,
         LocalizationManager.Instance[GoalKey],
         AmuletGoal);
 
-    public WaitingRoomViewModel(
-        INavigator navigator,
-        IDialogManager dialogManager,
-        IPlayerSession playerSession,
-        IRoomSession roomSession,
-        IClipboardManager clipboardManager,
-        ISocialCircle socialCircle,
-        TimeProvider timeProvider,
-        IRoomClient roomClient)
+    public LobbyViewModel(LobbyDependencies dependencies)
     {
-        _navigator = navigator;
-        _dialogManager = dialogManager;
-        _playerSession = playerSession;
-        _roomSession = roomSession;
-        _clipboardManager = clipboardManager;
-        _socialCircle = socialCircle;
-        _timeProvider = timeProvider;
-        _roomClient = roomClient;
-        _room = roomSession.Current ?? throw new InvalidOperationException("There is no room to show.");
-        _isHost = _room.IsHost;
-        _visibility = _room.Visibility;
-        _capacity = _room.Capacity;
+        _navigator = dependencies.Navigator;
+        _dialogManager = dependencies.DialogManager;
+        _playerSession = dependencies.PlayerSession;
+        _lobbySession = dependencies.LobbySession;
+        _clipboardManager = dependencies.ClipboardManager;
+        _socialCircle = dependencies.SocialCircle;
+        _timeProvider = dependencies.TimeProvider;
+        _lobbyClient = dependencies.LobbyClient;
+        _lobby = dependencies.LobbySession.Current ?? throw new InvalidOperationException("There is no lobby to show.");
+        _isHost = _lobby.IsHost;
+        _visibility = _lobby.Visibility;
+        _capacity = _lobby.Capacity;
 
         Capacities = BuildCapacities();
         LoadMembers();
 
-        foreach (RoomChatEntry entry in _room.Chat)
+        foreach (LobbyChatEntry entry in _lobby.Chat)
         {
             Messages.Add(entry);
         }
 
-        SubscribeToRoomEvents();
+        SubscribeToLobbyEvents();
     }
 
     public void Dispose()
@@ -185,8 +182,8 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
         if (!_isDisposed)
         {
             _isDisposed = true;
-            _roomClient.PlayerJoined -= OnPlayerJoined;
-            _roomClient.PlayerLeft -= OnPlayerLeft;
+            _lobbyClient.PlayerJoined -= OnPlayerJoined;
+            _lobbyClient.PlayerLeft -= OnPlayerLeft;
         }
 
         GC.SuppressFinalize(this);
@@ -223,7 +220,7 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
     {
         if (IsHost)
         {
-            Visibility = RoomVisibility.Public;
+            Visibility = LobbyVisibility.Public;
             // TODO: Send the new visibility to the server (CU-014).
         }
     }
@@ -233,16 +230,16 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
     {
         if (IsHost && IsPrivateAvailable)
         {
-            Visibility = RoomVisibility.Private;
+            Visibility = LobbyVisibility.Private;
         }
     }
 
     [RelayCommand]
-    private async Task KickAsync(RoomParticipantItem participant)
+    private async Task KickAsync(LobbyParticipantItem participant)
     {
         PlayerActionConfirmationViewModel dialog =
             await _dialogManager.ShowDialogAsync<PlayerActionConfirmationViewModel, PlayerActionRequest>(
-                new PlayerActionRequest(PlayerAction.KickFromRoom, participant.Username));
+                new PlayerActionRequest(PlayerAction.KickFromLobby, participant.Username));
 
         if (dialog.IsConfirmed)
         {
@@ -253,7 +250,7 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
     }
 
     [RelayCommand]
-    private void ProposeKick(RoomParticipantItem participant)
+    private void ProposeKick(LobbyParticipantItem participant)
     {
         // TODO: Open the expulsion proposal (MOD-007, CU-016) when the shared voting dialog exists.
     }
@@ -267,19 +264,19 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
     }
 
     [RelayCommand]
-    private async Task LeaveRoomAsync()
+    private async Task LeaveLobbyAsync()
     {
         string successor = FindSuccessorName();
 
         PlayerActionConfirmationViewModel dialog =
             await _dialogManager.ShowDialogAsync<PlayerActionConfirmationViewModel, PlayerActionRequest>(
-                new PlayerActionRequest(PlayerAction.LeaveRoom, successor));
+                new PlayerActionRequest(PlayerAction.LeaveLobby, successor));
 
         if (dialog.IsConfirmed)
         {
-            await NotifyLeftRoomAsync();
+            NotifyLeftLobby();
 
-            _roomSession.Current = null;
+            _lobbySession.Current = null;
 
             if (IsGuest)
             {
@@ -311,7 +308,7 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
     {
         // TODO: Send the message to the server (CU-032); a filtered text is not sent and is kept for correction
         // (MSG-CHAT-001).
-        Messages.Add(new RoomChatEntry(RoomChatKind.Own, FindOwnName(), ChatText.Trim()));
+        Messages.Add(new LobbyChatEntry(LobbyChatKind.Own, FindOwnName(), ChatText.Trim()));
         ChatText = string.Empty;
     }
 
@@ -322,22 +319,22 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
 
     private void LoadMembers()
     {
-        foreach (RoomMember member in _room.Members)
+        foreach (LobbyMember member in _lobby.Members)
         {
-            Participants.Add(CreateParticipantItem(member.PlayerId, member.Username, member.AvatarId, member.IsHost));
+            Participants.Add(CreateParticipantItem(member));
         }
     }
 
-    private RoomParticipantItem CreateParticipantItem(Guid playerId, string username, int? avatarId, bool isHost)
+    private LobbyParticipantItem CreateParticipantItem(LobbyMember member)
     {
-        bool isSelf = playerId == _playerSession.PlayerId;
+        bool isSelf = member.PlayerId == _playerSession.PlayerId;
 
-        return new RoomParticipantItem
+        return new LobbyParticipantItem
         {
-            PlayerId = playerId,
-            Username = username,
-            AvatarId = avatarId,
-            IsHost = isHost,
+            PlayerId = member.PlayerId,
+            Username = member.Username,
+            AvatarId = member.AvatarId,
+            IsHost = member.IsHost,
             IsCurrentPlayer = isSelf,
             CanKick = _isHost && !isSelf,
             CanProposeKick = !_isHost && !isSelf,
@@ -346,29 +343,29 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
         };
     }
 
-    private void SubscribeToRoomEvents()
+    private void SubscribeToLobbyEvents()
     {
-        _roomClient.PlayerJoined += OnPlayerJoined;
-        _roomClient.PlayerLeft += OnPlayerLeft;
-        _roomClient.ReplayPendingEvents();
+        _lobbyClient.PlayerJoined += OnPlayerJoined;
+        _lobbyClient.PlayerLeft += OnPlayerLeft;
+        _lobbyClient.ReplayPendingEvents();
     }
 
     // The server events arrive on a network thread: they are queued in order and applied on the UI thread.
-    private void OnPlayerJoined(object? sender, RoomMemberDto player)
+    private void OnPlayerJoined(object? sender, LobbyMemberDto player)
     {
-        _pendingChanges.Enqueue(new RoomChange(player, Guid.Empty));
+        _pendingChanges.Enqueue(new LobbyChange(player, Guid.Empty));
         Dispatcher.UIThread.Post(ApplyPendingChanges);
     }
 
     private void OnPlayerLeft(object? sender, Guid playerId)
     {
-        _pendingChanges.Enqueue(new RoomChange(null, playerId));
+        _pendingChanges.Enqueue(new LobbyChange(null, playerId));
         Dispatcher.UIThread.Post(ApplyPendingChanges);
     }
 
     private void ApplyPendingChanges()
     {
-        while (!_isDisposed && _pendingChanges.TryDequeue(out RoomChange? change))
+        while (!_isDisposed && _pendingChanges.TryDequeue(out LobbyChange? change))
         {
             if (change.Joined is not null)
             {
@@ -381,25 +378,25 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
         }
     }
 
-    private void AddParticipant(RoomMemberDto player)
+    private void AddParticipant(LobbyMemberDto player)
     {
         if (FindParticipant(player.PlayerId) is null)
         {
-            Participants.Add(CreateParticipantItem(player.PlayerId, player.Username, null, false));
-            Messages.Add(RoomModelFactory.CreateJoinNotice(player.Username));
+            Participants.Add(CreateParticipantItem(new LobbyMember(player.PlayerId, player.Username, null, false)));
+            Messages.Add(LobbyModelFactory.CreateJoinNotice(player.Username));
             RefreshParticipantTexts();
         }
     }
 
     private void RemoveParticipant(Guid playerId)
     {
-        RoomParticipantItem? leaving = FindParticipant(playerId);
+        LobbyParticipantItem? leaving = FindParticipant(playerId);
 
         if (leaving is not null)
         {
             Participants.Remove(leaving);
-            Messages.Add(new RoomChatEntry(
-                RoomChatKind.System,
+            Messages.Add(new LobbyChatEntry(
+                LobbyChatKind.System,
                 string.Empty,
                 string.Empty,
                 new LocalizedText(LeftNoticeKey, leaving.Username)));
@@ -413,32 +410,34 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
         }
     }
 
-    // The server hands the role to the participant who has been longest in the room, so both sides agree.
+    // The server hands the role to the participant who has been longest in the lobby, so both sides agree.
     private void PromoteHost(Guid newHostId)
     {
         _isHost = newHostId == _playerSession.PlayerId;
 
-        List<RoomParticipantItem> current = new(Participants);
+        List<LobbyParticipantItem> current = new(Participants);
 
         Participants.Clear();
 
-        foreach (RoomParticipantItem participant in current)
+        foreach (LobbyParticipantItem participant in current)
         {
-            Participants.Add(CreateParticipantItem(
+            LobbyMember member = new(
                 participant.PlayerId,
                 participant.Username,
                 participant.AvatarId,
-                participant.PlayerId == newHostId));
+                participant.PlayerId == newHostId);
+
+            Participants.Add(CreateParticipantItem(member));
         }
 
         OnPropertyChanged(string.Empty);
     }
 
-    private RoomParticipantItem? FindParticipant(Guid playerId)
+    private LobbyParticipantItem? FindParticipant(Guid playerId)
     {
-        RoomParticipantItem? found = null;
+        LobbyParticipantItem? found = null;
 
-        foreach (RoomParticipantItem participant in Participants)
+        foreach (LobbyParticipantItem participant in Participants)
         {
             if (participant.PlayerId == playerId)
             {
@@ -449,27 +448,27 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
         return found;
     }
 
-    private async Task NotifyLeftRoomAsync()
+    // LeaveLobby is one-way: nothing is waited for. If the call fails, the server removes this player when the channel
+    // closes.
+    private void NotifyLeftLobby()
     {
-        _roomClient.PlayerJoined -= OnPlayerJoined;
-        _roomClient.PlayerLeft -= OnPlayerLeft;
+        _lobbyClient.PlayerJoined -= OnPlayerJoined;
+        _lobbyClient.PlayerLeft -= OnPlayerLeft;
 
-        try
+        LobbyLeaveRequest request = new(Code, _playerSession.PlayerId);
+
+        BackgroundAction<LobbyLeaveRequest> action = new()
         {
-            await _roomClient.LeaveRoomAsync(Code, _playerSession.PlayerId);
-        }
-        catch (FaultException<ServiceFaultDto>)
-        {
-            // The room no longer exists on the server, so there is nothing left to leave.
-        }
-        catch (CommunicationException)
-        {
-            // The client aborts the broken channel and the server removes this player when it closes.
-        }
-        catch (TimeoutException)
-        {
-            // The client aborts the broken channel and the server removes this player when it closes.
-        }
+            Work = LeaveLobbyOnWorker,
+            State = request
+        };
+
+        BackgroundWork.Start(action);
+    }
+
+    private void LeaveLobbyOnWorker(LobbyLeaveRequest request)
+    {
+        _lobbyClient.LeaveLobby(request.LobbyCode, request.PlayerId);
     }
 
     private List<CapacityOption> BuildCapacities()
@@ -481,8 +480,8 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
             options.Add(new CapacityOption
             {
                 Value = value,
-                IsSelected = value == _room.Capacity,
-                IsAvailable = value >= _room.Members.Count,
+                IsSelected = value == _lobby.Capacity,
+                IsAvailable = value >= _lobby.Members.Count,
                 SelectCommand = SelectCapacityCommand
             });
         }
@@ -531,11 +530,11 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
     // System notices of the chat are texts of the language: they are put again so they are redrawn.
     protected override void OnLanguageChanged()
     {
-        List<RoomChatEntry> entries = new(Messages);
+        List<LobbyChatEntry> entries = new(Messages);
 
         Messages.Clear();
 
-        foreach (RoomChatEntry entry in entries)
+        foreach (LobbyChatEntry entry in entries)
         {
             Messages.Add(entry);
         }
@@ -552,7 +551,7 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
     {
         string hostName = string.Empty;
 
-        foreach (RoomParticipantItem participant in Participants)
+        foreach (LobbyParticipantItem participant in Participants)
         {
             if (participant.IsHost)
             {
@@ -563,14 +562,14 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
         return hostName;
     }
 
-    // The host role passes to the participant who has been longest in the room: the first one after the host.
+    // The host role passes to the participant who has been longest in the lobby: the first one after the host.
     private string FindSuccessorName()
     {
         string successor = string.Empty;
 
         if (_isHost)
         {
-            foreach (RoomParticipantItem participant in Participants)
+            foreach (LobbyParticipantItem participant in Participants)
             {
                 if (!participant.IsHost && successor.Length == 0)
                 {
@@ -605,6 +604,4 @@ public partial class WaitingRoomViewModel : ViewModelBase, INavigable, IDisposab
 
         return slots;
     }
-
-    private sealed record RoomChange(RoomMemberDto? Joined, Guid LeftPlayerId);
 }

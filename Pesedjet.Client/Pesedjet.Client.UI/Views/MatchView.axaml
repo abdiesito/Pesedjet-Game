@@ -6,7 +6,9 @@
              xmlns:views="using:Pesedjet.Client.UI.Views"
              xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
              xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
-             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:modelsCards="using:Pesedjet.Client.UI.Models.Cards"
+             xmlns:modelsLobbies="using:Pesedjet.Client.UI.Models.Lobbies"
+             xmlns:modelsMatches="using:Pesedjet.Client.UI.Models.Matches"
              xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
              x:Class="Pesedjet.Client.UI.Views.MatchView"
@@ -68,7 +70,7 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="models:MatchOpponentItem">
+                    <DataTemplate x:DataType="modelsMatches:MatchOpponentItem">
                         <Border Classes="opponent"
                                 Classes.turn="{Binding IsInTurn}"
                                 Classes.out="{Binding IsOut}"
@@ -147,7 +149,7 @@
                                       VerticalContentAlignment="Bottom">
                             <ItemsControl ItemsSource="{Binding Log}">
                                 <ItemsControl.ItemTemplate>
-                                    <DataTemplate x:DataType="models:MatchLogEntry">
+                                    <DataTemplate x:DataType="modelsMatches:MatchLogEntry">
                                         <TextBlock Classes="log-line"
                                                    Classes.gain="{Binding IsGain}"
                                                    Classes.loss="{Binding IsLoss}"
@@ -206,7 +208,7 @@
                         </Grid>
                         <ItemsControl Grid.Row="1" ItemsSource="{Binding Unseen}">
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="models:UnseenItem">
+                                <DataTemplate x:DataType="modelsCards:UnseenItem">
                                     <Grid Classes="unseen-row" ColumnDefinitions="130,*,Auto">
                                         <TextBlock Classes="unseen-label"
                                                    Classes.depleted="{Binding IsDepleted}"
@@ -296,7 +298,7 @@
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="models:HandCardItem">
+                                <DataTemplate x:DataType="modelsCards:HandCardItem">
                                     <StackPanel>
                                         <Button Classes="hand-card"
                                                 Classes.selected="{Binding IsSelected}"
@@ -358,7 +360,7 @@
                         <TextBlock Classes="section-heading" Margin="0,0,0,10" Text="{Binding ScoreboardTitle}"/>
                         <ItemsControl ItemsSource="{Binding Standings}">
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="models:StandingItem">
+                                <DataTemplate x:DataType="modelsMatches:StandingItem">
                                     <Grid Classes="standing-row" ColumnDefinitions="Auto,*,Auto,Auto">
                                         <Border Classes="avatar score-avatar">
                                             <TextBlock Classes="avatar-initials" Text="{Binding Initials}"/>
@@ -416,7 +418,7 @@
                     <ScrollViewer Grid.Row="1" Classes="notifications-scroll">
                         <ItemsControl ItemsSource="{Binding ChatMessages}">
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="models:RoomChatEntry">
+                                <DataTemplate x:DataType="modelsLobbies:LobbyChatEntry">
                                     <StackPanel Classes="chat-line" Orientation="Horizontal" Spacing="8">
                                         <TextBlock Classes="chat-author"
                                                    Classes.own="{Binding IsOwn}"

@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
-             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:modelsSocial="using:Pesedjet.Client.UI.Models.Social"
              xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="560"
              x:Class="Pesedjet.Client.UI.Views.BlockedPlayersView"
@@ -26,7 +26,7 @@
             <ScrollViewer Classes="notifications-scroll">
                 <ItemsControl ItemsSource="{Binding BlockedPlayers}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="models:BlockedPlayerItem">
+                        <DataTemplate x:DataType="modelsSocial:BlockedPlayerItem">
                             <Border Classes="person-row">
                                 <Grid ColumnDefinitions="Auto,*,Auto">
                                     <Border Classes="avatar person-avatar">

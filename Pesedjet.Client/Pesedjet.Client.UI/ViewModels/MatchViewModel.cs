@@ -5,14 +5,19 @@ using System.Globalization;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Pesedjet.Client.UI.Models;
 using Pesedjet.Client.UI.Utilities.Dialogs;
 using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Matches;
 using Pesedjet.Client.UI.Utilities.Navigation;
-using Pesedjet.Client.UI.Utilities.Rooms;
+using Pesedjet.Client.UI.Utilities.Lobbies;
 using Pesedjet.Client.UI.Utilities.Session;
 using Pesedjet.Client.UI.Utilities.Timing;
+using Pesedjet.Client.UI.ViewModels.Dependencies;
+using Pesedjet.Client.UI.ViewModels.Dialogs;
+using Pesedjet.Client.UI.Models.Cards;
+using Pesedjet.Client.UI.Models.DialogParameters;
+using Pesedjet.Client.UI.Models.Lobbies;
+using Pesedjet.Client.UI.Models.Matches;
 
 namespace Pesedjet.Client.UI.ViewModels;
 
@@ -49,7 +54,7 @@ public partial class MatchViewModel : ViewModelBase, INavigable, IDisposable
     private readonly INavigator _navigator;
     private readonly IDialogManager _dialogManager;
     private readonly IPlayerSession _playerSession;
-    private readonly IRoomSession _roomSession;
+    private readonly ILobbySession _lobbySession;
     private readonly IMatchGateway _matchGateway;
     private readonly TimeProvider _timeProvider;
     private readonly Countdown _turnCountdown;
@@ -137,7 +142,7 @@ public partial class MatchViewModel : ViewModelBase, INavigable, IDisposable
 
     public ObservableCollection<StandingItem> Standings { get; } = new();
 
-    public ObservableCollection<RoomChatEntry> ChatMessages { get; } = new();
+    public ObservableCollection<LobbyChatEntry> ChatMessages { get; } = new();
 
     public IReadOnlyList<int> MyDiscards { get; private set; } = [];
 
@@ -176,23 +181,16 @@ public partial class MatchViewModel : ViewModelBase, INavigable, IDisposable
         : $"{SelectedCard.Card.Name} ({SelectedCard.Card.Value}) · "
           + LocalizationManager.Instance["Card.Effect." + SelectedCard.Card.Value];
 
-    public MatchViewModel(
-        INavigator navigator,
-        IDialogManager dialogManager,
-        IPlayerSession playerSession,
-        IRoomSession roomSession,
-        IMatchGateway matchGateway,
-        TopBarViewModel topBar,
-        TimeProvider timeProvider)
+    public MatchViewModel(MatchDependencies dependencies)
     {
-        _navigator = navigator;
-        _dialogManager = dialogManager;
-        _playerSession = playerSession;
-        _roomSession = roomSession;
-        _matchGateway = matchGateway;
-        _timeProvider = timeProvider;
-        TopBar = topBar;
-        _turnCountdown = new Countdown(timeProvider, HandleTurnTick, HandleTurnTimeout);
+        _navigator = dependencies.Navigator;
+        _dialogManager = dependencies.DialogManager;
+        _playerSession = dependencies.PlayerSession;
+        _lobbySession = dependencies.LobbySession;
+        _matchGateway = dependencies.MatchGateway;
+        _timeProvider = dependencies.TimeProvider;
+        TopBar = dependencies.TopBar;
+        _turnCountdown = new Countdown(dependencies.TimeProvider, HandleTurnTick, HandleTurnTimeout);
         LocalizationManager.Instance.LanguageChanged += HandleLanguageChanged;
     }
 
@@ -236,7 +234,7 @@ public partial class MatchViewModel : ViewModelBase, INavigable, IDisposable
     private void SendMessage()
     {
         // TODO: Send the message to the server (CU-032); a guest has the chat of his match, not a general one.
-        ChatMessages.Add(new RoomChatEntry(RoomChatKind.Own, MyName, ChatText.Trim()));
+        ChatMessages.Add(new LobbyChatEntry(LobbyChatKind.Own, MyName, ChatText.Trim()));
         ChatText = string.Empty;
     }
 
@@ -293,7 +291,7 @@ public partial class MatchViewModel : ViewModelBase, INavigable, IDisposable
     {
         IsBusy = true;
 
-        MatchSnapshot snapshot = await _matchGateway.StartAsync(_roomSession.Current!);
+        MatchSnapshot snapshot = await _matchGateway.StartAsync(_lobbySession.Current!);
 
         IsBusy = false;
         ApplySnapshot(snapshot);
@@ -375,7 +373,7 @@ public partial class MatchViewModel : ViewModelBase, INavigable, IDisposable
         if (confirmation.IsConfirmed)
         {
             // TODO: Tell the server the player abandoned: he keeps the points obtained and cannot come back (CU-031).
-            _roomSession.Current = null;
+            _lobbySession.Current = null;
 
             if (IsGuest)
             {

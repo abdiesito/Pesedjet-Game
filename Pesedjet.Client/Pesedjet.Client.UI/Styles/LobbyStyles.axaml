@@ -52,20 +52,20 @@
         <Setter Property="Foreground" Value="{DynamicResource ColorErrorBackground}" />
     </Style>
 
-    <Style Selector="StackPanel.room-code-block">
+    <Style Selector="StackPanel.lobby-code-block">
         <Setter Property="Spacing" Value="2" />
         <Setter Property="HorizontalAlignment" Value="Right" />
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
-    <Style Selector="StackPanel.room-code-block > TextBlock.caption">
+    <Style Selector="StackPanel.lobby-code-block > TextBlock.caption">
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Foreground" Value="{DynamicResource ColorGold}" />
         <Setter Property="HorizontalAlignment" Value="Right" />
     </Style>
 
-    <Style Selector="TextBlock.room-code">
+    <Style Selector="TextBlock.lobby-code">
         <Setter Property="FontFamily" Value="Consolas, Menlo, DejaVu Sans Mono, monospace" />
         <Setter Property="FontSize" Value="34" />
         <Setter Property="FontWeight" Value="Bold" />

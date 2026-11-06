@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
              xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
-             xmlns:models="using:Pesedjet.Client.UI.Models"
              xmlns:rules="using:Pesedjet.Client.UI.Utilities.Validation"
              xmlns:views="using:Pesedjet.Client.UI.Views"
              xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
@@ -17,10 +16,11 @@
         <Border Classes="dialog-card screen-panel">
             <Grid RowDefinitions="Auto,*">
 
-                <Border Classes="panel-header">
+                <Border Classes="panel-header" IsEnabled="{Binding !PublicLobbies.IsJoining}">
                     <StackPanel Classes="panel-header-content">
                         <Button Classes="header-btn"
                                 IsVisible="{Binding IsRegistered}"
+                                IsEnabled="{Binding !IsJoining}"
                                 Command="{Binding GoBackCommand}">
                             <StackPanel Classes="inline-icon-text">
                                 <Path Classes="icon" Data="{DynamicResource IconBack}"/>
@@ -32,6 +32,7 @@
                         </Button>
                         <Button Classes="header-btn"
                                 IsVisible="{Binding IsGuest}"
+                                IsEnabled="{Binding !IsJoining}"
                                 Command="{Binding GoBackCommand}">
                             <StackPanel Classes="inline-icon-text">
                                 <Path Classes="icon" Data="{DynamicResource IconBack}"/>
@@ -64,7 +65,7 @@
                         <Grid Grid.Row="1" Classes="choice-grid" ColumnDefinitions="*,*">
 
                             <Border Classes="choice-card">
-                                <views:PublicRoomListView DataContext="{Binding PublicRooms}"/>
+                                <views:PublicLobbyListView DataContext="{Binding PublicLobbies}"/>
                             </Border>
 
                             <StackPanel Grid.Column="1" Classes="choice-column">
@@ -75,19 +76,19 @@
                                                 <Path Classes="icon" Data="{DynamicResource IconCrown}"/>
                                             </Border>
                                             <TextBlock Classes="card-title"
-                                                       Text="{Binding [GameMenu.CreateRoomTitle],
+                                                       Text="{Binding [GameMenu.CreateLobbyTitle],
                                                                Source={x:Static
                                                                    loc:LocalizationManager.Instance}}"/>
                                         </StackPanel>
                                         <TextBlock Classes="body-secondary"
                                                    Grid.Row="1" Margin="0,14,0,0"
-                                                   Text="{Binding [GameMenu.CreateRoomDescription],
+                                                   Text="{Binding [GameMenu.CreateLobbyDescription],
                                                            Source={x:Static
                                                                loc:LocalizationManager.Instance}}"/>
                                         <Button Grid.Row="2" Classes="primary-btn"
                                                 Margin="0,14,0,0"
-                                                Command="{Binding CreateRoomCommand}"
-                                                Content="{Binding [GameMenu.CreateRoomTitle],
+                                                Command="{Binding CreateLobbyCommand}"
+                                                Content="{Binding [GameMenu.CreateLobbyTitle],
                                                                Source={x:Static
                                                                    loc:LocalizationManager.Instance}}"/>
                                     </Grid>
@@ -114,10 +115,10 @@
                                             <TextBox Classes="input-field code-field"
                                                      Classes.error="{Binding HasCodeError}"
                                                      IsReadOnly="{Binding IsJoining}"
-                                                     MaxLength="{x:Static rules:RoomRules.CodeLength}"
-                                                     Text="{Binding RoomCode}">
+                                                     MaxLength="{x:Static rules:LobbyRules.CodeLength}"
+                                                     Text="{Binding LobbyCode}">
                                                 <TextBox.KeyBindings>
-                                                    <KeyBinding Gesture="Enter" Command="{Binding JoinRoomCommand}"/>
+                                                    <KeyBinding Gesture="Enter" Command="{Binding JoinLobbyCommand}"/>
                                                 </TextBox.KeyBindings>
                                             </TextBox>
                                             <ContentControl Classes="field-message"
@@ -132,7 +133,7 @@
                                                                     Header="{Binding [Common.ConnectionError],
                                                                                    Source={x:Static
                                                                                        loc:LocalizationManager.Instance}}">
-                                                <Button Classes="alert-action" Command="{Binding JoinRoomCommand}">
+                                                <Button Classes="alert-action" Command="{Binding JoinLobbyCommand}">
                                                     <StackPanel Classes="inline-icon-text">
                                                         <Path Classes="icon" Data="{DynamicResource IconRefresh}"/>
                                                         <TextBlock
@@ -146,7 +147,7 @@
                                         <Button Grid.Row="2" Classes="primary-btn"
                                                 Classes.loading="{Binding IsJoining}"
                                                 Margin="0,14,0,0"
-                                                Command="{Binding JoinRoomCommand}">
+                                                Command="{Binding JoinLobbyCommand}">
                                             <StackPanel Classes="inline-icon-text">
                                                 <Path Classes="spinner" IsVisible="{Binding IsJoining}"/>
                                                 <TextBlock IsVisible="{Binding !IsJoining}"

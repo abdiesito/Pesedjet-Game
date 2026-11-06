@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace Pesedjet.Client.UI.Views;
 
-public partial class PublicRoomListView : UserControl
+public partial class LobbyView : UserControl
 {
-    public PublicRoomListView()
+    public LobbyView()
     {
         InitializeComponent();
     }

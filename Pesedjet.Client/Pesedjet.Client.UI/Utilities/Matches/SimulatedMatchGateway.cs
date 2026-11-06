@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Pesedjet.Client.UI.Models;
 using Pesedjet.Client.UI.Utilities.Session;
+using Pesedjet.Client.UI.Models.Cards;
+using Pesedjet.Client.UI.Models.Common;
+using Pesedjet.Client.UI.Models.DialogParameters;
+using Pesedjet.Client.UI.Models.Lobbies;
+using Pesedjet.Client.UI.Models.Matches;
 
 namespace Pesedjet.Client.UI.Utilities.Matches;
 
@@ -34,7 +38,7 @@ public sealed class SimulatedMatchGateway : IMatchGateway
 
     private readonly IPlayerSession _playerSession;
 
-    private RoomSnapshot? _room;
+    private LobbySnapshot? _lobby;
     private int _round = StartingRound;
     private int _goal;
     private int _mePoints = MeStartingPoints;
@@ -48,15 +52,15 @@ public sealed class SimulatedMatchGateway : IMatchGateway
         _playerSession = playerSession;
     }
 
-    public Task<MatchSnapshot> StartAsync(RoomSnapshot room)
+    public Task<MatchSnapshot> StartAsync(LobbySnapshot lobby)
     {
-        _room = room;
+        _lobby = lobby;
         _round = StartingRound;
-        _goal = AmuletGoalsByPlayers[Math.Clamp(room.Members.Count, 2, 6) - 2];
+        _goal = AmuletGoalsByPlayers[Math.Clamp(lobby.Members.Count, 2, 6) - 2];
         _mePoints = MeStartingPoints;
         _meAmulets = MeStartingAmulets;
         _isMeOut = false;
-        _opponents = BuildOpponents(room);
+        _opponents = BuildOpponents(lobby);
         _log =
         [
             new MatchLogEntry(MatchLogKind.Normal, Format("Match.Log.Start", _round, OwnName())),
@@ -101,7 +105,7 @@ public sealed class SimulatedMatchGateway : IMatchGateway
     {
         _round++;
         _isMeOut = false;
-        _opponents = BuildOpponents(_room!);
+        _opponents = BuildOpponents(_lobby!);
         _log =
         [
             new MatchLogEntry(MatchLogKind.Normal, Format("Match.Log.Start", _round, OwnName())),
@@ -290,13 +294,13 @@ public sealed class SimulatedMatchGateway : IMatchGateway
         return new MatchResult(me, _round + 1, _goal, rows);
     }
 
-    private List<PlayerSnapshot> BuildOpponents(RoomSnapshot room)
+    private List<PlayerSnapshot> BuildOpponents(LobbySnapshot lobby)
     {
         List<PlayerSnapshot> opponents = new();
         string me = OwnName();
         int index = 0;
 
-        foreach (RoomMember member in room.Members)
+        foreach (LobbyMember member in lobby.Members)
         {
             if (member.Username != me && index < MaximumOpponents)
             {
@@ -346,7 +350,7 @@ public sealed class SimulatedMatchGateway : IMatchGateway
             deckCount,
             true,
             [],
-            _room!.Members.Count == 2,
+            _lobby!.Members.Count == 2,
             BuildUnseen(),
             new List<MatchLogEntry>(_log));
     }

@@ -134,7 +134,7 @@
   <data name="Notifications.PendingOne" xml:space="preserve"><value>1 pendiente</value></data>
   <data name="Notifications.PendingMany" xml:space="preserve"><value>{0} pendientes</value></data>
   <data name="Notifications.FriendRequest" xml:space="preserve"><value>te envió una solicitud de amistad.</value></data>
-  <data name="Notifications.RoomInvitation" xml:space="preserve"><value>te invita a la sala {0} · {1}/{2} jugadores.</value></data>
+  <data name="Notifications.LobbyInvitation" xml:space="preserve"><value>te invita a la sala {0} · {1}/{2} jugadores.</value></data>
   <data name="Notifications.Accept" xml:space="preserve"><value>Aceptar</value></data>
   <data name="Notifications.Accepting" xml:space="preserve"><value>Aceptando…</value></data>
   <data name="Notifications.Join" xml:space="preserve"><value>Unirme</value></data>
@@ -229,8 +229,8 @@
   <data name="Common.ConnectionError" xml:space="preserve"><value>No fue posible comunicarse con el servidor. Revisa tu conexión e inténtalo de nuevo.</value></data>
   <data name="Guest.NoticeTitle" xml:space="preserve"><value>Jugar como invitado</value></data>
   <data name="Guest.CanDoTitle" xml:space="preserve"><value>LO QUE PUEDES HACER</value></data>
-  <data name="Guest.CanCreateRoom" xml:space="preserve"><value>Crear una sala de juego</value></data>
-  <data name="Guest.CanJoinRoom" xml:space="preserve"><value>Unirte a una sala con su código</value></data>
+  <data name="Guest.CanCreateLobby" xml:space="preserve"><value>Crear una sala de juego</value></data>
+  <data name="Guest.CanJoinLobby" xml:space="preserve"><value>Unirte a una sala con su código</value></data>
   <data name="Guest.CanPlayFull" xml:space="preserve"><value>Jugar partidas completas</value></data>
   <data name="Guest.CannotTitle" xml:space="preserve"><value>NO DISPONIBLE COMO INVITADO</value></data>
   <data name="Guest.CannotProfile" xml:space="preserve"><value>Perfil, amigos y notificaciones</value></data>
@@ -257,8 +257,8 @@
   <data name="GameMenu.Back" xml:space="preserve"><value>Menú</value></data>
   <data name="GameMenu.Question" xml:space="preserve"><value>¿Cómo quieres jugar?</value></data>
   <data name="GameMenu.GuestIntro" xml:space="preserve"><value>Como invitado puedes crear una sala o unirte a una con su código.</value></data>
-  <data name="GameMenu.CreateRoomTitle" xml:space="preserve"><value>Crear sala</value></data>
-  <data name="GameMenu.CreateRoomDescription" xml:space="preserve"><value>Elige cuántos jugarán y si la sala es pública o privada. Serás el anfitrión y compartirás el código.</value></data>
+  <data name="GameMenu.CreateLobbyTitle" xml:space="preserve"><value>Crear sala</value></data>
+  <data name="GameMenu.CreateLobbyDescription" xml:space="preserve"><value>Elige cuántos jugarán y si la sala es pública o privada. Serás el anfitrión y compartirás el código.</value></data>
   <data name="GameMenu.Step1" xml:space="preserve"><value>Elige de 2 a 6 jugadores y la visibilidad.</value></data>
   <data name="GameMenu.Step2" xml:space="preserve"><value>Comparte el código que te daremos.</value></data>
   <data name="GameMenu.Step3" xml:space="preserve"><value>Inicia cuando haya al menos 2.</value></data>
@@ -285,38 +285,38 @@
   <data name="GameSetup.PrivateHint" xml:space="preserve"><value>Solo entra quien invites; el código no basta.</value></data>
   <data name="GameSetup.PrivateGuestHint" xml:space="preserve"><value>Como invitado no tienes amigos a quién invitar</value></data>
   <data name="GameSetup.Creating" xml:space="preserve"><value>Creando sala…</value></data>
-  <data name="WaitingRoom.Title" xml:space="preserve"><value>Sala de espera</value></data>
-  <data name="WaitingRoom.Subtitle" xml:space="preserve"><value>{0} · {1} de {2} jugadores</value></data>
-  <data name="WaitingRoom.CodeLabel" xml:space="preserve"><value>Código</value></data>
-  <data name="WaitingRoom.Copy" xml:space="preserve"><value>Copiar</value></data>
-  <data name="WaitingRoom.Copied" xml:space="preserve"><value>Copiado</value></data>
-  <data name="WaitingRoom.MaxPlayers" xml:space="preserve"><value>Jugadores máx.</value></data>
-  <data name="WaitingRoom.Visibility" xml:space="preserve"><value>Visibilidad</value></data>
-  <data name="WaitingRoom.GoalAmulets" xml:space="preserve"><value>{0} amuletos</value></data>
-  <data name="WaitingRoom.Goal" xml:space="preserve"><value>Meta:</value></data>
-  <data name="WaitingRoom.ReadOnlyNotice" xml:space="preserve"><value>Jugadores máx.: {0} · {1}</value></data>
-  <data name="WaitingRoom.HostOnlyNotice" xml:space="preserve"><value>Solo el anfitrión cambia estos ajustes.</value></data>
-  <data name="WaitingRoom.Participants" xml:space="preserve"><value>Participantes</value></data>
-  <data name="WaitingRoom.ParticipantsCount" xml:space="preserve"><value>{0} de {1}</value></data>
-  <data name="WaitingRoom.HostBadge" xml:space="preserve"><value>Anfitrión</value></data>
-  <data name="WaitingRoom.You" xml:space="preserve"><value>Tú</value></data>
-  <data name="WaitingRoom.Kick" xml:space="preserve"><value>Expulsar</value></data>
-  <data name="WaitingRoom.ProposeKick" xml:space="preserve"><value>Proponer expulsión</value></data>
-  <data name="WaitingRoom.WaitingPlayer" xml:space="preserve"><value>Esperando jugador…</value></data>
-  <data name="WaitingRoom.Chat" xml:space="preserve"><value>Chat de la sala</value></data>
-  <data name="WaitingRoom.ChatPlaceholder" xml:space="preserve"><value>Escribe un mensaje…</value></data>
-  <data name="WaitingRoom.Send" xml:space="preserve"><value>Enviar</value></data>
-  <data name="WaitingRoom.Leave" xml:space="preserve"><value>Abandonar sala</value></data>
-  <data name="WaitingRoom.InviteFriends" xml:space="preserve"><value>Invitar amigos</value></data>
-  <data name="WaitingRoom.StartMatch" xml:space="preserve"><value>Iniciar partida</value></data>
-  <data name="WaitingRoom.NeedMorePlayers" xml:space="preserve"><value>Se necesitan al menos 2 jugadores para iniciar.</value></data>
-  <data name="WaitingRoom.WaitingForHost" xml:space="preserve"><value>Esperando a que {0} inicie la partida…</value></data>
-  <data name="WaitingRoom.GuestCannotInvite" xml:space="preserve"><value>Como invitado no tienes amigos a quién invitar.</value></data>
-  <data name="WaitingRoom.JoinedNotice" xml:space="preserve"><value>{0} se unió a la sala.</value></data>
-  <data name="WaitingRoom.LeftNotice" xml:space="preserve"><value>{0} salió de la sala.</value></data>
-  <data name="WaitingRoom.SampleHostMessage" xml:space="preserve"><value>¿Listos? En cuanto llegue uno más empezamos.</value></data>
-  <data name="WaitingRoom.SampleJoinerMessage" xml:space="preserve"><value>¡Sí! Yo siempre empiezo con Osiris.</value></data>
-  <data name="WaitingRoom.SampleSecondJoinerMessage" xml:space="preserve"><value>Hola a todos</value></data>
+  <data name="Lobby.Title" xml:space="preserve"><value>Sala de espera</value></data>
+  <data name="Lobby.Subtitle" xml:space="preserve"><value>{0} · {1} de {2} jugadores</value></data>
+  <data name="Lobby.CodeLabel" xml:space="preserve"><value>Código</value></data>
+  <data name="Lobby.Copy" xml:space="preserve"><value>Copiar</value></data>
+  <data name="Lobby.Copied" xml:space="preserve"><value>Copiado</value></data>
+  <data name="Lobby.MaxPlayers" xml:space="preserve"><value>Jugadores máx.</value></data>
+  <data name="Lobby.Visibility" xml:space="preserve"><value>Visibilidad</value></data>
+  <data name="Lobby.GoalAmulets" xml:space="preserve"><value>{0} amuletos</value></data>
+  <data name="Lobby.Goal" xml:space="preserve"><value>Meta:</value></data>
+  <data name="Lobby.ReadOnlyNotice" xml:space="preserve"><value>Jugadores máx.: {0} · {1}</value></data>
+  <data name="Lobby.HostOnlyNotice" xml:space="preserve"><value>Solo el anfitrión cambia estos ajustes.</value></data>
+  <data name="Lobby.Participants" xml:space="preserve"><value>Participantes</value></data>
+  <data name="Lobby.ParticipantsCount" xml:space="preserve"><value>{0} de {1}</value></data>
+  <data name="Lobby.HostBadge" xml:space="preserve"><value>Anfitrión</value></data>
+  <data name="Lobby.You" xml:space="preserve"><value>Tú</value></data>
+  <data name="Lobby.Kick" xml:space="preserve"><value>Expulsar</value></data>
+  <data name="Lobby.ProposeKick" xml:space="preserve"><value>Proponer expulsión</value></data>
+  <data name="Lobby.WaitingPlayer" xml:space="preserve"><value>Esperando jugador…</value></data>
+  <data name="Lobby.Chat" xml:space="preserve"><value>Chat de la sala</value></data>
+  <data name="Lobby.ChatPlaceholder" xml:space="preserve"><value>Escribe un mensaje…</value></data>
+  <data name="Lobby.Send" xml:space="preserve"><value>Enviar</value></data>
+  <data name="Lobby.Leave" xml:space="preserve"><value>Abandonar sala</value></data>
+  <data name="Lobby.InviteFriends" xml:space="preserve"><value>Invitar amigos</value></data>
+  <data name="Lobby.StartMatch" xml:space="preserve"><value>Iniciar partida</value></data>
+  <data name="Lobby.NeedMorePlayers" xml:space="preserve"><value>Se necesitan al menos 2 jugadores para iniciar.</value></data>
+  <data name="Lobby.WaitingForHost" xml:space="preserve"><value>Esperando a que {0} inicie la partida…</value></data>
+  <data name="Lobby.GuestCannotInvite" xml:space="preserve"><value>Como invitado no tienes amigos a quién invitar.</value></data>
+  <data name="Lobby.JoinedNotice" xml:space="preserve"><value>{0} se unió a la sala.</value></data>
+  <data name="Lobby.LeftNotice" xml:space="preserve"><value>{0} salió de la sala.</value></data>
+  <data name="Lobby.SampleHostMessage" xml:space="preserve"><value>¿Listos? En cuanto llegue uno más empezamos.</value></data>
+  <data name="Lobby.SampleJoinerMessage" xml:space="preserve"><value>¡Sí! Yo siempre empiezo con Osiris.</value></data>
+  <data name="Lobby.SampleSecondJoinerMessage" xml:space="preserve"><value>Hola a todos</value></data>
   <data name="PlayerAction.KickTitle" xml:space="preserve"><value>¿Expulsar a {0} de la sala?</value></data>
   <data name="PlayerAction.KickMessage" xml:space="preserve"><value>Saldrá de inmediato y verá que el anfitrión lo retiró. Podrá volver a entrar con el código si la sala sigue abierta.</value></data>
   <data name="PlayerAction.KickConfirm" xml:space="preserve"><value>Expulsar</value></data>
@@ -408,7 +408,7 @@
   <data name="MatchResult.SavedNotice" xml:space="preserve"><value>Resultado registrado en la tabla de puntuaciones.</value></data>
   <data name="MatchResult.GuestNotice" xml:space="preserve"><value>Juegas como invitado: este resultado no se guarda.</value></data>
   <data name="MatchResult.MainMenu" xml:space="preserve"><value>Menú principal</value></data>
-  <data name="MatchResult.BackToRoom" xml:space="preserve"><value>Volver a la sala</value></data>
+  <data name="MatchResult.BackToLobby" xml:space="preserve"><value>Volver a la sala</value></data>
   <data name="MatchResult.Scoreboard" xml:space="preserve"><value>Ver puntuaciones</value></data>
   <data name="MatchResult.Continue" xml:space="preserve"><value>Continuar ({0} s)</value></data>
   <data name="AreYouThere.Title" xml:space="preserve"><value>¿Sigues ahí?</value></data>
@@ -457,29 +457,16 @@
   <data name="Card.Effect.2" xml:space="preserve"><value>Mira en secreto la mano de otro jugador.</value></data>
   <data name="Card.Effect.1" xml:space="preserve"><value>Nombra una deidad; si el rival la tiene, queda eliminado.</value></data>
   <data name="Card.Effect.0" xml:space="preserve"><value>No hace nada al jugarla; puede darte un punto extra al final de la ronda.</value></data>
-  <data name="Lobby.Title" xml:space="preserve"><value>Sala de Espera</value></data>
-  <data name="Lobby.RoomCode" xml:space="preserve"><value>CÓDIGO DE SALA</value></data>
-  <data name="Lobby.Participants" xml:space="preserve"><value>JUGADORES EN LA SALA</value></data>
-  <data name="Lobby.Host" xml:space="preserve"><value>Anfitrión</value></data>
-  <data name="Lobby.You" xml:space="preserve"><value>Tú</value></data>
-  <data name="Lobby.Guest" xml:space="preserve"><value>Invitado</value></data>
-  <data name="Lobby.Occupancy" xml:space="preserve"><value>{0} de {1} jugadores</value></data>
-  <data name="Lobby.StatusWaiting" xml:space="preserve"><value>Esperando jugadores…</value></data>
-  <data name="Lobby.StatusFull" xml:space="preserve"><value>Sala llena</value></data>
-  <data name="Lobby.StatusDisconnected" xml:space="preserve"><value>Conexión interrumpida</value></data>
-  <data name="Lobby.WaitingForHost" xml:space="preserve"><value>Esperando a que el anfitrión inicie la partida…</value></data>
-  <data name="Lobby.LeaveRoom" xml:space="preserve"><value>Abandonar sala</value></data>
-  <data name="Lobby.StartMatch" xml:space="preserve"><value>Iniciar partida</value></data>
   <data name="Messages.MSG-ROOM-005" xml:space="preserve"><value>Se requieren al menos 2 jugadores para iniciar.</value></data>
   <data name="Messages.MSG-GEN-001" xml:space="preserve"><value>Ocurrió un problema de comunicación con el servidor.</value></data>
   
-  <data name="PublicRooms.Title" xml:space="preserve"><value>Salas públicas</value></data>
-  <data name="PublicRooms.Subtitle" xml:space="preserve"><value>Únete a una sala pública para jugar con jugadores que ya están conectados.</value></data>
-  <data name="PublicRooms.Refresh" xml:space="preserve"><value>Actualizar</value></data>
-  <data name="PublicRooms.HostedBy" xml:space="preserve"><value>Anfitrión: {0}</value></data>
-  <data name="PublicRooms.Occupancy" xml:space="preserve"><value>{0} de {1} jugadores</value></data>
-  <data name="PublicRooms.Full" xml:space="preserve"><value>Llena</value></data>
-  <data name="PublicRooms.EmptyTitle" xml:space="preserve"><value>No hay salas públicas por ahora</value></data>
-  <data name="PublicRooms.EmptyHint" xml:space="preserve"><value>Crea una sala o únete con un código.</value></data>
-  <data name="PublicRooms.LoadError" xml:space="preserve"><value>No pudimos cargar las salas públicas. Inténtalo de nuevo.</value></data>
+  <data name="PublicLobbies.Title" xml:space="preserve"><value>Salas públicas</value></data>
+  <data name="PublicLobbies.Subtitle" xml:space="preserve"><value>Únete a una sala pública para jugar con jugadores que ya están conectados.</value></data>
+  <data name="PublicLobbies.Refresh" xml:space="preserve"><value>Actualizar</value></data>
+  <data name="PublicLobbies.HostedBy" xml:space="preserve"><value>Anfitrión: {0}</value></data>
+  <data name="PublicLobbies.Occupancy" xml:space="preserve"><value>{0} de {1} jugadores</value></data>
+  <data name="PublicLobbies.Full" xml:space="preserve"><value>Llena</value></data>
+  <data name="PublicLobbies.EmptyTitle" xml:space="preserve"><value>No hay salas públicas por ahora</value></data>
+  <data name="PublicLobbies.EmptyHint" xml:space="preserve"><value>Crea una sala o únete con un código.</value></data>
+  <data name="PublicLobbies.LoadError" xml:space="preserve"><value>No pudimos cargar las salas públicas. Inténtalo de nuevo.</value></data>
 </root>

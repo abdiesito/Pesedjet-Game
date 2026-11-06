@@ -3,11 +3,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
-             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:modelsLobbies="using:Pesedjet.Client.UI.Models.Lobbies"
              xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="480"
-             x:Class="Pesedjet.Client.UI.Views.PublicRoomListView"
-             x:DataType="vm:PublicRoomListViewModel"
+             x:Class="Pesedjet.Client.UI.Views.PublicLobbyListView"
+             x:DataType="vm:PublicLobbyListViewModel"
              x:CompileBindings="True">
 
     <Grid RowDefinitions="Auto,Auto,*">
@@ -18,7 +18,7 @@
                     <Path Classes="icon" Data="{DynamicResource IconFriends}"/>
                 </Border>
                 <TextBlock Classes="card-title"
-                           Text="{Binding [PublicRooms.Title],
+                           Text="{Binding [PublicLobbies.Title],
                                           Source={x:Static
                                               loc:LocalizationManager.Instance}}"/>
             </StackPanel>
@@ -27,7 +27,7 @@
                 <StackPanel Classes="inline-icon-text">
                     <Path Classes="icon" Data="{DynamicResource IconRefresh}"/>
                     <TextBlock
-                               Text="{Binding [PublicRooms.Refresh],
+                               Text="{Binding [PublicLobbies.Refresh],
                                               Source={x:Static
                                                   loc:LocalizationManager.Instance}}"/>
                 </StackPanel>
@@ -36,7 +36,7 @@
 
         <TextBlock Classes="body-secondary"
                    Grid.Row="1" Margin="0,14,0,14"
-                   Text="{Binding [PublicRooms.Subtitle],
+                   Text="{Binding [PublicLobbies.Subtitle],
                                   Source={x:Static
                                       loc:LocalizationManager.Instance}}"/>
 
@@ -44,9 +44,9 @@
 
             <Border Classes="list-frame" IsVisible="{Binding ShowsList}">
                 <ScrollViewer Classes="notifications-scroll">
-                    <ItemsControl ItemsSource="{Binding Rooms}">
+                    <ItemsControl ItemsSource="{Binding Lobbies}">
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="models:PublicRoomItem">
+                            <DataTemplate x:DataType="modelsLobbies:PublicLobbyItem">
                                 <Border Classes="person-row">
                                     <Grid ColumnDefinitions="Auto,*,Auto">
                                         <Border Classes="avatar person-avatar">
@@ -57,7 +57,7 @@
                                                        Text="{Binding HostUsername}"
                                                        ToolTip.Tip="{Binding HostUsername}"/>
                                             <StackPanel Classes="person-status">
-                                                <TextBlock Classes="public-room-code" Text="{Binding Code}"/>
+                                                <TextBlock Classes="public-lobby-code" Text="{Binding Code}"/>
                                                 <TextBlock Classes="person-status-text"
                                                            Text="{Binding OccupancyText}"/>
                                             </StackPanel>
@@ -81,11 +81,11 @@
 
             <StackPanel Classes="empty-state" IsVisible="{Binding ShowsEmptyState}">
                 <TextBlock Classes="empty-title"
-                           Text="{Binding [PublicRooms.EmptyTitle],
+                           Text="{Binding [PublicLobbies.EmptyTitle],
                                           Source={x:Static
                                               loc:LocalizationManager.Instance}}"/>
                 <TextBlock Classes="empty-hint"
-                           Text="{Binding [PublicRooms.EmptyHint],
+                           Text="{Binding [PublicLobbies.EmptyHint],
                                           Source={x:Static
                                               loc:LocalizationManager.Instance}}"/>
             </StackPanel>
@@ -99,7 +99,7 @@
             <StackPanel VerticalAlignment="Top" Spacing="8">
                 <HeaderedContentControl Classes="alert error"
                                         IsVisible="{Binding HasLoadError}"
-                                        Header="{Binding [PublicRooms.LoadError],
+                                        Header="{Binding [PublicLobbies.LoadError],
                                                          Source={x:Static
                                                              loc:LocalizationManager.Instance}}">
                     <Button Classes="alert-action" Command="{Binding RefreshCommand}">

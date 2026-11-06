@@ -1,6 +1,6 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Pesedjet.Client.UI.Models;
+using Pesedjet.Client.UI.Models.Account;
 
 namespace Pesedjet.Client.UI.Utilities.Session;
 

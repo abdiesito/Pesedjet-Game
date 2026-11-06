@@ -1,6 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
-using Pesedjet.Client.UI.Models;
+using Pesedjet.Client.UI.Models.Account;
 
 namespace Pesedjet.Client.UI.Utilities.Validation;
 
