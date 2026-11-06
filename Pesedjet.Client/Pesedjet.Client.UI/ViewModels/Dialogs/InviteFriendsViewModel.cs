@@ -3,15 +3,23 @@ using System.Collections.Generic;
 using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Pesedjet.Client.UI.Utilities.Dialogs;
-using Pesedjet.Client.UI.Utilities.Localization;
-using Pesedjet.Client.UI.Utilities.Social;
+using Pesedjet.Client.Networking.Interfaces;
+using Pesedjet.Client.Networking.Results;
+using Pesedjet.Client.UI.Models.DialogParameters;
 using Pesedjet.Client.UI.Models.Lobbies;
 using Pesedjet.Client.UI.Models.Social;
+using Pesedjet.Client.UI.Utilities.Dialogs;
+using Pesedjet.Client.UI.Utilities.Localization;
+using Pesedjet.Client.UI.Utilities.Session;
+using Pesedjet.Client.UI.Utilities.Social;
+using Pesedjet.Client.UI.Utilities.Threading;
+using Pesedjet.Client.UI.Utilities.Toasts;
+using Pesedjet.Client.UI.ViewModels.Dialogs.Dependencies;
+using Pesedjet.Server.Contracts.DTOs;
 
 namespace Pesedjet.Client.UI.ViewModels.Dialogs;
 
-public partial class InviteFriendsViewModel : DialogViewModelBase, IDialogParameter<int>
+public partial class InviteFriendsViewModel : DialogViewModelBase, IDialogParameter<InviteFriendsRequest>
 {
     private const string FreeSlotsOneKey = "InviteFriends.FreeSlotOne";
     private const string FreeSlotsManyKey = "InviteFriends.FreeSlotsMany";
@@ -19,18 +27,25 @@ public partial class InviteFriendsViewModel : DialogViewModelBase, IDialogParame
     private const string SendManyKey = "InviteFriends.SendMany";
     private const string SendNoneKey = "InviteFriends.Send";
     private const string UnavailableKey = "InviteFriends.InMatchUnavailable";
+    private const string SentToastKey = "InviteFriends.SentToast";
 
-    private readonly ISocialCircle _socialCircle;
+    private readonly ILobbyInvitationClient _lobbyInvitationClient;
+    private readonly IPlayerSession _playerSession;
+    private readonly IToastManager _toastManager;
     private readonly TimeProvider _timeProvider;
 
+    private string _lobbyCode = string.Empty;
     private int _freeSlots;
+    private bool _isSending;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(SendLabel))]
     [NotifyCanExecuteChangedFor(nameof(SendCommand))]
     private int _selectedCount;
 
-    public IReadOnlyList<InviteCandidate> Candidates { get; private set; } = [];
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasCandidates))]
+    private IReadOnlyList<InviteCandidate> _candidates = [];
 
     public bool HasCandidates => Candidates.Count > 0;
 
@@ -45,30 +60,71 @@ public partial class InviteFriendsViewModel : DialogViewModelBase, IDialogParame
         _ => string.Format(CultureInfo.CurrentCulture, LocalizationManager.Instance[SendManyKey], SelectedCount)
     };
 
-    public InviteFriendsViewModel(ISocialCircle socialCircle, TimeProvider timeProvider)
+    public InviteFriendsViewModel(InviteFriendsDependencies dependencies)
     {
-        _socialCircle = socialCircle;
-        _timeProvider = timeProvider;
+        _lobbyInvitationClient = dependencies.LobbyInvitationClient;
+        _playerSession = dependencies.PlayerSession;
+        _toastManager = dependencies.ToastManager;
+        _timeProvider = dependencies.TimeProvider;
     }
 
-    public void Initialize(int freeSlots)
+    public void Initialize(InviteFriendsRequest parameter)
     {
-        _freeSlots = freeSlots;
+        _lobbyCode = parameter.LobbyCode;
+        _freeSlots = parameter.FreeSlots;
 
+        InvitableFriendsRequest request = new InvitableFriendsRequest
+        {
+            PlayerId = _playerSession.PlayerId,
+            LobbyCode = _lobbyCode
+        };
+
+        BackgroundJob<InvitableFriendsRequest, ClientResult<List<FriendEntry>>> job = new()
+        {
+            Work = GetInvitableFriendsOnWorker,
+            State = request,
+            OnCompleted = OnInvitableFriendsLoaded,
+            OnFailed = OnInvitableFriendsFailed
+        };
+
+        BackgroundWork.Start(job);
+    }
+
+    private ClientResult<List<FriendEntry>> GetInvitableFriendsOnWorker(InvitableFriendsRequest request)
+    {
+        return _lobbyInvitationClient.GetInvitableFriends(request);
+    }
+
+    private void OnInvitableFriendsLoaded(ClientResult<List<FriendEntry>> result, InvitableFriendsRequest request)
+    {
+        if (result.IsSuccess)
+        {
+            ShowCandidates(result.Value!);
+        }
+        else
+        {
+            _toastManager.Show(FriendshipErrors.Describe(result));
+        }
+    }
+
+    private void OnInvitableFriendsFailed(Exception error, InvitableFriendsRequest request)
+    {
+        OnInvitableFriendsLoaded(ClientResult<List<FriendEntry>>.TechnicalFailure(FailureKind.Unexpected), request);
+    }
+
+    private void ShowCandidates(List<FriendEntry> friends)
+    {
         List<InviteCandidate> candidates = new();
 
-        foreach (FriendItem friend in _socialCircle.Friends)
+        foreach (FriendEntry friend in friends)
         {
-            if (!friend.IsOffline)
+            candidates.Add(new InviteCandidate
             {
-                candidates.Add(new InviteCandidate
-                {
-                    Username = friend.Username,
-                    IsAvailable = friend.IsOnline,
-                    FriendPresence = friend.Presence,
-                    FriendLastSeenAt = friend.LastSeenAt
-                });
-            }
+                PlayerId = friend.PlayerId,
+                Username = friend.Username,
+                IsAvailable = true,
+                FriendPresence = PresenceStatus.Online
+            });
         }
 
         foreach (InviteCandidate candidate in candidates)
@@ -108,9 +164,71 @@ public partial class InviteFriendsViewModel : DialogViewModelBase, IDialogParame
     [RelayCommand(CanExecute = nameof(CanSend))]
     private void Send()
     {
-        // TODO: Send the lobby invitations to the selected friends through the server (CU-014 step 5).
-        IsConfirmed = true;
-        RequestClose();
+        if (!_isSending)
+        {
+            _isSending = true;
+
+            LobbyInvitationRequest request = new LobbyInvitationRequest
+            {
+                SenderId = _playerSession.PlayerId,
+                LobbyCode = _lobbyCode,
+                TargetIds = FindSelectedIds()
+            };
+
+            BackgroundJob<LobbyInvitationRequest, ClientResult<List<Guid>>> job = new()
+            {
+                Work = SendInvitationsOnWorker,
+                State = request,
+                OnCompleted = OnInvitationsSent,
+                OnFailed = OnInvitationsFailed
+            };
+
+            BackgroundWork.Start(job);
+        }
+    }
+
+    private ClientResult<List<Guid>> SendInvitationsOnWorker(LobbyInvitationRequest request)
+    {
+        return _lobbyInvitationClient.SendLobbyInvitations(request);
+    }
+
+    private void OnInvitationsSent(ClientResult<List<Guid>> result, LobbyInvitationRequest request)
+    {
+        _isSending = false;
+
+        if (result.IsSuccess)
+        {
+            _toastManager.Show(string.Format(
+                CultureInfo.CurrentCulture,
+                LocalizationManager.Instance[SentToastKey],
+                result.Value!.Count));
+            IsConfirmed = true;
+            RequestClose();
+        }
+        else
+        {
+            _toastManager.Show(FriendshipErrors.Describe(result));
+        }
+    }
+
+    private void OnInvitationsFailed(Exception error, LobbyInvitationRequest request)
+    {
+        OnInvitationsSent(ClientResult<List<Guid>>.TechnicalFailure(FailureKind.Unexpected), request);
+    }
+
+    private List<Guid> FindSelectedIds()
+    {
+        List<Guid> selectedIds = new();
+
+        foreach (InviteCandidate candidate in Candidates)
+        {
+            if (candidate.IsSelected)
+            {
+                selectedIds.Add(candidate.PlayerId);
+            }
+        }
+
+        return selectedIds;
     }
 
     private bool CanSend()

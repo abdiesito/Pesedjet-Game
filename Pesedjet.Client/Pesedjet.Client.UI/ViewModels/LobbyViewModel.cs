@@ -260,7 +260,8 @@ public partial class LobbyViewModel : ViewModelBase, INavigable, IDisposable
     {
         int freeSlots = Capacity - Participants.Count;
 
-        await _dialogManager.ShowDialogAsync<InviteFriendsViewModel, int>(freeSlots);
+        await _dialogManager.ShowDialogAsync<InviteFriendsViewModel, InviteFriendsRequest>(
+            new InviteFriendsRequest(Code, freeSlots));
     }
 
     [RelayCommand]

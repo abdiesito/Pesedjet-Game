@@ -11,6 +11,8 @@ public partial class InviteCandidate : ObservableObject
     [ObservableProperty]
     private bool _isSelected;
 
+    public required Guid PlayerId { get; init; }
+
     public required string Username { get; init; }
 
     public required bool IsAvailable { get; init; }
