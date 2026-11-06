@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace Pesedjet.Server.Contracts.DTOs;
 
 [DataContract]
-public class RoomMember
+public class LobbyMember
 {
     [DataMember]
     public Guid PlayerId { get; set; }

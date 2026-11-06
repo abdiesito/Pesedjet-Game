@@ -26,20 +26,20 @@ public class AccountService : IAccountService
         _timeProvider = timeProvider;
     }
 
-    public async Task<bool> RegisterAccountAsync(UserRegisterRequest request)
+    public bool RegisterAccount(UserRegisterRequest request)
     {
         bool isCreated = false;
 
         EnsureRequestIsValid(request);
-        await EnsureAccountIsAvailableAsync(request);
+        EnsureAccountIsAvailable(request);
 
         Player player = CreatePlayer(request);
-        isCreated = await _playerRepository.CreatePlayerAsync(player);
+        isCreated = _playerRepository.CreatePlayer(player);
 
         return isCreated;
     }
 
-    public async Task<bool> VerifyCodeAsync(string usernameOrEmail, string code, string purpose)
+    public bool VerifyCode(string usernameOrEmail, string code, string purpose)
     {
         bool isVerified = false;
 
@@ -48,12 +48,12 @@ public class AccountService : IAccountService
             throw CreateFault(ServiceErrorCodes.InvalidData, ServiceMessageKeys.InvalidData);
         }
 
-        isVerified = await _playerRepository.VerifyCodeAsync(usernameOrEmail, code, purpose);
+        isVerified = _playerRepository.VerifyCode(usernameOrEmail, code, purpose);
 
         return isVerified;
     }
 
-    public async Task<bool> RequestPasswordResetAsync(string email)
+    public bool RequestPasswordReset(string email)
     {
         bool isProcessed = false;
 
@@ -62,18 +62,18 @@ public class AccountService : IAccountService
             throw CreateFault(ServiceErrorCodes.InvalidData, ServiceMessageKeys.InvalidData);
         }
 
-        Player? player = await _playerRepository.GetPlayerByEmailAsync(email);
+        Player? player = _playerRepository.GetPlayerByEmail(email);
         if (player is null)
         {
             throw CreateFault(ServiceErrorCodes.UserNotFound, ServiceMessageKeys.UserNotFound);
         }
 
-        isProcessed = await _playerRepository.GeneratePasswordResetCodeAsync(player.Id);
+        isProcessed = _playerRepository.GeneratePasswordResetCode(player.Id);
 
         return isProcessed;
     }
 
-    public async Task<bool> ResetToNewPasswordAsync(ResetPasswordRequest request)
+    public bool ResetPassword(ResetPasswordRequest request)
     {
         bool isResetSuccessful = false;
 
@@ -82,25 +82,25 @@ public class AccountService : IAccountService
             throw CreateFault(ServiceErrorCodes.InvalidData, ServiceMessageKeys.InvalidData);
         }
 
-        Player? player = await _playerRepository.GetPlayerByEmailAsync(request.Email);
+        Player? player = _playerRepository.GetPlayerByEmail(request.Email);
         if (player is null)
         {
             throw CreateFault(ServiceErrorCodes.UserNotFound, ServiceMessageKeys.UserNotFound);
         }
 
-        bool isValidCode = await _playerRepository.VerifyCodeAsync(request.Email, request.Code, "PASSWORD_RESET");
+        bool isValidCode = _playerRepository.VerifyCode(request.Email, request.Code, "PASSWORD_RESET");
         if (!isValidCode)
         {
             throw CreateFault(ServiceErrorCodes.InvalidCode, ServiceMessageKeys.InvalidCode);
         }
 
         string newPasswordHash = _passwordHasher.HashPassword(request.NewPassword, player.Id);
-        isResetSuccessful = await _playerRepository.UpdatePasswordHashAsync(player.Id, newPasswordHash);
+        isResetSuccessful = _playerRepository.UpdatePasswordHash(player.Id, newPasswordHash);
 
         return isResetSuccessful;
     }
 
-    public async Task<bool> ChangePasswordAsync(ChangePasswordRequest request)
+    public bool ChangePassword(ChangePasswordRequest request)
     {
         bool isChanged = false;
 
@@ -109,7 +109,7 @@ public class AccountService : IAccountService
             throw CreateFault(ServiceErrorCodes.InvalidData, ServiceMessageKeys.InvalidData);
         }
 
-        Player? player = await _playerRepository.GetPlayerByUsernameAsync(request.Username);
+        Player? player = _playerRepository.GetPlayerByUsername(request.Username);
         if (player is null)
         {
             throw CreateFault(ServiceErrorCodes.UserNotFound, ServiceMessageKeys.UserNotFound);
@@ -122,7 +122,7 @@ public class AccountService : IAccountService
         }
 
         string newPasswordHash = _passwordHasher.HashPassword(request.NewPassword, player.Id);
-        isChanged = await _playerRepository.UpdatePasswordHashAsync(player.Id, newPasswordHash);
+        isChanged = _playerRepository.UpdatePasswordHash(player.Id, newPasswordHash);
 
         return isChanged;
     }
@@ -151,9 +151,9 @@ public class AccountService : IAccountService
         }
     }
 
-    private async Task EnsureAccountIsAvailableAsync(UserRegisterRequest request)
+    private void EnsureAccountIsAvailable(UserRegisterRequest request)
     {
-        Player? playerWithUsername = await _playerRepository.GetPlayerByUsernameAsync(request.Username);
+        Player? playerWithUsername = _playerRepository.GetPlayerByUsername(request.Username);
 
         if (playerWithUsername is not null)
         {
@@ -162,7 +162,7 @@ public class AccountService : IAccountService
                 ServiceMessageKeys.UsernameAlreadyRegistered);
         }
 
-        Player? playerWithEmail = await _playerRepository.GetPlayerByEmailAsync(request.Email);
+        Player? playerWithEmail = _playerRepository.GetPlayerByEmail(request.Email);
 
         if (playerWithEmail is not null)
         {

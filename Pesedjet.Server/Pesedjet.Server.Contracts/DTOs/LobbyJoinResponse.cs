@@ -7,10 +7,10 @@ using System.Runtime.Serialization;
 namespace Pesedjet.Server.Contracts.DTOs;
 
 [DataContract]
-public class RoomJoinResponse
+public class LobbyJoinResponse
 {
     [DataMember]
-    public string RoomCode { get; set; } = string.Empty;
+    public string LobbyCode { get; set; } = string.Empty;
 
     [DataMember]
     public Guid HostPlayerId { get; set; }
@@ -22,5 +22,5 @@ public class RoomJoinResponse
     public int MaxPlayers { get; set; }
 
     [DataMember]
-    public List<RoomMember> ExistingMembers { get; set; } = new();
+    public List<LobbyMember> ExistingMembers { get; set; } = new();
 }

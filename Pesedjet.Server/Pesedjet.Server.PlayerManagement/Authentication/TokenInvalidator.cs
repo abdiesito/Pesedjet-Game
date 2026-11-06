@@ -1,6 +1,5 @@
 namespace Pesedjet.Server.PlayerManagement.Authentication;
 
-using System.Threading.Tasks;
 using DataAccess.Repositories.Interfaces;
 
 public class TokenInvalidator : ITokenInvalidator
@@ -12,13 +11,13 @@ public class TokenInvalidator : ITokenInvalidator
         _playerRepository = playerRepository;
     }
 
-    public async Task<bool> InvalidateTokenAsync(string rememberToken)
+    public bool InvalidateToken(string rememberToken)
     {
         bool isInvalidated = false;
 
         if (!string.IsNullOrWhiteSpace(rememberToken))
         {
-            isInvalidated = await _playerRepository.RevokeRememberTokenAsync(rememberToken);
+            isInvalidated = _playerRepository.RevokeRememberToken(rememberToken);
         }
 
         return isInvalidated;

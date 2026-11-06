@@ -33,12 +33,17 @@ builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<ITokenInvalidator, TokenInvalidator>();
 
 builder.Services.AddTransient<AccountService>();
+builder.Services.AddTransient<AuthServiceDependencies>();
 builder.Services.AddTransient<AuthService>();
-builder.Services.AddSingleton<RoomService>();
+builder.Services.AddSingleton<LobbyService>();
 
 WebApplication app = builder.Build();
 
-((IApplicationBuilder)app).UseServiceModel(serviceBuilder =>
+((IApplicationBuilder)app).UseServiceModel(ConfigureServiceModel);
+
+app.Run();
+
+static void ConfigureServiceModel(IServiceBuilder serviceBuilder)
 {
     NetTcpBinding tcpBinding = new NetTcpBinding(SecurityMode.None);
 
@@ -48,8 +53,6 @@ WebApplication app = builder.Build();
     serviceBuilder.AddService<AuthService>()
         .AddServiceEndpoint<AuthService, IAuthService>(tcpBinding, ServiceEndpoints.AuthServiceAddress);
 
-    serviceBuilder.AddService<RoomService>()
-        .AddServiceEndpoint<RoomService, IRoomService>(tcpBinding, ServiceEndpoints.RoomServiceAddress);
-});
-
-app.Run();
+    serviceBuilder.AddService<LobbyService>()
+        .AddServiceEndpoint<LobbyService, ILobbyService>(tcpBinding, ServiceEndpoints.LobbyServiceAddress);
+}

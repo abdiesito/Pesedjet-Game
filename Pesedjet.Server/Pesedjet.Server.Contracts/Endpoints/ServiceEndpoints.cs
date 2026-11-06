@@ -6,5 +6,5 @@ public static class ServiceEndpoints
 
     public static readonly string AccountServiceAddress = $"net.tcp://localhost:{TcpPort}/AccountService";
     public static readonly string AuthServiceAddress = $"net.tcp://localhost:{TcpPort}/AuthService";
-    public static readonly string RoomServiceAddress = $"net.tcp://localhost:{TcpPort}/RoomService";
+    public static readonly string LobbyServiceAddress = $"net.tcp://localhost:{TcpPort}/LobbyService";
 }

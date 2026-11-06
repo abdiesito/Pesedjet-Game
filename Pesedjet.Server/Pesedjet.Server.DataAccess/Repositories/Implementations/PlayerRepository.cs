@@ -16,111 +16,109 @@ public class PlayerRepository : IPlayerRepository
         _context = context;
     }
 
-    public async Task<Player?> GetPlayerByIdAsync(Guid playerId)
+    public Player? GetPlayerById(Guid playerId)
     {
-        Player? player = await _context.Players
+        Player? player = _context.Players
             .AsNoTracking()
-            .FirstOrDefaultAsync(p => p.Id == playerId);
+            .FirstOrDefault(p => p.Id == playerId);
 
         return player;
     }
 
-    public async Task<Player?> GetPlayerByUsernameAsync(string username)
+    public Player? GetPlayerByUsername(string username)
     {
-        Player? player = await _context.Players
+        Player? player = _context.Players
             .AsNoTracking()
-            .FirstOrDefaultAsync(p => p.Username == username);
+            .FirstOrDefault(p => p.Username == username);
 
         return player;
     }
 
-    public async Task<Player?> GetPlayerByEmailAsync(string email)
+    public Player? GetPlayerByEmail(string email)
     {
-        Player? player = await _context.Players
+        Player? player = _context.Players
             .AsNoTracking()
-            .FirstOrDefaultAsync(p => p.Email == email);
+            .FirstOrDefault(p => p.Email == email);
 
         return player;
     }
 
-    public async Task<bool> CreatePlayerAsync(Player player)
+    public bool CreatePlayer(Player player)
     {
         _context.Players.Add(player);
-        int affectedRows = await _context.SaveChangesAsync();
+        int affectedRows = _context.SaveChanges();
 
         return affectedRows == ExpectedAffectedRows;
     }
 
-    public async Task<bool> VerifyCodeAsync(string usernameOrEmail, string code, string purpose)
+    public bool VerifyCode(string usernameOrEmail, string code, string purpose)
     {
         bool isValid = false;
-        await Task.CompletedTask;
 
         return isValid;
     }
 
-    public async Task<bool> GeneratePasswordResetCodeAsync(Guid playerId)
+    public bool GeneratePasswordResetCode(Guid playerId)
     {
         bool isGenerated = false;
-        await Task.CompletedTask;
 
         return isGenerated;
     }
 
-    public async Task<bool> UpdatePasswordHashAsync(Guid playerId, string newPasswordHash)
+    public bool UpdatePasswordHash(Guid playerId, string newPasswordHash)
     {
         bool isUpdated = false;
 
-        Player? player = await _context.Players
-            .FirstOrDefaultAsync(p => p.Id == playerId);
+        Player? player = _context.Players
+            .FirstOrDefault(p => p.Id == playerId);
 
         if (player is not null)
         {
             player.PasswordHash = newPasswordHash;
-            int affectedRows = await _context.SaveChangesAsync();
+            int affectedRows = _context.SaveChanges();
             isUpdated = affectedRows == ExpectedAffectedRows;
         }
 
         return isUpdated;
     }
 
-    public async Task<bool> SaveRememberTokenAsync(Guid playerId, string token)
+    public bool SaveRememberToken(Guid playerId, string token)
     {
         bool isSaved = false;
 
-        Player? player = await _context.Players
-            .FirstOrDefaultAsync(p => p.Id == playerId);
+        Player? player = _context.Players
+            .FirstOrDefault(p => p.Id == playerId);
 
         if (player is not null)
         {
             player.RememberToken = token;
-            int affectedRows = await _context.SaveChangesAsync();
+            int affectedRows = _context.SaveChanges();
             isSaved = affectedRows == ExpectedAffectedRows;
         }
 
         return isSaved;
     }
 
-    public async Task<Player?> GetPlayerByRememberTokenAsync(string token)
+    public Player? GetPlayerByRememberToken(string token)
     {
-        Player? player = await _context.Players
+        Player? player = _context.Players
             .AsNoTracking()
-            .FirstOrDefaultAsync(p => p.RememberToken == token);
+            .FirstOrDefault(p => p.RememberToken == token);
 
         return player;
     }
 
-    public async Task<bool> RevokeRememberTokenAsync(string username)
+    public bool RevokeRememberToken(string username)
     {
         bool isRevoked = false;
 
-        Player? player = await _context.Players
-            .FirstOrDefaultAsync(p => p.Username == username);
+        Player? player = _context.Players
+            .FirstOrDefault(p => p.Username == username);
 
         if (player is not null)
         {
             player.RememberToken = null;
-            int affectedRows = await _context.SaveChangesAsync();
+            int affectedRows = _context.SaveChanges();
             isRevoked = affectedRows == ExpectedAffectedRows;
         }
 

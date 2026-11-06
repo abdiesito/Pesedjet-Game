@@ -5,10 +5,10 @@ using System.Runtime.Serialization;
 namespace Pesedjet.Server.Contracts.DTOs;
 
 [DataContract]
-public class RoomSummary
+public class LobbySummary
 {
     [DataMember]
-    public string RoomCode { get; set; } = string.Empty;
+    public string LobbyCode { get; set; } = string.Empty;
 
     [DataMember]
     public string HostUsername { get; set; } = string.Empty;

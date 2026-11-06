@@ -8,22 +8,22 @@ namespace Pesedjet.Server.Contracts.Interfaces
     {
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]
-        Task<bool> RegisterAccountAsync(UserRegisterRequest request);
+        bool RegisterAccount(UserRegisterRequest request);
 
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]
-        Task<bool> VerifyCodeAsync(string usernameOrEmail, string code, string purpose);
+        bool VerifyCode(string usernameOrEmail, string code, string purpose);
 
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]
-        Task<bool> RequestPasswordResetAsync(string email);
+        bool RequestPasswordReset(string email);
 
-        //[OperationContract]
-        //[FaultContract(typeof(ServiceFault))]
-        //Task<bool> ResetToNewPasswordAsync(ResetPassword request);
+        [OperationContract]
+        [FaultContract(typeof(ServiceFault))]
+        bool ResetPassword(ResetPasswordRequest request);
 
-        //[OperationContract]
-        //[FaultContract(typeof(ServiceFault))]
-        //Task<bool> ChangePasswordAsync(ChangePassword request);
+        [OperationContract]
+        [FaultContract(typeof(ServiceFault))]
+        bool ChangePassword(ChangePasswordRequest request);
     }
 }

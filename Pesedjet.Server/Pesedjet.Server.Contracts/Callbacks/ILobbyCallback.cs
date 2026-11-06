@@ -1,12 +1,16 @@
+#nullable enable
+
 using System.ServiceModel;
-using Pesedjet.Server.Contracts.Callbacks;
 using Pesedjet.Server.Contracts.DTOs;
 
-namespace Pesedjet.Server.Contracts.Callbacks
+namespace Pesedjet.Server.Contracts.Callbacks;
+
+[ServiceContract]
+public interface ILobbyCallback
 {
-    public interface ILobbyCallback
-    {
-        [OperationContract(IsOneWay = true)]
-        void OnLobbyStateChanged(LobbyChangeEvent changeEvent);
-    }
+    [OperationContract(IsOneWay = true)]
+    void PlayerJoined(LobbyMember player);
+
+    [OperationContract(IsOneWay = true)]
+    void PlayerLeft(Guid playerId);
 }

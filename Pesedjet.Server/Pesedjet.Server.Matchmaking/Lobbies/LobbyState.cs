@@ -6,28 +6,23 @@ using System.Linq;
 using Pesedjet.Server.Contracts.Callbacks;
 using Pesedjet.Server.Contracts.DTOs;
 
-namespace Pesedjet.Server.Matchmaking.Rooms;
+namespace Pesedjet.Server.Matchmaking.Lobbies;
 
-public sealed class RoomState
+public sealed class LobbyState
 {
-    private readonly List<RoomConnection> _connections = new();
+    private readonly List<LobbyConnection> _connections = new();
 
-    public RoomState(
-        string roomCode,
-        Guid hostPlayerId,
-        bool isPublic,
-        int maxPlayers,
-        DateTimeOffset createdAtUtc)
+    public LobbyState(LobbySettings settings)
     {
-        RoomCode = roomCode;
-        HostPlayerId = hostPlayerId;
-        IsPublic = isPublic;
-        MaxPlayers = maxPlayers;
-        CreatedAtUtc = createdAtUtc;
-        Status = RoomStatus.Waiting;
+        LobbyCode = settings.LobbyCode;
+        HostPlayerId = settings.HostPlayerId;
+        IsPublic = settings.IsPublic;
+        MaxPlayers = settings.MaxPlayers;
+        CreatedAtUtc = settings.CreatedAtUtc;
+        Status = LobbyStatus.Waiting;
     }
 
-    public string RoomCode { get; }
+    public string LobbyCode { get; }
 
     public Guid HostPlayerId { get; private set; }
 
@@ -37,7 +32,7 @@ public sealed class RoomState
 
     public DateTimeOffset CreatedAtUtc { get; }
 
-    public RoomStatus Status { get; private set; }
+    public LobbyStatus Status { get; private set; }
 
     public bool IsEmpty => _connections.Count == 0;
 
@@ -50,7 +45,7 @@ public sealed class RoomState
         return contains;
     }
 
-    public void AddOrReplace(RoomConnection connection)
+    public void AddOrReplace(LobbyConnection connection)
     {
         int index = _connections.FindIndex(existing => existing.Member.PlayerId == connection.Member.PlayerId);
         if (index >= 0)
@@ -67,7 +62,7 @@ public sealed class RoomState
     {
         int removedCount = _connections.RemoveAll(connection => connection.Member.PlayerId == playerId);
 
-        // The role passes to the participant who has been longest in the room (CU-014 FA-04).
+        // The role passes to the participant who has been longest in the lobby (CU-014 FA-04).
         if (removedCount > 0 && playerId == HostPlayerId && _connections.Count > 0)
         {
             HostPlayerId = _connections[0].Member.PlayerId;
@@ -93,12 +88,12 @@ public sealed class RoomState
 
     public void StartMatch()
     {
-        Status = RoomStatus.InGame;
+        Status = LobbyStatus.InGame;
     }
 
-    public List<RoomMember> GetMembersExcept(Guid playerId)
+    public List<LobbyMember> GetMembersExcept(Guid playerId)
     {
-        List<RoomMember> members = _connections
+        List<LobbyMember> members = _connections
             .Where(connection => connection.Member.PlayerId != playerId)
             .Select(connection => connection.Member)
             .ToList();
@@ -106,9 +101,9 @@ public sealed class RoomState
         return members;
     }
 
-    public List<IRoomCallback> GetCallbacksExcept(Guid playerId)
+    public List<ILobbyCallback> GetCallbacksExcept(Guid playerId)
     {
-        List<IRoomCallback> callbacks = _connections
+        List<ILobbyCallback> callbacks = _connections
             .Where(connection => connection.Member.PlayerId != playerId)
             .Select(connection => connection.Callback)
             .ToList();
@@ -116,14 +111,14 @@ public sealed class RoomState
         return callbacks;
     }
 
-    public RoomSummary ToSummary()
+    public LobbySummary ToSummary()
     {
-        RoomConnection? hostConnection = _connections.Find(
+        LobbyConnection? hostConnection = _connections.Find(
             connection => connection.Member.PlayerId == HostPlayerId);
 
-        RoomSummary summary = new()
+        LobbySummary summary = new()
         {
-            RoomCode = RoomCode,
+            LobbyCode = LobbyCode,
             HostUsername = hostConnection?.Member.Username ?? string.Empty,
             CurrentPlayers = _connections.Count,
             MaxPlayers = MaxPlayers
