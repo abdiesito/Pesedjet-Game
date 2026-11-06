@@ -8,18 +8,18 @@ using Pesedjet.Server.Contracts.DTOs;
 namespace Pesedjet.Client.Networking.Callbacks;
 
 [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Single, UseSynchronizationContext = false)]
-public sealed class RoomCallbackHandler : IRoomCallback
+public sealed class LobbyCallbackHandler : ILobbyCallback
 {
-    public event EventHandler<RoomMember>? PlayerJoined;
+    public event EventHandler<LobbyMember>? PlayerJoined;
 
     public event EventHandler<Guid>? PlayerLeft;
 
-    void IRoomCallback.PlayerJoined(RoomMember player)
+    void ILobbyCallback.PlayerJoined(LobbyMember player)
     {
         PlayerJoined?.Invoke(this, player);
     }
 
-    void IRoomCallback.PlayerLeft(Guid playerId)
+    void ILobbyCallback.PlayerLeft(Guid playerId)
     {
         PlayerLeft?.Invoke(this, playerId);
     }

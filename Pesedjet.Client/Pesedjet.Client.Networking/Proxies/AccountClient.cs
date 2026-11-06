@@ -1,112 +1,30 @@
-using System.ServiceModel;
 using Pesedjet.Client.Networking.Interfaces;
 using Pesedjet.Client.Networking.Results;
 using Pesedjet.Server.Contracts.DTOs;
 using Pesedjet.Server.Contracts.Endpoints;
-using Pesedjet.Server.Contracts.Faults;
 using Pesedjet.Server.Contracts.Interfaces;
 
 namespace Pesedjet.Client.Networking.Proxies;
 
-public class AccountClient : IAccountClient
+public sealed class AccountClient : IAccountClient
 {
-    private const int OperationTimeoutSeconds = 15;
+    private readonly IServiceCaller _serviceCaller;
 
-    private static readonly TimeSpan OperationTimeout = TimeSpan.FromSeconds(OperationTimeoutSeconds);
-
-    public async Task<AccountRegistrationResult> RegisterAccountAsync(UserRegisterRequest request)
+    public AccountClient(IServiceCaller serviceCaller)
     {
-        AccountRegistrationResult result = AccountRegistrationResult.Failed;
-        var channelFactory = new ChannelFactory<IAccountService>(CreateBinding(), CreateEndpointAddress());
-        IAccountService channel = channelFactory.CreateChannel();
-
-        try
-        {
-            bool isRegistered = await channel.RegisterAccountAsync(request);
-
-            if (isRegistered)
-            {
-                result = AccountRegistrationResult.Registered;
-            }
-        }
-        catch (FaultException<ServiceFault> ex)
-        {
-            result = MapFault(ex.Detail);
-        }
-        catch (CommunicationException)
-        {
-            result = AccountRegistrationResult.ServerUnreachable;
-        }
-        catch (TimeoutException)
-        {
-            result = AccountRegistrationResult.ServerUnreachable;
-        }
-        finally
-        {
-            CloseCommunicationObject(channel as ICommunicationObject);
-            CloseCommunicationObject(channelFactory);
-        }
-
-        return result;
+        _serviceCaller = serviceCaller;
     }
 
-    private static NetTcpBinding CreateBinding()
+    public ClientResult<bool> RegisterAccount(UserRegisterRequest request)
     {
-        return new NetTcpBinding(SecurityMode.None)
-        {
-            OpenTimeout = OperationTimeout,
-            SendTimeout = OperationTimeout
-        };
+        return _serviceCaller.Call<IAccountService, UserRegisterRequest, bool>(
+            ServiceEndpoints.AccountServiceAddress,
+            RegisterAccountOperation,
+            request);
     }
 
-    private static EndpointAddress CreateEndpointAddress()
+    private static bool RegisterAccountOperation(IAccountService channel, UserRegisterRequest request)
     {
-        return new EndpointAddress(ServiceEndpoints.AccountServiceAddress);
-    }
-
-    private static AccountRegistrationResult MapFault(ServiceFault fault)
-    {
-        AccountRegistrationResult result = AccountRegistrationResult.Failed;
-
-        if (fault.ErrorCode == ServiceErrorCodes.UsernameAlreadyRegistered)
-        {
-            result = AccountRegistrationResult.UsernameAlreadyRegistered;
-        }
-        else if (fault.ErrorCode == ServiceErrorCodes.EmailAlreadyRegistered)
-        {
-            result = AccountRegistrationResult.EmailAlreadyRegistered;
-        }
-        else if (fault.ErrorCode == ServiceErrorCodes.InvalidRegistrationData)
-        {
-            result = AccountRegistrationResult.InvalidData;
-        }
-
-        return result;
-    }
-
-    private static void CloseCommunicationObject(ICommunicationObject? communicationObject)
-    {
-        if (communicationObject is not null)
-        {
-            try
-            {
-                if (communicationObject.State == CommunicationState.Faulted)
-                {
-                    communicationObject.Abort();
-                }
-                else
-                {
-                    communicationObject.Close();
-                }
-            }
-            catch (CommunicationException)
-            {
-                communicationObject.Abort();
-            }
-            catch (TimeoutException)
-            {
-                communicationObject.Abort();
-            }
-        }
+        return channel.RegisterAccount(request);
     }
 }

@@ -1,216 +1,74 @@
-using System.ServiceModel;
 using Pesedjet.Client.Networking.Interfaces;
 using Pesedjet.Client.Networking.Results;
 using Pesedjet.Server.Contracts.DTOs;
 using Pesedjet.Server.Contracts.Endpoints;
-using Pesedjet.Server.Contracts.Faults;
 using Pesedjet.Server.Contracts.Interfaces;
 
 namespace Pesedjet.Client.Networking.Proxies;
 
-public class AuthClient : IAuthClient
+public sealed class AuthClient : IAuthClient
 {
-    private const int OperationTimeoutSeconds = 15;
+    private readonly IServiceCaller _serviceCaller;
 
-    private static readonly TimeSpan OperationTimeout = TimeSpan.FromSeconds(OperationTimeoutSeconds);
-
-    public async Task<(AuthResult Result, UserSession? Session)> LoginAsync(UserLoginRequest request)
+    public AuthClient(IServiceCaller serviceCaller)
     {
-        AuthResult result = AuthResult.Failed;
-        UserSession? session = null;
-
-        ChannelFactory<IAuthService> channelFactory = new ChannelFactory<IAuthService>(CreateBinding(), CreateEndpointAddress());
-        IAuthService channel = channelFactory.CreateChannel();
-
-        try
-        {
-            session = await channel.LoginAsync(request);
-            result = AuthResult.Success;
-        }
-        catch (FaultException<ServiceFault> ex)
-        {
-            result = MapFault(ex.Detail);
-        }
-        catch (CommunicationException)
-        {
-            result = AuthResult.ServerUnreachable;
-        }
-        catch (TimeoutException)
-        {
-            result = AuthResult.ServerUnreachable;
-        }
-        finally
-        {
-            CloseCommunicationObject(channel as ICommunicationObject);
-            CloseCommunicationObject(channelFactory);
-        }
-
-        return (result, session);
+        _serviceCaller = serviceCaller;
     }
 
-    public async Task<(AuthResult Result, UserSession? Session)> ResumeSessionAsync(string rememberToken)
+    public ClientResult<UserSession> Login(UserLoginRequest request)
     {
-        AuthResult result = AuthResult.Failed;
-        UserSession? session = null;
-
-        ChannelFactory<IAuthService> channelFactory = new ChannelFactory<IAuthService>(CreateBinding(), CreateEndpointAddress());
-        IAuthService channel = channelFactory.CreateChannel();
-
-        try
-        {
-            session = await channel.ResumeSessionAsync(rememberToken);
-            result = AuthResult.Success;
-        }
-        catch (FaultException<ServiceFault> ex)
-        {
-            result = MapFault(ex.Detail);
-        }
-        catch (CommunicationException)
-        {
-            result = AuthResult.ServerUnreachable;
-        }
-        catch (TimeoutException)
-        {
-            result = AuthResult.ServerUnreachable;
-        }
-        finally
-        {
-            CloseCommunicationObject(channel as ICommunicationObject);
-            CloseCommunicationObject(channelFactory);
-        }
-
-        return (result, session);
+        return _serviceCaller.Call<IAuthService, UserLoginRequest, UserSession>(
+            ServiceEndpoints.AuthServiceAddress,
+            LoginOperation,
+            request);
     }
 
-    public async Task<(AuthResult Result, UserSession? Session)> CreateGuestSessionAsync()
+    public ClientResult<UserSession> ResumeSession(string rememberToken)
     {
-        AuthResult result = AuthResult.Failed;
-        UserSession? session = null;
-
-        ChannelFactory<IAuthService> channelFactory = new ChannelFactory<IAuthService>(CreateBinding(), CreateEndpointAddress());
-        IAuthService channel = channelFactory.CreateChannel();
-
-        try
-        {
-            session = await channel.CreateGuestSessionAsync();
-            result = AuthResult.Success;
-        }
-        catch (FaultException<ServiceFault>)
-        {
-            result = AuthResult.Failed;
-        }
-        catch (CommunicationException)
-        {
-            result = AuthResult.ServerUnreachable;
-        }
-        catch (TimeoutException)
-        {
-            result = AuthResult.ServerUnreachable;
-        }
-        finally
-        {
-            CloseCommunicationObject(channel as ICommunicationObject);
-            CloseCommunicationObject(channelFactory);
-        }
-
-        return (result, session);
+        return _serviceCaller.Call<IAuthService, string, UserSession>(
+            ServiceEndpoints.AuthServiceAddress,
+            ResumeSessionOperation,
+            rememberToken);
     }
 
-    public async Task<AuthResult> LogoutAsync(string sessionToken)
+    public ClientResult<UserSession> CreateGuestSession()
     {
-        AuthResult result = AuthResult.Failed;
+        return _serviceCaller.Call<IAuthService, object?, UserSession>(
+            ServiceEndpoints.AuthServiceAddress,
+            CreateGuestSessionOperation,
+            null);
+    }
 
-        ChannelFactory<IAuthService> channelFactory = new ChannelFactory<IAuthService>(CreateBinding(), CreateEndpointAddress());
-        IAuthService channel = channelFactory.CreateChannel();
-
-        LogoutRequest request = new LogoutRequest
+    public ClientResult<bool> Logout(string sessionToken)
+    {
+        LogoutRequest request = new()
         {
             SessionToken = sessionToken
         };
 
-        try
-        {
-            bool isSuccess = await channel.LogoutAsync(request);
-            result = isSuccess ? AuthResult.Success : AuthResult.Failed;
-        }
-        catch (FaultException<ServiceFault> ex)
-        {
-            result = MapFault(ex.Detail);
-        }
-        catch (CommunicationException)
-        {
-            result = AuthResult.ServerUnreachable;
-        }
-        catch (TimeoutException)
-        {
-            result = AuthResult.ServerUnreachable;
-        }
-        finally
-        {
-            CloseCommunicationObject(channel as ICommunicationObject);
-            CloseCommunicationObject(channelFactory);
-        }
-
-        return result;
+        return _serviceCaller.Call<IAuthService, LogoutRequest, bool>(
+            ServiceEndpoints.AuthServiceAddress,
+            LogoutOperation,
+            request);
     }
 
-    private static NetTcpBinding CreateBinding()
+    private static UserSession LoginOperation(IAuthService channel, UserLoginRequest request)
     {
-        return new NetTcpBinding(SecurityMode.None)
-        {
-            OpenTimeout = OperationTimeout,
-            SendTimeout = OperationTimeout
-        };
+        return channel.Login(request);
     }
 
-    private static EndpointAddress CreateEndpointAddress()
+    private static UserSession ResumeSessionOperation(IAuthService channel, string rememberToken)
     {
-        return new EndpointAddress(ServiceEndpoints.AuthServiceAddress);
+        return channel.ResumeSession(rememberToken);
     }
 
-    private static AuthResult MapFault(ServiceFault fault)
+    private static UserSession CreateGuestSessionOperation(IAuthService channel, object? unused)
     {
-        AuthResult result = AuthResult.Failed;
-
-        if (fault.ErrorCode == ServiceErrorCodes.InvalidCredentials)
-        {
-            result = AuthResult.InvalidCredentials;
-        }
-        else if (fault.ErrorCode == ServiceErrorCodes.UserNotFound)
-        {
-            result = AuthResult.UserNotFound;
-        }
-        else if (fault.ErrorCode == ServiceErrorCodes.InvalidData)
-        {
-            result = AuthResult.InvalidData;
-        }
-
-        return result;
+        return channel.CreateGuestSession();
     }
 
-    private static void CloseCommunicationObject(ICommunicationObject? communicationObject)
+    private static bool LogoutOperation(IAuthService channel, LogoutRequest request)
     {
-        if (communicationObject is not null)
-        {
-            try
-            {
-                if (communicationObject.State == CommunicationState.Faulted)
-                {
-                    communicationObject.Abort();
-                }
-                else
-                {
-                    communicationObject.Close();
-                }
-            }
-            catch (CommunicationException)
-            {
-                communicationObject.Abort();
-            }
-            catch (TimeoutException)
-            {
-                communicationObject.Abort();
-            }
-        }
+        return channel.Logout(request);
     }
 }

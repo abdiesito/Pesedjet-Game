@@ -7,25 +7,25 @@ using Pesedjet.Server.Contracts.Interfaces;
 
 namespace Pesedjet.Client.Networking.Proxies;
 
-public sealed class RoomClient : IRoomClient
+public sealed class LobbyClient : ILobbyClient
 {
     private const int OperationTimeoutSeconds = 15;
 
     private static readonly TimeSpan OperationTimeout = TimeSpan.FromSeconds(OperationTimeoutSeconds);
 
-    private readonly RoomCallbackHandler _callbackHandler;
-    private readonly DuplexChannelFactory<IRoomService> _channelFactory;
+    private readonly LobbyCallbackHandler _callbackHandler;
+    private readonly DuplexChannelFactory<ILobbyService> _channelFactory;
     private readonly object _syncRoot = new();
     private readonly object _eventLock = new();
-    private readonly Queue<Action> _pendingEvents = new();
-    private EventHandler<RoomMember>? _playerJoined;
+    private readonly Queue<PendingLobbyEvent> _pendingEvents = new();
+    private EventHandler<LobbyMember>? _playerJoined;
     private EventHandler<Guid>? _playerLeft;
-    private IRoomService? _channel;
+    private ILobbyService? _channel;
     private bool _isDisposed;
 
-    public RoomClient()
+    public LobbyClient()
     {
-        _callbackHandler = new RoomCallbackHandler();
+        _callbackHandler = new LobbyCallbackHandler();
         _callbackHandler.PlayerJoined += OnPlayerJoined;
         _callbackHandler.PlayerLeft += OnPlayerLeft;
 
@@ -35,13 +35,13 @@ public sealed class RoomClient : IRoomClient
             SendTimeout = OperationTimeout
         };
         InstanceContext callbackContext = new(_callbackHandler);
-        _channelFactory = new DuplexChannelFactory<IRoomService>(
+        _channelFactory = new DuplexChannelFactory<ILobbyService>(
             callbackContext,
             binding,
-            new EndpointAddress(ServiceEndpoints.RoomServiceAddress));
+            new EndpointAddress(ServiceEndpoints.LobbyServiceAddress));
     }
 
-    public event EventHandler<RoomMember>? PlayerJoined
+    public event EventHandler<LobbyMember>? PlayerJoined
     {
         add
         {
@@ -77,34 +77,78 @@ public sealed class RoomClient : IRoomClient
         }
     }
 
-    public Task<string> CreateRoomAsync(RoomMember host, bool isPublic, int maxPlayers)
+    // Request-reply calls block the calling thread: callers must invoke them from a worker thread, never the UI thread.
+    public string CreateLobby(LobbyMember host, bool isPublic, int maxPlayers)
     {
         ClearPendingEvents();
-        Task<string> operation = ExecuteAsync(channel => channel.CreateRoomAsync(host, isPublic, maxPlayers));
 
-        return operation;
+        ILobbyService channel = GetOrCreateChannel();
+        string lobbyCode;
+
+        try
+        {
+            lobbyCode = channel.CreateLobby(host, isPublic, maxPlayers);
+        }
+        catch (Exception exception) when (IsTransportFailure(exception))
+        {
+            AbortChannel(channel);
+            throw;
+        }
+
+        return lobbyCode;
     }
 
-    public Task<RoomJoinResponse> JoinRoomAsync(string roomCode, RoomMember player)
+    public LobbyJoinResponse JoinLobby(string lobbyCode, LobbyMember player)
     {
         ClearPendingEvents();
-        Task<RoomJoinResponse> operation = ExecuteAsync(channel => channel.JoinRoomAsync(roomCode, player));
 
-        return operation;
+        ILobbyService channel = GetOrCreateChannel();
+        LobbyJoinResponse response;
+
+        try
+        {
+            response = channel.JoinLobby(lobbyCode, player);
+        }
+        catch (Exception exception) when (IsTransportFailure(exception))
+        {
+            AbortChannel(channel);
+            throw;
+        }
+
+        return response;
     }
 
-    public Task LeaveRoomAsync(string roomCode, Guid playerId)
+    public void LeaveLobby(string lobbyCode, Guid playerId)
     {
-        Task operation = ExecuteAsync(channel => channel.LeaveRoomAsync(roomCode, playerId));
+        ILobbyService channel = GetOrCreateChannel();
 
-        return operation;
+        try
+        {
+            channel.LeaveLobby(lobbyCode, playerId);
+        }
+        catch (Exception exception) when (IsTransportFailure(exception))
+        {
+            AbortChannel(channel);
+            throw;
+        }
     }
 
-    public Task<List<RoomSummary>> GetPublicRoomsAsync()
+    public List<LobbySummary> GetPublicLobbies()
     {
-        Task<List<RoomSummary>> operation = ExecuteAsync(channel => channel.GetPublicRoomsAsync());
+        ILobbyService channel = GetOrCreateChannel();
+        List<LobbySummary> lobbies;
 
-        return operation;
+        try
+        {
+            lobbies = channel.GetPublicLobbies();
+        }
+        catch (Exception exception) when (IsTransportFailure(exception))
+        {
+            AbortChannel(channel);
+            throw;
+        }
+
+        return lobbies;
     }
 
     public void ReplayPendingEvents()
@@ -113,14 +157,23 @@ public sealed class RoomClient : IRoomClient
         {
             while (_pendingEvents.Count > 0)
             {
-                _pendingEvents.Dequeue().Invoke();
+                PendingLobbyEvent pending = _pendingEvents.Dequeue();
+
+                if (pending.Joined is not null)
+                {
+                    _playerJoined?.Invoke(this, pending.Joined);
+                }
+                else
+                {
+                    _playerLeft?.Invoke(this, pending.LeftPlayerId);
+                }
             }
         }
     }
 
-    public async ValueTask DisposeAsync()
+    public void Dispose()
     {
-        IRoomService? channel;
+        ILobbyService? channel;
         bool wasDisposed;
 
         lock (_syncRoot)
@@ -139,48 +192,24 @@ public sealed class RoomClient : IRoomClient
 
             if (channel is not null)
             {
-                await CloseSafelyAsync((ICommunicationObject)channel).ConfigureAwait(false);
+                CloseSafely((ICommunicationObject)channel);
             }
 
-            await CloseSafelyAsync(_channelFactory).ConfigureAwait(false);
+            CloseSafely(_channelFactory);
         }
     }
 
-    private async Task<TResult> ExecuteAsync<TResult>(Func<IRoomService, Task<TResult>> operation)
+    private static bool IsTransportFailure(Exception exception)
     {
-        IRoomService channel = GetOrCreateChannel();
-        TResult result;
+        bool isCommunicationFailure = exception is CommunicationException and not FaultException;
+        bool isTimeout = exception is TimeoutException;
 
-        try
-        {
-            result = await operation(channel).ConfigureAwait(false);
-        }
-        catch (CommunicationException exception) when (exception is not FaultException)
-        {
-            AbortChannel(channel);
-            throw;
-        }
-        catch (TimeoutException)
-        {
-            AbortChannel(channel);
-            throw;
-        }
-
-        return result;
+        return isCommunicationFailure || isTimeout;
     }
 
-    private async Task ExecuteAsync(Func<IRoomService, Task> operation)
+    private ILobbyService GetOrCreateChannel()
     {
-        await ExecuteAsync(async channel =>
-        {
-            await operation(channel).ConfigureAwait(false);
-            return true;
-        }).ConfigureAwait(false);
-    }
-
-    private IRoomService GetOrCreateChannel()
-    {
-        IRoomService channel;
+        ILobbyService channel;
 
         lock (_syncRoot)
         {
@@ -202,7 +231,7 @@ public sealed class RoomClient : IRoomClient
         return channel;
     }
 
-    private void AbortChannel(IRoomService channel)
+    private void AbortChannel(ILobbyService channel)
     {
         ((ICommunicationObject)channel).Abort();
 
@@ -224,13 +253,11 @@ public sealed class RoomClient : IRoomClient
         return isUnusable;
     }
 
-    private static async Task CloseSafelyAsync(ICommunicationObject communicationObject)
+    private static void CloseSafely(ICommunicationObject communicationObject)
     {
         try
         {
-            await Task.Factory
-                .FromAsync(communicationObject.BeginClose, communicationObject.EndClose, null)
-                .ConfigureAwait(false);
+            communicationObject.Close();
         }
         catch (CommunicationException)
         {
@@ -252,13 +279,13 @@ public sealed class RoomClient : IRoomClient
 
     // Events are raised inside the lock so replayed and live events keep the server's order;
     // subscribers must only marshal to the UI thread (Dispatcher.Post) and return.
-    private void OnPlayerJoined(object? sender, RoomMember player)
+    private void OnPlayerJoined(object? sender, LobbyMember player)
     {
         lock (_eventLock)
         {
             if (_playerJoined is null)
             {
-                _pendingEvents.Enqueue(() => _playerJoined?.Invoke(this, player));
+                _pendingEvents.Enqueue(new PendingLobbyEvent(player, Guid.Empty));
             }
             else
             {
@@ -273,7 +300,7 @@ public sealed class RoomClient : IRoomClient
         {
             if (_playerLeft is null)
             {
-                _pendingEvents.Enqueue(() => _playerLeft?.Invoke(this, playerId));
+                _pendingEvents.Enqueue(new PendingLobbyEvent(null, playerId));
             }
             else
             {
