@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using Pesedjet.Client.UI.Models.Social;
 
@@ -7,4 +8,6 @@ public interface ISocialCircle
 {
     ObservableCollection<FriendItem> Friends { get; }
     ObservableCollection<BlockedPlayerItem> BlockedPlayers { get; }
+
+    void AddFriend(Guid playerId, string username);
 }

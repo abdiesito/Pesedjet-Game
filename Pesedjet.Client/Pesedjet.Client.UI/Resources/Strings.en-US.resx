@@ -146,6 +146,9 @@
   <data name="Common.Yesterday" xml:space="preserve"><value>yesterday</value></data>
   <data name="Common.DaysAgo" xml:space="preserve"><value>{0} d ago</value></data>
   <data name="Notifications.Expired" xml:space="preserve"><value>The room has already started; the invitation expired.</value></data>
+  <data name="Notifications.FriendRequestNotFound" xml:space="preserve"><value>This request is no longer available.</value></data>
+  <data name="Notifications.FriendAcceptedToast" xml:space="preserve"><value>You and {0} are now friends.</value></data>
+  <data name="Notifications.AlreadyInLobby" xml:space="preserve"><value>You are already in a lobby. Leave it to join another.</value></data>
   <data name="Notifications.UpToDate" xml:space="preserve"><value>You're all caught up</value></data>
   <data name="Common.MonthAgo" xml:space="preserve"><value>1 month ago</value></data>
   <data name="Common.MonthsAgo" xml:space="preserve"><value>{0} months ago</value></data>
@@ -180,6 +183,8 @@
   <data name="Friends.RemovedToast" xml:space="preserve"><value>You removed {0} from your friends.</value></data>
   <data name="Friends.BlockedToast" xml:space="preserve"><value>You blocked {0}.</value></data>
   <data name="Friends.RequestSentToast" xml:space="preserve"><value>Friend request sent to {0}.</value></data>
+  <data name="Friends.FriendAddedToast" xml:space="preserve"><value>You and {0} are now friends.</value></data>
+  <data name="Friends.RequestBlocked" xml:space="preserve"><value>You cannot send a friend request to this player.</value></data>
   <data name="Blocked.Notice" xml:space="preserve"><value>Anyone blocked cannot send you requests or invite you to rooms. Unblocking does not make them your friend.</value></data>
   <data name="Blocked.CountOne" xml:space="preserve"><value>1 blocked</value></data>
   <data name="Blocked.CountMany" xml:space="preserve"><value>{0} blocked</value></data>
@@ -333,6 +338,8 @@
   <data name="InviteFriends.Send" xml:space="preserve"><value>Send invitations</value></data>
   <data name="InviteFriends.SendOne" xml:space="preserve"><value>Send 1 invitation</value></data>
   <data name="InviteFriends.SendMany" xml:space="preserve"><value>Send {0} invitations</value></data>
+  <data name="InviteFriends.SentToast" xml:space="preserve"><value>Invitations sent: {0}.</value></data>
+  <data name="InviteFriends.NotAllowed" xml:space="preserve"><value>You cannot invite from this lobby.</value></data>
   <data name="Match.Round" xml:space="preserve"><value>Round {0}</value></data>
   <data name="Match.YourTurn" xml:space="preserve"><value>Your turn</value></data>
   <data name="Match.TurnOf" xml:space="preserve"><value>{0}'s turn</value></data>

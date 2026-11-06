@@ -5,9 +5,17 @@ using System.Globalization;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Pesedjet.Client.Networking.Interfaces;
+using Pesedjet.Client.Networking.Results;
 using Pesedjet.Client.UI.Utilities.Localization;
+using Pesedjet.Client.UI.Utilities.Session;
+using Pesedjet.Client.UI.Utilities.Social;
+using Pesedjet.Client.UI.Utilities.Threading;
 using Pesedjet.Client.UI.Utilities.Toasts;
+using Pesedjet.Client.UI.ViewModels.Dependencies;
 using Pesedjet.Client.UI.Models.Social;
+using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.Faults;
 
 namespace Pesedjet.Client.UI.ViewModels;
 
@@ -19,9 +27,13 @@ public partial class PlayerSearchViewModel : ViewModelBase
     private const string SendingKey = "Friends.Sending";
     private const string NoMatchesTitleKey = "Friends.NoMatchesTitle";
     private const string RequestSentToastKey = "Friends.RequestSentToast";
+    private const string FriendAddedToastKey = "Friends.FriendAddedToast";
 
     private static readonly TimeSpan SearchDelay = TimeSpan.FromMilliseconds(SearchDelayMilliseconds);
 
+    private readonly IFriendshipClient _friendshipClient;
+    private readonly IPlayerSession _playerSession;
+    private readonly ISocialCircle _socialCircle;
     private readonly IToastManager _toastManager;
     private readonly TimeProvider _timeProvider;
 
@@ -58,10 +70,13 @@ public partial class PlayerSearchViewModel : ViewModelBase
 
     public bool HasSearchText => SearchText.Length > 0;
 
-    public PlayerSearchViewModel(IToastManager toastManager, TimeProvider timeProvider)
+    public PlayerSearchViewModel(PlayerSearchDependencies dependencies)
     {
-        _toastManager = toastManager;
-        _timeProvider = timeProvider;
+        _friendshipClient = dependencies.FriendshipClient;
+        _playerSession = dependencies.PlayerSession;
+        _socialCircle = dependencies.SocialCircle;
+        _toastManager = dependencies.ToastManager;
+        _timeProvider = dependencies.TimeProvider;
     }
 
     partial void OnSearchTextChanged(string value)
@@ -77,40 +92,153 @@ public partial class PlayerSearchViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task SendRequestAsync(PlayerSearchResult result)
+    private void SendRequest(PlayerSearchResult result)
     {
         result.IsSending = true;
 
-        try
+        FriendRequest request = new FriendRequest
         {
-            await SendRequestToServerAsync(result);
-        }
-        finally
-        {
-            result.IsSending = false;
-        }
+            SenderId = _playerSession.PlayerId,
+            TargetId = result.Id
+        };
+        FriendRequestSubmission submission = new(result, request);
 
-        result.Relation = FriendshipRelation.RequestSent;
-        _toastManager.Show(string.Format(
-            CultureInfo.CurrentCulture,
-            LocalizationManager.Instance[RequestSentToastKey],
-            result.Username));
+        BackgroundJob<FriendRequestSubmission, ClientResult<PlayerRelation>> job = new()
+        {
+            Work = SendFriendRequestOnWorker,
+            State = submission,
+            OnCompleted = OnSendRequestCompleted,
+            OnFailed = OnSendRequestFailed
+        };
+
+        BackgroundWork.Start(job);
     }
 
-    private static Task SendRequestToServerAsync(PlayerSearchResult result)
+    private ClientResult<PlayerRelation> SendFriendRequestOnWorker(FriendRequestSubmission submission)
     {
-        // TODO: Send FRIEND_REQUEST to the server (CU-008); a double click must not send it twice. If the other player
-        // already sent one, the server accepts it directly.
-        return Task.CompletedTask;
+        return _friendshipClient.SendFriendRequest(submission.Request);
     }
 
-    private static Task<IReadOnlyList<PlayerSearchResult>> SearchOnServerAsync(string term)
+    private void OnSendRequestCompleted(ClientResult<PlayerRelation> result, FriendRequestSubmission submission)
     {
-        // TODO: Search by username on the server (CU-008): case insensitive, never the player himself or guests, with
-        // the relation (none, request sent, friends, blocked) of each result.
-        IReadOnlyList<PlayerSearchResult> none = new List<PlayerSearchResult>();
+        submission.Player.IsSending = false;
 
-        return Task.FromResult(none);
+        if (result.IsSuccess)
+        {
+            ApplySentRelation(submission.Player, result.Value);
+        }
+        else
+        {
+            ApplySendFailure(submission.Player, result);
+        }
+    }
+
+    private void OnSendRequestFailed(Exception error, FriendRequestSubmission submission)
+    {
+        submission.Player.IsSending = false;
+        ApplySendFailure(submission.Player, ClientResult<PlayerRelation>.TechnicalFailure(FailureKind.Unexpected));
+    }
+
+    private void ApplySentRelation(PlayerSearchResult player, PlayerRelation relation)
+    {
+        if (relation == PlayerRelation.Friends)
+        {
+            player.Relation = FriendshipRelation.Friends;
+            _socialCircle.AddFriend(player.Id, player.Username);
+            ShowToast(FriendAddedToastKey, player.Username);
+        }
+        else
+        {
+            player.Relation = FriendshipRelation.RequestSent;
+            ShowToast(RequestSentToastKey, player.Username);
+        }
+    }
+
+    private void ApplySendFailure(PlayerSearchResult player, ClientResult<PlayerRelation> result)
+    {
+        bool isAlreadySent = result.Failure == FailureKind.Business
+                             && result.ErrorCode == ServiceErrorCodes.FriendRequestAlreadySent;
+        bool isAlreadyFriend = result.Failure == FailureKind.Business
+                               && result.ErrorCode == ServiceErrorCodes.AlreadyFriends;
+
+        if (isAlreadySent)
+        {
+            player.Relation = FriendshipRelation.RequestSent;
+        }
+        else if (isAlreadyFriend)
+        {
+            player.Relation = FriendshipRelation.Friends;
+        }
+        else
+        {
+            _toastManager.Show(FriendshipErrors.Describe(result));
+        }
+    }
+
+    private void ShowToast(string key, string username)
+    {
+        _toastManager.Show(string.Format(CultureInfo.CurrentCulture, LocalizationManager.Instance[key], username));
+    }
+
+    private ClientResult<List<PlayerSearchEntry>> SearchOnWorker(PlayerSearchCall call)
+    {
+        PlayerSearchRequest request = new PlayerSearchRequest
+        {
+            RequesterId = call.RequesterId,
+            SearchTerm = call.Term
+        };
+
+        return _friendshipClient.SearchPlayers(request);
+    }
+
+    private void OnSearchCompleted(ClientResult<List<PlayerSearchEntry>> result, PlayerSearchCall call)
+    {
+        if (call.SearchNumber == _lastSearchNumber)
+        {
+            if (result.IsSuccess)
+            {
+                ShowResults(call.Term, CreateResults(result.Value!));
+            }
+            else
+            {
+                State = SearchState.Prompt;
+                _toastManager.Show(FriendshipErrors.Describe(result));
+            }
+        }
+    }
+
+    private void OnSearchFailed(Exception error, PlayerSearchCall call)
+    {
+        OnSearchCompleted(ClientResult<List<PlayerSearchEntry>>.TechnicalFailure(FailureKind.Unexpected), call);
+    }
+
+    private static List<PlayerSearchResult> CreateResults(List<PlayerSearchEntry> entries)
+    {
+        List<PlayerSearchResult> results = new List<PlayerSearchResult>();
+
+        foreach (PlayerSearchEntry entry in entries)
+        {
+            results.Add(new PlayerSearchResult
+            {
+                Id = entry.PlayerId,
+                Username = entry.Username,
+                Presence = PresenceStatus.Offline,
+                Relation = MapRelation(entry.Relation)
+            });
+        }
+
+        return results;
+    }
+
+    private static FriendshipRelation MapRelation(PlayerRelation relation)
+    {
+        return relation switch
+        {
+            PlayerRelation.RequestSent => FriendshipRelation.RequestSent,
+            PlayerRelation.Friends => FriendshipRelation.Friends,
+            PlayerRelation.Blocked => FriendshipRelation.Blocked,
+            _ => FriendshipRelation.None
+        };
     }
 
     private void StartSearch(string term)
@@ -141,12 +269,17 @@ public partial class PlayerSearchViewModel : ViewModelBase
 
         if (searchNumber == _lastSearchNumber)
         {
-            IReadOnlyList<PlayerSearchResult> found = await SearchOnServerAsync(term);
+            PlayerSearchCall call = new(_playerSession.PlayerId, term, searchNumber);
 
-            if (searchNumber == _lastSearchNumber)
+            BackgroundJob<PlayerSearchCall, ClientResult<List<PlayerSearchEntry>>> job = new()
             {
-                ShowResults(term, found);
-            }
+                Work = SearchOnWorker,
+                State = call,
+                OnCompleted = OnSearchCompleted,
+                OnFailed = OnSearchFailed
+            };
+
+            BackgroundWork.Start(job);
         }
     }
 

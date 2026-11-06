@@ -42,6 +42,8 @@ public static class ViewDependencyInjectionSetup
         services.AddSingleton<IPlayerSession, PlayerSession>();
         services.AddSingleton<INotificationInbox, NotificationInbox>();
         services.AddSingleton<ISocialCircle, SocialCircle>();
+        services.AddTransient<SocialSynchronizerDependencies>();
+        services.AddSingleton<ISocialSynchronizer, SocialSynchronizer>();
         services.AddSingleton<ILobbySession, LobbySession>();
         services.AddSingleton<IClipboardManager, ClipboardManager>();
         services.AddSingleton<IToastManager, ToastManager>();
@@ -56,6 +58,9 @@ public static class ViewDependencyInjectionSetup
         services.AddSingleton<IServiceCaller, ServiceCaller>();
         services.AddSingleton<IAuthClient, AuthClient>();
         services.AddSingleton<IAccountClient, AccountClient>();
+        services.AddSingleton<IFriendshipClient, FriendshipClient>();
+        services.AddSingleton<ILobbyInvitationClient, LobbyInvitationClient>();
+        services.AddSingleton<IFriendshipNotificationClient, FriendshipNotificationClient>();
         services.AddSingleton<ILobbyClient, LobbyClient>();
         
         //TODO: This is a simulated gateway only for testing. Must remove
@@ -127,6 +132,11 @@ public static class ViewDependencyInjectionSetup
         services.AddTransient<LobbyDependencies>();
         services.AddTransient<PublicLobbyListDependencies>();
         services.AddTransient<AccessMenuDependencies>();
+        services.AddTransient<PlayerSearchDependencies>();
+        services.AddTransient<TopBarDependencies>();
+        services.AddTransient<NotificationsDependencies>();
+        services.AddTransient<InviteFriendsDependencies>();
+        services.AddTransient<NotificationInboxDependencies>();
 
         services.AddSingleton<TopBarViewModel>();
         services.AddSingleton<MainWindowViewModel>();

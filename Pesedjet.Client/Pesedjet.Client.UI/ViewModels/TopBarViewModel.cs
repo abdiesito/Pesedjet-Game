@@ -9,6 +9,8 @@ using Pesedjet.Client.UI.Utilities.Dialogs;
 using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Notifications;
 using Pesedjet.Client.UI.Utilities.Session;
+using Pesedjet.Client.UI.Utilities.Social;
+using Pesedjet.Client.UI.ViewModels.Dependencies;
 using Pesedjet.Client.UI.ViewModels.Dialogs;
 using Pesedjet.Client.UI.Models.Account;
 using Pesedjet.Client.UI.Models.DialogParameters;
@@ -26,6 +28,7 @@ public partial class TopBarViewModel : ViewModelBase, IDisposable
     private readonly IPlayerSession _playerSession;
     private readonly IDialogManager _dialogManager;
     private readonly INotificationInbox _notificationInbox;
+    private readonly ISocialSynchronizer _socialSynchronizer;
 
     private PlayerProfile _player;
 
@@ -62,16 +65,14 @@ public partial class TopBarViewModel : ViewModelBase, IDisposable
         ? OverflowBadgeText
         : PendingNotificationCount.ToString(CultureInfo.CurrentCulture);
 
-    public TopBarViewModel(
-        IPlayerSession playerSession,
-        IDialogManager dialogManager,
-        INotificationInbox notificationInbox)
+    public TopBarViewModel(TopBarDependencies dependencies)
     {
-        _playerSession = playerSession;
-        _dialogManager = dialogManager;
-        _notificationInbox = notificationInbox;
-        _player = playerSession.CurrentPlayer ?? new PlayerProfile(string.Empty, 0, 0);
-        _pendingNotificationCount = notificationInbox.Items.Count;
+        _playerSession = dependencies.PlayerSession;
+        _dialogManager = dependencies.DialogManager;
+        _notificationInbox = dependencies.NotificationInbox;
+        _socialSynchronizer = dependencies.SocialSynchronizer;
+        _player = _playerSession.CurrentPlayer ?? new PlayerProfile(string.Empty, 0, 0);
+        _pendingNotificationCount = _notificationInbox.Items.Count;
 
         _playerSession.PropertyChanged += HandleSessionChanged;
         _notificationInbox.Items.CollectionChanged += HandleNotificationsChanged;
@@ -121,6 +122,11 @@ public partial class TopBarViewModel : ViewModelBase, IDisposable
         OnPropertyChanged(nameof(IsGuest));
         OnPropertyChanged(nameof(IsRegistered));
         OnPropertyChanged(nameof(GuestIndicatorText));
+
+        if (eventArgs.PropertyName == nameof(IPlayerSession.CurrentPlayer))
+        {
+            _socialSynchronizer.Synchronize();
+        }
     }
 
     private void HandleNotificationsChanged(object? sender, NotifyCollectionChangedEventArgs eventArgs)

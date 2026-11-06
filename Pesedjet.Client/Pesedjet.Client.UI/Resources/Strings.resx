@@ -146,6 +146,9 @@
   <data name="Common.Yesterday" xml:space="preserve"><value>ayer</value></data>
   <data name="Common.DaysAgo" xml:space="preserve"><value>hace {0} d</value></data>
   <data name="Notifications.Expired" xml:space="preserve"><value>La sala ya empezó; la invitación expiró.</value></data>
+  <data name="Notifications.FriendRequestNotFound" xml:space="preserve"><value>La solicitud ya no está disponible.</value></data>
+  <data name="Notifications.FriendAcceptedToast" xml:space="preserve"><value>Ahora tú y {0} son amigos.</value></data>
+  <data name="Notifications.AlreadyInLobby" xml:space="preserve"><value>Ya estás en una sala. Sal de ella para unirte a otra.</value></data>
   <data name="Notifications.UpToDate" xml:space="preserve"><value>Estás al día</value></data>
   <data name="Common.MonthAgo" xml:space="preserve"><value>hace 1 mes</value></data>
   <data name="Common.MonthsAgo" xml:space="preserve"><value>hace {0} meses</value></data>
@@ -180,6 +183,8 @@
   <data name="Friends.RemovedToast" xml:space="preserve"><value>Eliminaste a {0} de tus amigos.</value></data>
   <data name="Friends.BlockedToast" xml:space="preserve"><value>Bloqueaste a {0}.</value></data>
   <data name="Friends.RequestSentToast" xml:space="preserve"><value>Solicitud enviada a {0}.</value></data>
+  <data name="Friends.FriendAddedToast" xml:space="preserve"><value>Ahora tú y {0} son amigos.</value></data>
+  <data name="Friends.RequestBlocked" xml:space="preserve"><value>No puedes enviar una solicitud a este jugador.</value></data>
   <data name="Blocked.Notice" xml:space="preserve"><value>Quien está bloqueado no puede enviarte solicitudes ni invitarte a salas. Desbloquear no lo vuelve tu amigo.</value></data>
   <data name="Blocked.CountOne" xml:space="preserve"><value>1 bloqueado</value></data>
   <data name="Blocked.CountMany" xml:space="preserve"><value>{0} bloqueados</value></data>
@@ -333,6 +338,8 @@
   <data name="InviteFriends.Send" xml:space="preserve"><value>Enviar invitaciones</value></data>
   <data name="InviteFriends.SendOne" xml:space="preserve"><value>Enviar 1 invitación</value></data>
   <data name="InviteFriends.SendMany" xml:space="preserve"><value>Enviar {0} invitaciones</value></data>
+  <data name="InviteFriends.SentToast" xml:space="preserve"><value>Invitaciones enviadas: {0}.</value></data>
+  <data name="InviteFriends.NotAllowed" xml:space="preserve"><value>No puedes invitar desde esta sala.</value></data>
   <data name="Match.Round" xml:space="preserve"><value>Ronda {0}</value></data>
   <data name="Match.YourTurn" xml:space="preserve"><value>Tu turno</value></data>
   <data name="Match.TurnOf" xml:space="preserve"><value>Turno de {0}</value></data>
