@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Pesedjet.Client.UI.Resources;
+using Pesedjet.Client.UI.Utilities.Logging;
 
 namespace Pesedjet.Client.UI.Utilities.Localization;
 
@@ -14,6 +15,7 @@ public sealed class LocalizationManager : INotifyPropertyChanged
 {
     private const string DefaultCultureCode = "es-MX";
     private const string AllPropertiesChanged = "";
+    private const string SaveLanguageSource = "LocalizationManager.SaveLanguage";
 
     private static readonly string[] SupportedCultureCodes = [DefaultCultureCode, "en-US"];
 
@@ -53,7 +55,7 @@ public sealed class LocalizationManager : INotifyPropertyChanged
     private LocalizationManager(UserSettingsStore settingsStore)
     {
         _settingsStore = settingsStore;
-        string? savedCultureCode = FindSupportedCultureCode(_settingsStore.Load()?.Language);
+        string? savedCultureCode = FindSupportedCultureCode(_settingsStore.Load().Language);
         ApplyCulture(savedCultureCode ?? DefaultCultureCode);
     }
 
@@ -102,12 +104,12 @@ public sealed class LocalizationManager : INotifyPropertyChanged
         {
             try
             {
-                _settingsStore.Save(new UserSettings(_activeCulture.Name));
+                UserSettings currentSettings = _settingsStore.Load();
+                _settingsStore.Save(currentSettings with { Language = _activeCulture.Name });
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
-                // TODO: Replace the trace with a logger when the language applies to this session but is not saved.
-                Trace.TraceWarning($"The language preference could not be saved: {ex.Message}");
+                ApplicationLog.Warning(SaveLanguageSource, $"The language preference could not be saved: {ex.Message}");
             }
         }
     }

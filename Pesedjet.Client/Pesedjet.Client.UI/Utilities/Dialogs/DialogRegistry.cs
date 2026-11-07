@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
 using Pesedjet.Client.UI.ViewModels;
+using Pesedjet.Client.UI.ViewModels.Dialogs;
 
 namespace Pesedjet.Client.UI.Utilities.Dialogs;
 

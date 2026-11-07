@@ -4,11 +4,13 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
-using Pesedjet.Client.UI.Models;
 using Pesedjet.Client.UI.Utilities.Dialogs;
 using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Social;
 using Pesedjet.Client.UI.Utilities.Toasts;
+using Pesedjet.Client.UI.ViewModels.Dialogs;
+using Pesedjet.Client.UI.Models.DialogParameters;
+using Pesedjet.Client.UI.Models.Social;
 
 namespace Pesedjet.Client.UI.ViewModels;
 

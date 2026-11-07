@@ -2,9 +2,10 @@ using System;
 using System.Collections.Specialized;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Pesedjet.Client.UI.Models;
 using Pesedjet.Client.UI.Utilities.Navigation;
 using Pesedjet.Client.UI.Utilities.Social;
+using Pesedjet.Client.UI.ViewModels.Dependencies;
+using Pesedjet.Client.UI.Models.Social;
 
 namespace Pesedjet.Client.UI.ViewModels;
 
@@ -43,18 +44,13 @@ public partial class FriendsViewModel : ViewModelBase, INavigable, IDisposable
         _ => _friendList
     };
 
-    public FriendsViewModel(
-        INavigator navigator,
-        ISocialCircle socialCircle,
-        FriendListViewModel friendList,
-        PlayerSearchViewModel playerSearch,
-        BlockedPlayersViewModel blockedPlayers)
+    public FriendsViewModel(FriendsDependencies dependencies)
     {
-        _navigator = navigator;
-        _socialCircle = socialCircle;
-        _friendList = friendList;
-        _playerSearch = playerSearch;
-        _blockedPlayers = blockedPlayers;
+        _navigator = dependencies.Navigator;
+        _socialCircle = dependencies.SocialCircle;
+        _friendList = dependencies.FriendList;
+        _playerSearch = dependencies.PlayerSearch;
+        _blockedPlayers = dependencies.BlockedPlayers;
 
         _friendList.SearchRequested += HandleSearchRequested;
         _socialCircle.Friends.CollectionChanged += HandleFriendsChanged;

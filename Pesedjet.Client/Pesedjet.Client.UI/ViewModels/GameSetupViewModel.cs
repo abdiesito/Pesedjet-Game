@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Pesedjet.Client.Networking.Interfaces;
-using Pesedjet.Client.UI.Models;
 using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Navigation;
-using Pesedjet.Client.UI.Utilities.Rooms;
+using Pesedjet.Client.UI.Utilities.Lobbies;
 using Pesedjet.Client.UI.Utilities.Session;
 using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Client.UI.Utilities.Threading;
+using Pesedjet.Client.UI.ViewModels.Dependencies;
+using Pesedjet.Client.UI.Models.Lobbies;
 
 namespace Pesedjet.Client.UI.ViewModels;
 
@@ -21,14 +23,13 @@ public partial class GameSetupViewModel : ViewModelBase, INavigable
     private const int MaximumCapacity = 6;
     private const int DefaultCapacity = 4;
     private const string GoalInfoKey = "GameSetup.GoalInfo";
-
-    // Amulets needed to win for each capacity from 2 to 6 players (RJ-03).
+    
     private static readonly int[] AmuletGoals = [6, 5, 4, 3, 3];
 
     private readonly INavigator _navigator;
     private readonly IPlayerSession _playerSession;
-    private readonly IRoomClient _roomClient;
-    private readonly IRoomSession _roomSession;
+    private readonly ILobbyClient _lobbyClient;
+    private readonly ILobbySession _lobbySession;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AmuletGoal), nameof(AmuletSlots), nameof(GoalInfo))]
@@ -36,10 +37,10 @@ public partial class GameSetupViewModel : ViewModelBase, INavigable
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsPublicSelected), nameof(IsPrivateSelected))]
-    private RoomVisibility _visibility = RoomVisibility.Public;
+    private LobbyVisibility _visibility = LobbyVisibility.Public;
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(CancelCommand), nameof(CreateRoomCommand))]
+    [NotifyCanExecuteChangedFor(nameof(CancelCommand), nameof(CreateLobbyCommand))]
     private bool _isBusy;
 
     [ObservableProperty]
@@ -53,9 +54,9 @@ public partial class GameSetupViewModel : ViewModelBase, INavigable
 
     public bool IsPrivateAvailable => !_playerSession.IsGuest;
 
-    public bool IsPublicSelected => Visibility == RoomVisibility.Public;
+    public bool IsPublicSelected => Visibility == LobbyVisibility.Public;
 
-    public bool IsPrivateSelected => Visibility == RoomVisibility.Private;
+    public bool IsPrivateSelected => Visibility == LobbyVisibility.Private;
 
     public int AmuletGoal => AmuletGoals[Capacity - MinimumCapacity];
 
@@ -67,16 +68,12 @@ public partial class GameSetupViewModel : ViewModelBase, INavigable
         Capacity,
         AmuletGoal);
 
-    public GameSetupViewModel(
-        INavigator navigator,
-        IPlayerSession playerSession,
-        IRoomClient roomClient,
-        IRoomSession roomSession)
+    public GameSetupViewModel(GameSetupDependencies dependencies)
     {
-        _roomClient = roomClient;
-        _roomSession = roomSession;
-        _navigator = navigator;
-        _playerSession = playerSession;
+        _lobbyClient = dependencies.LobbyClient;
+        _lobbySession = dependencies.LobbySession;
+        _navigator = dependencies.Navigator;
+        _playerSession = dependencies.PlayerSession;
 
         List<CapacityOption> options = new();
 
@@ -107,16 +104,16 @@ public partial class GameSetupViewModel : ViewModelBase, INavigable
     [RelayCommand]
     private void SelectPublic()
     {
-        Visibility = RoomVisibility.Public;
+        Visibility = LobbyVisibility.Public;
     }
 
     [RelayCommand]
     private void SelectPrivate()
     {
-        // The guest has no friends to invite, so the private room is not offered to him (RN04).
+        // The guest has no friends to invite, so the private lobby is not offered to him (RN04).
         if (IsPrivateAvailable)
         {
-            Visibility = RoomVisibility.Private;
+            Visibility = LobbyVisibility.Private;
         }
     }
 
@@ -127,38 +124,44 @@ public partial class GameSetupViewModel : ViewModelBase, INavigable
     }
 
     [RelayCommand(CanExecute = nameof(CanRespond))]
-    private async Task CreateRoomAsync()
+    private void CreateLobby()
     {
         IsBusy = true;
         HasConnectionError = false;
 
-        try
-        {
-            string roomCode = await _roomClient.CreateRoomAsync(
-                RoomModelFactory.CreateLocalMember(_playerSession),
-                Visibility == RoomVisibility.Public,
-                Capacity);
+        LobbyCreationRequest request = new(
+            LobbyModelFactory.CreateLocalMember(_playerSession),
+            Visibility == LobbyVisibility.Public,
+            Capacity);
 
-            _roomSession.Current = RoomModelFactory.CreateCreatedRoom(roomCode, Capacity, Visibility, _playerSession);
-            _navigator.NavigateTo<WaitingRoomViewModel>();
-        }
-        catch (FaultException<ServiceFault>)
+        BackgroundJob<LobbyCreationRequest, string> job = new()
         {
-            // The capacity is limited by the screen, so a refusal from the server is shown as a failed request.
-            HasConnectionError = true;
-        }
-        catch (CommunicationException)
-        {
-            HasConnectionError = true;
-        }
-        catch (TimeoutException)
-        {
-            HasConnectionError = true;
-        }
-        finally
-        {
-            IsBusy = false;
-        }
+            Work = CreateLobbyOnWorker,
+            State = request,
+            OnCompleted = OnCreateLobbyCompleted,
+            OnFailed = OnCreateLobbyFailed
+        };
+
+        BackgroundWork.Start(job);
+    }
+
+    private string CreateLobbyOnWorker(LobbyCreationRequest request)
+    {
+        return _lobbyClient.CreateLobby(request.Host, request.IsPublic, request.Capacity);
+    }
+
+    private void OnCreateLobbyCompleted(string lobbyCode, LobbyCreationRequest request)
+    {
+        IsBusy = false;
+        _lobbySession.Current = LobbyModelFactory.CreateCreatedLobby(lobbyCode, request, _playerSession);
+        _navigator.NavigateTo<LobbyViewModel>();
+    }
+
+    // The capacity is limited by the screen, so any failure is shown as a failed request.
+    private void OnCreateLobbyFailed(Exception error, LobbyCreationRequest request)
+    {
+        IsBusy = false;
+        HasConnectionError = true;
     }
 
     private bool CanRespond()

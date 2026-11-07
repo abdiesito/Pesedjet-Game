@@ -2,12 +2,14 @@ using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
-using Pesedjet.Client.UI.Models;
 using Pesedjet.Client.UI.Utilities.Dialogs;
 using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Navigation;
 using Pesedjet.Client.UI.Utilities.Session;
 using Pesedjet.Client.UI.Utilities.Toasts;
+using Pesedjet.Client.UI.ViewModels.Dependencies;
+using Pesedjet.Client.UI.ViewModels.Dialogs;
+using Pesedjet.Client.UI.Models.Account;
 
 namespace Pesedjet.Client.UI.ViewModels;
 
@@ -22,16 +24,12 @@ public partial class MainMenuViewModel : ViewModelBase, INavigable
     private readonly IPlayerSession _playerSession;
     private readonly IToastManager _toastManager;
 
-    public MainMenuViewModel(
-        INavigator navigator,
-        IDialogManager dialogManager,
-        IPlayerSession playerSession,
-        IToastManager toastManager)
+    public MainMenuViewModel(MainMenuDependencies dependencies)
     {
-        _navigator = navigator;
-        _dialogManager = dialogManager;
-        _playerSession = playerSession;
-        _toastManager = toastManager;
+        _navigator = dependencies.Navigator;
+        _dialogManager = dependencies.DialogManager;
+        _playerSession = dependencies.PlayerSession;
+        _toastManager = dependencies.ToastManager;
     }
 
     public bool ShowsTopBar => true;

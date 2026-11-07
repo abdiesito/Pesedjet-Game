@@ -978,7 +978,7 @@
         <Setter Property="Fill" Value="{DynamicResource ColorAccentLight}"/>
     </Style>
 
-    <!-- The tinted pill (hover/pressed) needs inner room;
+    <!-- The tinted pill (hover/pressed) needs inner lobby;
         the negative margin keeps the box aligned with the fields. -->
     <Style Selector="CheckBox.check-standard">
         <Setter Property="Margin" Value="-6,0,0,0"/>
@@ -2482,7 +2482,7 @@
     <Style Selector="Border.choice-card.compact">
         <Setter Property="Padding" Value="18"/>
     </Style>
-    <Style Selector="TextBlock.public-room-code">
+    <Style Selector="TextBlock.public-lobby-code">
         <Setter Property="FontFamily" Value="{DynamicResource FontMono}"/>
         <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}"/>
         <Setter Property="FontWeight" Value="Bold"/>
@@ -2670,7 +2670,7 @@
     </Style>
 
 
-    <!-- Waiting room (GUI-008) and invite dialog -->
+    <!-- Waiting lobby (GUI-008) and invite dialog -->
     <Style Selector="Border.code-box">
         <Setter Property="Padding" Value="14,6"/>
         <Setter Property="Background" Value="{DynamicResource ColorPrimaryHover}"/>
@@ -2746,7 +2746,7 @@
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="Foreground" Value="{DynamicResource ColorTextPrimary}"/>
     </Style>
-    <Style Selector="Border.room-row">
+    <Style Selector="Border.lobby-row">
         <Setter Property="Padding" Value="12,8"/>
         <Setter Property="Margin" Value="0,0,0,6"/>
         <Setter Property="Background" Value="{DynamicResource ColorSurfaceCard}"/>
@@ -2754,10 +2754,10 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="{DynamicResource RadiusControl}"/>
     </Style>
-    <Style Selector="Border.room-row.own">
+    <Style Selector="Border.lobby-row.own">
         <Setter Property="Background" Value="{DynamicResource ColorSandHighlight}"/>
     </Style>
-    <Style Selector="Border.room-row.empty">
+    <Style Selector="Border.lobby-row.empty">
         <Setter Property="BorderBrush" Value="{DynamicResource ColorBorderInput}"/>
         <Setter Property="BorderThickness" Value="1.5"/>
         <Setter Property="Background" Value="Transparent"/>

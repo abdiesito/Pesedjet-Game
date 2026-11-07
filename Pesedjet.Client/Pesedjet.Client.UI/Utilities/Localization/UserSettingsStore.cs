@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using Pesedjet.Client.UI.Utilities.Logging;
 
 namespace Pesedjet.Client.UI.Utilities.Localization;
 
@@ -10,6 +11,8 @@ public sealed class UserSettingsStore
     private const string SettingsFolderName = "Pesedjet";
     private const string SettingsFileName = "user.settings";
     private const string TemporaryFileExtension = ".tmp";
+    private const string LoadSource = "UserSettingsStore.Load";
+    private const string UnreadableFileMessage = "The settings file could not be decrypted; default settings are used.";
 
     private readonly ISettingsProtector _protector;
     private readonly string _settingsFilePath;
@@ -23,7 +26,7 @@ public sealed class UserSettingsStore
             SettingsFileName);
     }
 
-    public UserSettings? Load()
+    public UserSettings Load()
     {
         UserSettings? settings = null;
 
@@ -39,14 +42,19 @@ public sealed class UserSettingsStore
                 {
                     settings = JsonSerializer.Deserialize<UserSettings>(plainData);
                 }
+                else
+                {
+                    ApplicationLog.Warning(LoadSource, UnreadableFileMessage);
+                }
             }
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException)
         {
+            ApplicationLog.Error(LoadSource, ex);
             settings = null;
         }
 
-        return settings;
+        return settings ?? UserSettings.Default;
     }
 
     public void Save(UserSettings settings)

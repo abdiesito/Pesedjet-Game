@@ -5,5 +5,5 @@ namespace Pesedjet.Client.Networking.Interfaces;
 
 public interface IAccountClient
 {
-    Task<AccountRegistrationResult> RegisterAccountAsync(UserRegisterRequest request);
+    ClientResult<bool> RegisterAccount(UserRegisterRequest request);
 }

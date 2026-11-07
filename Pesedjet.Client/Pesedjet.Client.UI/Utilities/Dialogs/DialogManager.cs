@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 using Pesedjet.Client.UI.ViewModels;
+using Pesedjet.Client.UI.ViewModels.Dialogs;
 
 namespace Pesedjet.Client.UI.Utilities.Dialogs;
 
@@ -107,6 +108,4 @@ public sealed partial class DialogManager : ObservableObject, IDialogManager
         CurrentDialogView = hasDialogs ? _openDialogs[^1].View : null;
         HasOpenDialog = hasDialogs;
     }
-
-    private sealed record OpenDialog(DialogViewModelBase ViewModel, Control View, TaskCompletionSource Completion);
 }

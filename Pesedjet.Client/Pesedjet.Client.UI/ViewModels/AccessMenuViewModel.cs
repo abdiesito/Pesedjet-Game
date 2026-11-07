@@ -1,15 +1,21 @@
+using System;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Pesedjet.Client.Networking.Interfaces;
 using Pesedjet.Client.Networking.Results;
-using Pesedjet.Client.UI.Models;
 using Pesedjet.Client.UI.Utilities.Dialogs;
 using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Navigation;
 using Pesedjet.Client.UI.Utilities.Session;
 using Pesedjet.Client.UI.Utilities.Validation;
 using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Client.UI.Utilities.Threading;
+using Pesedjet.Client.UI.ViewModels.Dependencies;
+using Pesedjet.Server.Contracts.Faults;
+using Pesedjet.Client.UI.ViewModels.Dialogs;
+using Pesedjet.Client.UI.Models.Account;
+using Pesedjet.Client.UI.Models.DialogParameters;
 
 namespace Pesedjet.Client.UI.ViewModels;
 
@@ -55,6 +61,7 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
     [NotifyPropertyChangedFor(
         nameof(IsInvalidCredentials),
         nameof(IsTooManyAttempts),
+        nameof(IsSessionAlreadyActive),
         nameof(IsServerUnreachable))]
     private LoginStatus _loginStatus;
 
@@ -72,22 +79,19 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
 
     public bool IsTooManyAttempts => LoginStatus == LoginStatus.TooManyAttempts;
 
+    public bool IsSessionAlreadyActive => LoginStatus == LoginStatus.SessionAlreadyActive;
+
     public bool IsServerUnreachable => LoginStatus == LoginStatus.ServerUnreachable;
 
-    public AccessMenuViewModel(
-        INavigator navigator,
-        IDialogManager dialogManager,
-        IAuthClient authClient,
-        IPlayerSession playerSession,
-        UserSettingsStore userSettingsStore)
+    public AccessMenuViewModel(AccessMenuDependencies dependencies)
     {
-        _navigator = navigator;
-        _dialogManager = dialogManager;
-        _authClient = authClient;
-        _playerSession = playerSession;
-        _userSettingsStore = userSettingsStore;
+        _navigator = dependencies.Navigator;
+        _dialogManager = dependencies.DialogManager;
+        _authClient = dependencies.AuthClient;
+        _playerSession = dependencies.PlayerSession;
+        _userSettingsStore = dependencies.UserSettingsStore;
 
-        _ = ResumeSessionIfSavedAsync();
+        ResumeSessionIfSaved();
     }
 
     public void OnNavigatedFrom()
@@ -109,7 +113,7 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
     }
 
     [RelayCommand]
-    private async Task LoginAsync()
+    private void Login()
     {
         Username = Username.Trim();
 
@@ -118,50 +122,67 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
             IsBusy = true;
             ClearStatus();
 
-            try
+            UserLoginRequest request = new UserLoginRequest
             {
-                UserLoginRequest request = new UserLoginRequest
-                {
-                    Username = Username,
-                    Password = Password,
-                    RememberSession = RememberSession
-                };
+                Username = Username,
+                Password = Password,
+                DeviceToken = _userSettingsStore.Load().RememberToken
+            };
 
-                (AuthResult result, UserSession? session) = await _authClient.LoginAsync(request);
-
-                if (result == AuthResult.Success && session is not null)
-                {
-                    _failedAttemptsCount = 0;
-
-                    string rememberToken = RememberSession ? (session.RememberToken ?? string.Empty) : string.Empty;
-
-                    UserSettings currentSettings = _userSettingsStore.Load();
-                    UserSettings updatedSettings = currentSettings with
-                    {
-                        RememberToken = rememberToken
-                    };
-
-                    _userSettingsStore.Save(updatedSettings);
-
-                    PlayerProfile profile = new PlayerProfile(
-                        Username: session.Username ?? string.Empty,
-                        Points: 0,
-                        Victories: 0
-                    );
-
-                    _playerSession.PlayerId = session.PlayerId;
-                    _playerSession.CurrentPlayer = profile;
-                    _navigator.NavigateTo<MainMenuViewModel>();
-                }
-                else
-                {
-                    HandleLoginFailure(result);
-                }
-            }
-            finally
+            BackgroundJob<UserLoginRequest, ClientResult<UserSession>> job = new()
             {
-                IsBusy = false;
-            }
+                Work = _authClient.Login,
+                State = request,
+                OnCompleted = OnLoginCompleted,
+                OnFailed = OnLoginFailed
+            };
+
+            BackgroundWork.Start(job);
+        }
+    }
+
+    private void OnLoginCompleted(ClientResult<UserSession> result, UserLoginRequest request)
+    {
+        ApplyLoginResult(result);
+    }
+
+    private void OnLoginFailed(Exception error, UserLoginRequest request)
+    {
+        ApplyLoginResult(ClientResult<UserSession>.TechnicalFailure(FailureKind.Unexpected));
+    }
+
+    private void ApplyLoginResult(ClientResult<UserSession> result)
+    {
+        IsBusy = false;
+
+        if (result.IsSuccess)
+        {
+            UserSession session = result.Value!;
+
+            _failedAttemptsCount = 0;
+            
+            UserSettings currentSettings = _userSettingsStore.Load();
+            UserSettings updatedSettings = currentSettings with
+            {
+                RememberToken = session.RememberToken ?? string.Empty,
+                AutoResume = RememberSession
+            };
+
+            _userSettingsStore.Save(updatedSettings);
+
+            PlayerProfile profile = new PlayerProfile(
+                Username: session.Username ?? string.Empty,
+                Points: 0,
+                Victories: 0
+            );
+
+            _playerSession.PlayerId = session.PlayerId;
+            _playerSession.CurrentPlayer = profile;
+            _navigator.NavigateTo<MainMenuViewModel>();
+        }
+        else
+        {
+            HandleLoginFailure(result);
         }
     }
 
@@ -183,40 +204,63 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
         await _dialogManager.ShowDialogAsync<GuestNoticeViewModel, GuestNoticeMode>(GuestNoticeMode.Entry);
     }
 
-    private async Task ResumeSessionIfSavedAsync()
+    private void ResumeSessionIfSaved()
     {
         UserSettings settings = _userSettingsStore.Load();
 
-        if (!string.IsNullOrWhiteSpace(settings.RememberToken))
+        if (settings.AutoResume && !string.IsNullOrWhiteSpace(settings.RememberToken))
         {
             IsBusy = true;
 
-            try
+            BackgroundJob<UserSettings, ClientResult<UserSession>> job = new()
             {
-                (AuthResult result, UserSession? session) = await _authClient.ResumeSessionAsync(settings.RememberToken);
+                Work = ResumeSessionOnWorker,
+                State = settings,
+                OnCompleted = OnResumeCompleted,
+                OnFailed = OnResumeFailed
+            };
 
-                if (result == AuthResult.Success && session is not null)
-                {
-                    PlayerProfile profile = new PlayerProfile(
-                        Username: session.Username ?? string.Empty,
-                        Points: 0,
-                        Victories: 0
-                    );
+            BackgroundWork.Start(job);
+        }
+    }
 
-                    _playerSession.PlayerId = session.PlayerId;
-                    _playerSession.CurrentPlayer = profile;
-                    _navigator.NavigateTo<MainMenuViewModel>();
-                }
-                else
-                {
-                    UserSettings resetSettings = settings with { RememberToken = string.Empty };
-                    _userSettingsStore.Save(resetSettings);
-                }
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+    private ClientResult<UserSession> ResumeSessionOnWorker(UserSettings settings)
+    {
+        return _authClient.ResumeSession(settings.RememberToken);
+    }
+
+    private void OnResumeCompleted(ClientResult<UserSession> result, UserSettings settings)
+    {
+        ApplyResumeResult(result, settings);
+    }
+
+    private void OnResumeFailed(Exception error, UserSettings settings)
+    {
+        ApplyResumeResult(ClientResult<UserSession>.TechnicalFailure(FailureKind.Unexpected), settings);
+    }
+
+    private void ApplyResumeResult(ClientResult<UserSession> result, UserSettings settings)
+    {
+        IsBusy = false;
+
+        if (result.IsSuccess)
+        {
+            UserSession session = result.Value!;
+
+            PlayerProfile profile = new PlayerProfile(
+                Username: session.Username ?? string.Empty,
+                Points: 0,
+                Victories: 0
+            );
+
+            _playerSession.PlayerId = session.PlayerId;
+            _playerSession.CurrentPlayer = profile;
+            _navigator.NavigateTo<MainMenuViewModel>();
+        }
+        else if (result.Failure == FailureKind.Business)
+        {
+            UserSettings resetSettings = settings with { RememberToken = string.Empty, AutoResume = false };
+            _userSettingsStore.Save(resetSettings);
         }
     }
 
@@ -242,13 +286,23 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
         return validationError;
     }
 
-    private void HandleLoginFailure(AuthResult result)
+    private void HandleLoginFailure(ClientResult<UserSession> result)
     {
-        if (result == AuthResult.ServerUnreachable)
+        bool isSessionAlreadyActive = result.Failure == FailureKind.Business
+                                      && result.ErrorCode == ServiceErrorCodes.SessionAlreadyActive;
+        bool isRejectedCredentials = result.Failure == FailureKind.Business
+                                     && (result.ErrorCode == ServiceErrorCodes.InvalidCredentials
+                                         || result.ErrorCode == ServiceErrorCodes.UserNotFound);
+
+        if (result.IsConnectionFailure)
         {
             LoginStatus = LoginStatus.ServerUnreachable;
         }
-        else if (result == AuthResult.InvalidCredentials || result == AuthResult.UserNotFound)
+        else if (isSessionAlreadyActive)
+        {
+            LoginStatus = LoginStatus.SessionAlreadyActive;
+        }
+        else if (isRejectedCredentials)
         {
             _failedAttemptsCount++;
 

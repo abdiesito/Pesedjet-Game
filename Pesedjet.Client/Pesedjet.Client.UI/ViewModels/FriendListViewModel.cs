@@ -5,11 +5,14 @@ using System.Globalization;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Pesedjet.Client.UI.Models;
 using Pesedjet.Client.UI.Utilities.Dialogs;
 using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Social;
 using Pesedjet.Client.UI.Utilities.Toasts;
+using Pesedjet.Client.UI.ViewModels.Dependencies;
+using Pesedjet.Client.UI.ViewModels.Dialogs;
+using Pesedjet.Client.UI.Models.DialogParameters;
+using Pesedjet.Client.UI.Models.Social;
 
 namespace Pesedjet.Client.UI.ViewModels;
 
@@ -43,16 +46,12 @@ public partial class FriendListViewModel : ViewModelBase, IDisposable
 
     public string Summary => BuildSummary();
 
-    public FriendListViewModel(
-        ISocialCircle socialCircle,
-        IDialogManager dialogManager,
-        IToastManager toastManager,
-        TimeProvider timeProvider)
+    public FriendListViewModel(FriendListDependencies dependencies)
     {
-        _socialCircle = socialCircle;
-        _dialogManager = dialogManager;
-        _toastManager = toastManager;
-        _timeProvider = timeProvider;
+        _socialCircle = dependencies.SocialCircle;
+        _dialogManager = dependencies.DialogManager;
+        _toastManager = dependencies.ToastManager;
+        _timeProvider = dependencies.TimeProvider;
 
         foreach (FriendItem friend in Friends)
         {

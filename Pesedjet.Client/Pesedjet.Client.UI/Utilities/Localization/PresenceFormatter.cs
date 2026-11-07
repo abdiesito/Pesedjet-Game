@@ -1,6 +1,6 @@
 using System;
 using System.Globalization;
-using Pesedjet.Client.UI.Models;
+using Pesedjet.Client.UI.Models.Social;
 
 namespace Pesedjet.Client.UI.Utilities.Localization;
 

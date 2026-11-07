@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:behaviors="using:Pesedjet.Client.UI.Utilities.Behaviors"
              xmlns:loc="using:Pesedjet.Client.UI.Utilities.Localization"
-             xmlns:models="using:Pesedjet.Client.UI.Models"
+             xmlns:modelsScoreboard="using:Pesedjet.Client.UI.Models.Scoreboard"
              xmlns:vm="using:Pesedjet.Client.UI.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
              x:Class="Pesedjet.Client.UI.Views.ScoreboardView"
@@ -69,12 +69,12 @@
                                       ItemsSource="{Binding Periods}"
                                       SelectedItem="{Binding SelectedPeriod}">
                                 <ComboBox.ItemTemplate>
-                                    <DataTemplate x:DataType="models:ScoreboardPeriodOption">
+                                    <DataTemplate x:DataType="modelsScoreboard:ScoreboardPeriodOption">
                                         <TextBlock Text="{Binding DisplayName}"/>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                                 <ComboBox.SelectionBoxItemTemplate>
-                                    <DataTemplate x:DataType="models:ScoreboardPeriodOption">
+                                    <DataTemplate x:DataType="modelsScoreboard:ScoreboardPeriodOption">
                                         <StackPanel Classes="tab-content">
                                             <TextBlock
                                                        Text="{Binding [Scoreboard.PeriodLabel],
@@ -133,7 +133,7 @@
                                         <Button Grid.Column="2" Classes="sort-header"
                                                 Classes.sorted="{Binding IsUsernameSorted}"
                                                 Command="{Binding SortByCommand}"
-                                                CommandParameter="{x:Static models:ScoreboardSortColumn.Username}">
+                                                CommandParameter="{x:Static modelsScoreboard:ScoreboardSortColumn.Username}">
                                             <StackPanel Classes="sort-content">
                                                 <TextBlock Text="{Binding [Scoreboard.ColumnPlayer],
                                                                       Source={x:Static
@@ -151,7 +151,7 @@
                                         <Button Grid.Column="3" Classes="sort-header numeric"
                                                 Classes.sorted="{Binding IsPointsSorted}"
                                                 Command="{Binding SortByCommand}"
-                                                CommandParameter="{x:Static models:ScoreboardSortColumn.Points}">
+                                                CommandParameter="{x:Static modelsScoreboard:ScoreboardSortColumn.Points}">
                                             <StackPanel Classes="sort-content">
                                                 <TextBlock Text="{Binding [Scoreboard.ColumnPoints],
                                                                       Source={x:Static
@@ -169,7 +169,7 @@
                                         <Button Grid.Column="4" Classes="sort-header numeric"
                                                 Classes.sorted="{Binding IsGamesPlayedSorted}"
                                                 Command="{Binding SortByCommand}"
-                                                CommandParameter="{x:Static models:ScoreboardSortColumn.GamesPlayed}">
+                                                CommandParameter="{x:Static modelsScoreboard:ScoreboardSortColumn.GamesPlayed}">
                                             <StackPanel Classes="sort-content">
                                                 <TextBlock Text="{Binding [Scoreboard.ColumnGames],
                                                                       Source={x:Static
@@ -187,7 +187,7 @@
                                         <Button Grid.Column="5" Classes="sort-header numeric"
                                                 Classes.sorted="{Binding IsVictoriesSorted}"
                                                 Command="{Binding SortByCommand}"
-                                                CommandParameter="{x:Static models:ScoreboardSortColumn.Victories}">
+                                                CommandParameter="{x:Static modelsScoreboard:ScoreboardSortColumn.Victories}">
                                             <StackPanel Classes="sort-content">
                                                 <TextBlock Text="{Binding [Scoreboard.ColumnWins],
                                                                       Source={x:Static
@@ -206,7 +206,7 @@
                                                 Classes.sorted="{Binding IsAveragePerGameSorted}"
                                                 Command="{Binding SortByCommand}"
                                                 CommandParameter="{x:Static
-                                                                  models:ScoreboardSortColumn.AveragePerGame}">
+                                                                  modelsScoreboard:ScoreboardSortColumn.AveragePerGame}">
                                             <StackPanel Classes="sort-content">
                                                 <TextBlock Text="{Binding [Scoreboard.ColumnAverage],
                                                                       Source={x:Static
@@ -224,7 +224,7 @@
                                         <Button Grid.Column="7" Classes="sort-header numeric"
                                                 Classes.sorted="{Binding IsLastGameAtSorted}"
                                                 Command="{Binding SortByCommand}"
-                                                CommandParameter="{x:Static models:ScoreboardSortColumn.LastGameAt}">
+                                                CommandParameter="{x:Static modelsScoreboard:ScoreboardSortColumn.LastGameAt}">
                                             <StackPanel Classes="sort-content">
                                                 <TextBlock Text="{Binding [Scoreboard.ColumnLastGame],
                                                                       Source={x:Static
@@ -246,7 +246,7 @@
                                               IsVisible="{Binding ShowsRows}">
                                     <ItemsControl ItemsSource="{Binding Entries}">
                                         <ItemsControl.ItemTemplate>
-                                            <DataTemplate x:DataType="models:ScoreboardEntry">
+                                            <DataTemplate x:DataType="modelsScoreboard:ScoreboardEntry">
                                                 <Border Classes="score-row" Classes.own="{Binding IsCurrentPlayer}">
                                                     <Grid ColumnDefinitions="72,56,*,100,100,110,170,140">
                                                         <TextBlock Classes="score-cell position"

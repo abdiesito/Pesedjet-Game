@@ -1,5 +1,6 @@
-using System.ServiceModel;
-using System.Threading.Tasks;
+using System.Security.Cryptography;
+using System.Text;
+using CoreWCF;
 using Pesedjet.Server.Contracts.DTOs;
 using Pesedjet.Server.Contracts.Faults;
 using Pesedjet.Server.Contracts.Interfaces;
@@ -14,24 +15,17 @@ public class AuthService : IAuthService
     private readonly IPlayerRepository _playerRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly ITokenGenerator _tokenGenerator;
-    private readonly ITokenInvalidator _tokenInvalidator;
     private readonly IActivePlayers _activePlayers;
 
-    public AuthService(
-        IPlayerRepository playerRepository,
-        IPasswordHasher passwordHasher,
-        ITokenGenerator tokenGenerator,
-        ITokenInvalidator tokenInvalidator,
-        IActivePlayers activePlayers)
+    public AuthService(AuthServiceDependencies dependencies)
     {
-        _playerRepository = playerRepository;
-        _passwordHasher = passwordHasher;
-        _tokenGenerator = tokenGenerator;
-        _tokenInvalidator = tokenInvalidator;
-        _activePlayers = activePlayers;
+        _playerRepository = dependencies.PlayerRepository;
+        _passwordHasher = dependencies.PasswordHasher;
+        _tokenGenerator = dependencies.TokenGenerator;
+        _activePlayers = dependencies.ActivePlayers;
     }
 
-    public async Task<UserSession> LoginAsync(UserLoginRequest request)
+    public UserSession Login(UserLoginRequest request)
     {
         UserSession session = null!;
 
@@ -40,7 +34,7 @@ public class AuthService : IAuthService
             throw CreateFault(ServiceErrorCodes.InvalidData, ServiceMessageKeys.InvalidData);
         }
 
-        Player? player = await _playerRepository.GetPlayerByUsernameAsync(request.Username);
+        Player? player = _playerRepository.GetPlayerByUsername(request.Username);
         if (player is null)
         {
             throw CreateFault(ServiceErrorCodes.InvalidCredentials, ServiceMessageKeys.InvalidCredentials);
@@ -52,18 +46,13 @@ public class AuthService : IAuthService
             throw CreateFault(ServiceErrorCodes.InvalidCredentials, ServiceMessageKeys.InvalidCredentials);
         }
 
-        string rememberToken = String.Empty;
-        if (request.RememberSession)
-        {
-            rememberToken = _tokenGenerator.GenerateSessionToken();
-            await _playerRepository.SaveRememberTokenAsync(player.Id, rememberToken);
-        }
+        string sessionToken = ResolveSessionToken(player, request.DeviceToken);
 
         session = new UserSession
         {
             PlayerId = player.Id,
             Username = player.Username,
-            RememberToken = rememberToken,
+            RememberToken = sessionToken,
             PreferredLanguage = "es-MX",
             IsGuest = false
         };
@@ -71,7 +60,7 @@ public class AuthService : IAuthService
         return session;
     }
 
-    public async Task<UserSession> ResumeSessionAsync(string rememberToken)
+    public UserSession ResumeSession(string rememberToken)
     {
         UserSession session = null!;
 
@@ -80,7 +69,7 @@ public class AuthService : IAuthService
             throw CreateFault(ServiceErrorCodes.InvalidData, ServiceMessageKeys.InvalidData);
         }
 
-        Player? player = await _playerRepository.GetPlayerByRememberTokenAsync(rememberToken);
+        Player? player = _playerRepository.GetPlayerByRememberToken(rememberToken);
         if (player is null)
         {
             throw CreateFault(ServiceErrorCodes.UserNotFound, ServiceMessageKeys.UserNotFound);
@@ -98,7 +87,7 @@ public class AuthService : IAuthService
         return session;
     }
 
-    public async Task<UserSession> CreateGuestSessionAsync()
+    public UserSession CreateGuestSession()
     {
         UserSession guestSession = null!;
         string guestCode = _tokenGenerator.GenerateVerificationCode();
@@ -112,12 +101,10 @@ public class AuthService : IAuthService
             IsGuest = true
         };
 
-        await Task.CompletedTask;
-
         return guestSession;
     }
 
-    public async Task<bool> LogoutAsync(LogoutRequest request)
+    public bool Logout(LogoutRequest request)
     {
         bool isLogoutSuccessful = false;
 
@@ -126,9 +113,44 @@ public class AuthService : IAuthService
             throw CreateFault(ServiceErrorCodes.InvalidData, ServiceMessageKeys.InvalidData);
         }
 
-        isLogoutSuccessful = await _tokenInvalidator.InvalidateTokenAsync(request.SessionToken);
+        isLogoutSuccessful = _playerRepository.RevokeRememberToken(request.SessionToken);
 
         return isLogoutSuccessful;
+    }
+
+    
+    private string ResolveSessionToken(Player player, string? deviceToken)
+    {
+        string sessionToken = string.Empty;
+
+        if (string.IsNullOrEmpty(player.RememberToken))
+        {
+            sessionToken = _tokenGenerator.GenerateSessionToken();
+
+            bool isClaimed = _playerRepository.TryClaimRememberToken(player.Id, sessionToken);
+            if (!isClaimed)
+            {
+                throw CreateFault(ServiceErrorCodes.SessionAlreadyActive, ServiceMessageKeys.SessionAlreadyActive);
+            }
+        }
+        else if (AreTokensEqual(player.RememberToken, deviceToken))
+        {
+            sessionToken = player.RememberToken;
+        }
+        else
+        {
+            throw CreateFault(ServiceErrorCodes.SessionAlreadyActive, ServiceMessageKeys.SessionAlreadyActive);
+        }
+
+        return sessionToken;
+    }
+
+    private static bool AreTokensEqual(string storedToken, string? candidateToken)
+    {
+        byte[] storedBytes = Encoding.UTF8.GetBytes(storedToken);
+        byte[] candidateBytes = Encoding.UTF8.GetBytes(candidateToken ?? string.Empty);
+
+        return CryptographicOperations.FixedTimeEquals(storedBytes, candidateBytes);
     }
 
     private static FaultException<ServiceFault> CreateFault(string errorCode, string messageKey)

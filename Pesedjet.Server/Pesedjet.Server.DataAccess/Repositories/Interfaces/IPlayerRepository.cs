@@ -4,18 +4,20 @@ namespace Pesedjet.Server.DataAccess.Repositories.Interfaces;
 
 public interface IPlayerRepository
 {
-    Task<Player?> GetPlayerByIdAsync(Guid playerId);
-    Task<Player?> GetPlayerByUsernameAsync(string username);
+    Player? GetPlayerById(Guid playerId);
+    Player? GetPlayerByUsername(string username);
 
-    Task<Player?> GetPlayerByEmailAsync(string email);
+    Player? GetPlayerByEmail(string email);
 
-    Task<bool> CreatePlayerAsync(Player player);
+    List<Player> SearchPlayersByUsername(string searchTerm, Guid excludedPlayerId, int maximumResults);
+
+    bool CreatePlayer(Player player);
     
-    Task<bool> VerifyCodeAsync(string usernameOrEmail, string code, string purpose);
-    Task<bool> GeneratePasswordResetCodeAsync(Guid playerId);
-    Task<bool> UpdatePasswordHashAsync(Guid playerId, string newPasswordHash);
+    bool VerifyCode(string usernameOrEmail, string code, string purpose);
+    bool GeneratePasswordResetCode(Guid playerId);
+    bool UpdatePasswordHash(Guid playerId, string newPasswordHash);
     
-    Task<bool> SaveRememberTokenAsync(Guid playerId, string token);
-    Task<Player?> GetPlayerByRememberTokenAsync(string token);
-    Task<bool> RevokeRememberTokenAsync(string username);
+    bool TryClaimRememberToken(Guid playerId, string token);
+    Player? GetPlayerByRememberToken(string token);
+    bool RevokeRememberToken(string token);
 }

@@ -4,6 +4,7 @@ using Pesedjet.Client.UI.Utilities.Dialogs;
 using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Navigation;
 using Pesedjet.Client.UI.Utilities.Toasts;
+using Pesedjet.Client.UI.ViewModels.Dependencies;
 
 namespace Pesedjet.Client.UI.ViewModels;
 
@@ -22,16 +23,12 @@ public partial class MainWindowViewModel : ViewModelBase
     public bool IsGuestIndicatorVisible =>
         Navigator.CurrentViewModel is INavigable { ShowsGuestIndicator: true } && TopBar.IsGuest;
 
-    public MainWindowViewModel(
-        INavigator navigator,
-        IDialogManager dialogManager,
-        IToastManager toastManager,
-        TopBarViewModel topBar)
+    public MainWindowViewModel(MainWindowDependencies dependencies)
     {
-        Navigator = navigator;
-        DialogManager = dialogManager;
-        ToastManager = toastManager;
-        TopBar = topBar;
+        Navigator = dependencies.Navigator;
+        DialogManager = dependencies.DialogManager;
+        ToastManager = dependencies.ToastManager;
+        TopBar = dependencies.TopBar;
         Navigator.PropertyChanged += HandleNavigatorPropertyChanged;
         TopBar.PropertyChanged += HandleTopBarPropertyChanged;
         Navigator.NavigateAndClear<AccessMenuViewModel>();

@@ -16,114 +16,108 @@ public class PlayerRepository : IPlayerRepository
         _context = context;
     }
 
-    public async Task<Player?> GetPlayerByIdAsync(Guid playerId)
+    public Player? GetPlayerById(Guid playerId)
     {
-        Player? player = await _context.Players
+        Player? player = _context.Players
             .AsNoTracking()
-            .FirstOrDefaultAsync(p => p.Id == playerId);
+            .FirstOrDefault(p => p.Id == playerId);
 
         return player;
     }
 
-    public async Task<Player?> GetPlayerByUsernameAsync(string username)
+    public Player? GetPlayerByUsername(string username)
     {
-        Player? player = await _context.Players
+        Player? player = _context.Players
             .AsNoTracking()
-            .FirstOrDefaultAsync(p => p.Username == username);
+            .FirstOrDefault(p => p.Username == username);
 
         return player;
     }
 
-    public async Task<Player?> GetPlayerByEmailAsync(string email)
+    public Player? GetPlayerByEmail(string email)
     {
-        Player? player = await _context.Players
+        Player? player = _context.Players
             .AsNoTracking()
-            .FirstOrDefaultAsync(p => p.Email == email);
+            .FirstOrDefault(p => p.Email == email);
 
         return player;
     }
 
-    public async Task<bool> CreatePlayerAsync(Player player)
+    public List<Player> SearchPlayersByUsername(string searchTerm, Guid excludedPlayerId, int maximumResults)
+    {
+        List<Player> players = _context.Players
+            .AsNoTracking()
+            .Where(p => !p.IsGuest && p.Id != excludedPlayerId && p.Username.Contains(searchTerm))
+            .OrderBy(p => p.Username)
+            .Take(maximumResults)
+            .ToList();
+
+        return players;
+    }
+
+    public bool CreatePlayer(Player player)
     {
         _context.Players.Add(player);
-        int affectedRows = await _context.SaveChangesAsync();
+        int affectedRows = _context.SaveChanges();
 
         return affectedRows == ExpectedAffectedRows;
     }
 
-    public async Task<bool> VerifyCodeAsync(string usernameOrEmail, string code, string purpose)
+    public bool VerifyCode(string usernameOrEmail, string code, string purpose)
     {
         bool isValid = false;
-        await Task.CompletedTask;
 
         return isValid;
     }
 
-    public async Task<bool> GeneratePasswordResetCodeAsync(Guid playerId)
+    public bool GeneratePasswordResetCode(Guid playerId)
     {
         bool isGenerated = false;
-        await Task.CompletedTask;
 
         return isGenerated;
     }
 
-    public async Task<bool> UpdatePasswordHashAsync(Guid playerId, string newPasswordHash)
+    public bool UpdatePasswordHash(Guid playerId, string newPasswordHash)
     {
         bool isUpdated = false;
 
-        Player? player = await _context.Players
-            .FirstOrDefaultAsync(p => p.Id == playerId);
+        Player? player = _context.Players
+            .FirstOrDefault(p => p.Id == playerId);
 
         if (player is not null)
         {
             player.PasswordHash = newPasswordHash;
-            int affectedRows = await _context.SaveChangesAsync();
+            int affectedRows = _context.SaveChanges();
             isUpdated = affectedRows == ExpectedAffectedRows;
         }
 
         return isUpdated;
     }
-
-    public async Task<bool> SaveRememberTokenAsync(Guid playerId, string token)
+    
+    public bool TryClaimRememberToken(Guid playerId, string token)
     {
-        bool isSaved = false;
+        int affectedRows = _context.Players
+            .Where(p => p.Id == playerId && (p.RememberToken == null || p.RememberToken == string.Empty))
+            .ExecuteUpdate(setters => setters.SetProperty(p => p.RememberToken, token));
 
-        Player? player = await _context.Players
-            .FirstOrDefaultAsync(p => p.Id == playerId);
-
-        if (player is not null)
-        {
-            player.RememberToken = token;
-            int affectedRows = await _context.SaveChangesAsync();
-            isSaved = affectedRows == ExpectedAffectedRows;
-        }
-
-        return isSaved;
+        return affectedRows == ExpectedAffectedRows;
     }
 
-    public async Task<Player?> GetPlayerByRememberTokenAsync(string token)
+    public Player? GetPlayerByRememberToken(string token)
     {
-        Player? player = await _context.Players
+        Player? player = _context.Players
             .AsNoTracking()
-            .FirstOrDefaultAsync(p => p.RememberToken == token);
+            .FirstOrDefault(p => p.RememberToken == token);
 
         return player;
     }
 
-    public async Task<bool> RevokeRememberTokenAsync(string username)
+    public bool RevokeRememberToken(string token)
     {
-        bool isRevoked = false;
+        int affectedRows = _context.Players
+            .Where(p => p.RememberToken == token)
+            .ExecuteUpdate(setters => setters.SetProperty(p => p.RememberToken, (string?)null));
 
-        Player? player = await _context.Players
-            .FirstOrDefaultAsync(p => p.Username == username);
-
-        if (player is not null)
-        {
-            player.RememberToken = null;
-            int affectedRows = await _context.SaveChangesAsync();
-            isRevoked = affectedRows == ExpectedAffectedRows;
-        }
-
-        return isRevoked;
+        return affectedRows == ExpectedAffectedRows;
     }
 }

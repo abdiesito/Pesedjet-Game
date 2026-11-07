@@ -7,12 +7,16 @@ using Pesedjet.Client.UI.Utilities.Clipboard;
 using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Matches;
 using Pesedjet.Client.UI.Utilities.Notifications;
-using Pesedjet.Client.UI.Utilities.Rooms;
+using Pesedjet.Client.UI.Utilities.Lobbies;
 using Pesedjet.Client.UI.Utilities.Session;
 using Pesedjet.Client.UI.Utilities.Social;
 using Pesedjet.Client.UI.Utilities.Toasts;
 using Pesedjet.Client.UI.ViewModels;
 using Pesedjet.Client.UI.Views;
+using Pesedjet.Client.UI.ViewModels.Dependencies;
+using Pesedjet.Client.UI.ViewModels.Dialogs;
+using Pesedjet.Client.UI.Views.Dialogs;
+using Pesedjet.Client.UI.ViewModels.Dialogs.Dependencies;
 
 namespace Pesedjet.Client.UI.Utilities.Navigation;
 
@@ -38,7 +42,9 @@ public static class ViewDependencyInjectionSetup
         services.AddSingleton<IPlayerSession, PlayerSession>();
         services.AddSingleton<INotificationInbox, NotificationInbox>();
         services.AddSingleton<ISocialCircle, SocialCircle>();
-        services.AddSingleton<IRoomSession, RoomSession>();
+        services.AddTransient<SocialSynchronizerDependencies>();
+        services.AddSingleton<ISocialSynchronizer, SocialSynchronizer>();
+        services.AddSingleton<ILobbySession, LobbySession>();
         services.AddSingleton<IClipboardManager, ClipboardManager>();
         services.AddSingleton<IToastManager, ToastManager>();
         services.AddSingleton<UserSettingsStore>();
@@ -49,9 +55,13 @@ public static class ViewDependencyInjectionSetup
 
     private static IServiceCollection AddNetworkingClients(this IServiceCollection services)
     {
-        services.AddSingleton<IAuthClient, AuthClient>(); 
+        services.AddSingleton<IServiceCaller, ServiceCaller>();
+        services.AddSingleton<IAuthClient, AuthClient>();
         services.AddSingleton<IAccountClient, AccountClient>();
-        services.AddSingleton<IRoomClient, RoomClient>();
+        services.AddSingleton<IFriendshipClient, FriendshipClient>();
+        services.AddSingleton<ILobbyInvitationClient, LobbyInvitationClient>();
+        services.AddSingleton<IFriendshipNotificationClient, FriendshipNotificationClient>();
+        services.AddSingleton<ILobbyClient, LobbyClient>();
         
         //TODO: This is a simulated gateway only for testing. Must remove
         services.AddSingleton<IMatchGateway, SimulatedMatchGateway>();
@@ -110,6 +120,24 @@ public static class ViewDependencyInjectionSetup
 
     private static IServiceCollection AddViewModels(this IServiceCollection services)
     {
+        services.AddTransient<FriendsDependencies>();
+        services.AddTransient<MatchDependencies>();
+        services.AddTransient<FriendListDependencies>();
+        services.AddTransient<SettingsDependencies>();
+        services.AddTransient<GameMenuDependencies>();
+        services.AddTransient<MainWindowDependencies>();
+        services.AddTransient<LogOutDependencies>();
+        services.AddTransient<MainMenuDependencies>();
+        services.AddTransient<GameSetupDependencies>();
+        services.AddTransient<LobbyDependencies>();
+        services.AddTransient<PublicLobbyListDependencies>();
+        services.AddTransient<AccessMenuDependencies>();
+        services.AddTransient<PlayerSearchDependencies>();
+        services.AddTransient<TopBarDependencies>();
+        services.AddTransient<NotificationsDependencies>();
+        services.AddTransient<InviteFriendsDependencies>();
+        services.AddTransient<NotificationInboxDependencies>();
+
         services.AddSingleton<TopBarViewModel>();
         services.AddSingleton<MainWindowViewModel>();
 
@@ -125,9 +153,9 @@ public static class ViewDependencyInjectionSetup
         services.AddTransient<GuestExitViewModel>();
         services.AddTransient<HamburgerMenuViewModel>();
         services.AddTransient<GameMenuViewModel>();
-        services.AddTransient<PublicRoomListViewModel>();
+        services.AddTransient<PublicLobbyListViewModel>();
         services.AddTransient<GameSetupViewModel>();
-        services.AddTransient<WaitingRoomViewModel>();
+        services.AddTransient<LobbyViewModel>();
         services.AddTransient<MatchViewModel>();
         services.AddTransient<MatchNoticeViewModel>();
         services.AddTransient<CardHelpViewModel>();

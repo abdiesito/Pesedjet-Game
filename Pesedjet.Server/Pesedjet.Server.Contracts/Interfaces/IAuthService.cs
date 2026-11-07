@@ -8,18 +8,18 @@ namespace Pesedjet.Server.Contracts.Interfaces
     {
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]
-        Task<UserSession> LoginAsync(UserLoginRequest request);
+        UserSession Login(UserLoginRequest request);
 
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]
-        Task<UserSession> ResumeSessionAsync(string rememberToken);
+        UserSession ResumeSession(string rememberToken);
 
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]
-        Task<UserSession> CreateGuestSessionAsync();
+        UserSession CreateGuestSession();
 
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]
-        Task<bool> LogoutAsync(LogoutRequest request);
+        bool Logout(LogoutRequest request);
     }
 }
