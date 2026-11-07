@@ -160,8 +160,7 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
             UserSession session = result.Value!;
 
             _failedAttemptsCount = 0;
-
-            // The token always stays on this machine: it is what proves to the server that this device owns the session.
+            
             UserSettings currentSettings = _userSettingsStore.Load();
             UserSettings updatedSettings = currentSettings with
             {
@@ -260,7 +259,6 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
         }
         else if (result.Failure == FailureKind.Business)
         {
-            // Only a refusal from the server proves the token is dead; a network failure keeps it for the next try.
             UserSettings resetSettings = settings with { RememberToken = string.Empty, AutoResume = false };
             _userSettingsStore.Save(resetSettings);
         }

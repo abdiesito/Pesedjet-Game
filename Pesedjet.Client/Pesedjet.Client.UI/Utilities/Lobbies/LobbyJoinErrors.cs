@@ -17,8 +17,7 @@ public static class LobbyJoinErrors
     {
         return FromMessageKey(messageKey, 0, 0);
     }
-
-    // The lobby list knows how many players a lobby has; the server fault does not carry it.
+    
     public static LobbyJoinResult FromMessageKey(string messageKey, int occupancy, int capacity)
     {
         LobbyCodeError error = messageKey switch

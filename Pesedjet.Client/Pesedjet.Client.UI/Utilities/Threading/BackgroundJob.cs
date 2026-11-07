@@ -5,12 +5,6 @@ using Pesedjet.Client.UI.Utilities.Logging;
 
 namespace Pesedjet.Client.UI.Utilities.Threading;
 
-// One blocking call that runs on a worker thread and reports back on the UI thread.
-// Work runs off the UI thread and must not touch UI-bound state. OnCompleted and OnFailed run on the UI thread.
-// State is handed to all three, so the callbacks are plain methods and nothing is captured implicitly.
-// Cancel() cannot interrupt the blocking call; it only discards the outcome: OnCompleted and OnFailed never run.
-// If a cancelled call still succeeds, OnCompletedAfterCancel (optional) lets the owner undo what the server did.
-// Set a breakpoint in Execute, Complete or any of the callbacks to follow a call from start to finish.
 public sealed class BackgroundJob<TState, TResult>
 {
     private const string FailureSource = "BackgroundJob";
@@ -33,14 +27,12 @@ public sealed class BackgroundJob<TState, TResult>
     public TResult? Result => _result;
 
     public Exception? Error => _error;
-
-    // Call from the UI thread, for example when the screen that started the job is left.
+    
     public void Cancel()
     {
         IsCancelled = true;
     }
-
-    // Runs on the worker thread (WaitCallback signature).
+    
     public void Execute(object? unused)
     {
         try
@@ -55,8 +47,7 @@ public sealed class BackgroundJob<TState, TResult>
 
         Dispatcher.UIThread.Post(Complete);
     }
-
-    // Runs on the UI thread.
+    
     private void Complete()
     {
         if (IsCancelled)

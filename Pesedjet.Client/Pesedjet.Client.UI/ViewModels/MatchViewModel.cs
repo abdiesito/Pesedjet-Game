@@ -21,8 +21,6 @@ using Pesedjet.Client.UI.Models.Matches;
 
 namespace Pesedjet.Client.UI.ViewModels;
 
-// GUI-009: the table. It is the only screen that fills the whole window; it has no top bar of its own (the guest
-// indicator is part of its status bar, RN22).
 public partial class MatchViewModel : ViewModelBase, INavigable, IDisposable
 {
     private const int TurnSeconds = 180;
@@ -151,11 +149,9 @@ public partial class MatchViewModel : ViewModelBase, INavigable, IDisposable
     public int AmuletGoal => _snapshot?.AmuletGoal ?? 0;
 
     public TopBarViewModel TopBar { get; }
-
-    // The table fills the window, so the guest indicator travels inside its status bar and the common bar is hidden.
+    
     public bool ShowsTopBar => false;
-
-    // The guest indicator is drawn inside the status bar of the table, so it scales with it.
+    
     public bool ShowsGuestIndicator => false;
 
     public bool IsGuest => _playerSession.IsGuest;
@@ -171,9 +167,7 @@ public partial class MatchViewModel : ViewModelBase, INavigable, IDisposable
     public string UnreadText => UnreadCount.ToString(CultureInfo.CurrentCulture);
 
     public bool CanPlay => IsMyTurn && !IsBusy && SelectedCard is not null;
-
-    // The warning about Atum-Ra appears while it is in the hand and a different card is selected: when Atum-Ra itself
-    // is selected, the effect line already says it.
+    
     public bool ShowsAtumRaWarning => HandHasAtumRa() && SelectedCard?.Card.Value != DeityCatalog.AtumRaValue;
 
     public string SelectedCardText => SelectedCard is null
@@ -342,7 +336,6 @@ public partial class MatchViewModel : ViewModelBase, INavigable, IDisposable
         }
         else if (IsOut)
         {
-            // Out of the round the player only observes: the server moves the match on.
             await Task.Delay(TimeSpan.FromSeconds(ObserverAdvanceSeconds), _timeProvider);
             await HandleOutcomeAsync(await _matchGateway.AdvanceAsync());
         }
@@ -639,8 +632,7 @@ public partial class MatchViewModel : ViewModelBase, INavigable, IDisposable
             seconds / SecondsPerMinute,
             seconds % SecondsPerMinute);
     }
-
-    // The texts of the table are built when a snapshot is applied, so a language change rebuilds them.
+    
     private void HandleLanguageChanged(object? sender, EventArgs eventArgs)
     {
         if (_snapshot is not null)

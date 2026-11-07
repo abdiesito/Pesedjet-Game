@@ -2,8 +2,6 @@ using System.Diagnostics;
 
 namespace Pesedjet.Client.Networking.Results;
 
-// What a ViewModel receives from a client: either the value, or why there is none.
-// Technical details (exceptions, stack traces) never reach this type; they stay inside IServiceCaller.
 [DebuggerDisplay("{ToString(),nq}")]
 public sealed class ClientResult<TValue>
 {
@@ -16,8 +14,7 @@ public sealed class ClientResult<TValue>
     public TValue? Value { get; private set; }
 
     public FailureKind Failure { get; private set; }
-
-    // Only filled for Business failures; both come from the server.
+    
     public string ErrorCode { get; private set; } = string.Empty;
 
     public string MessageKey { get; private set; } = string.Empty;

@@ -118,7 +118,7 @@ public class AuthService : IAuthService
         return isLogoutSuccessful;
     }
 
-    // One active session per player: the token in the database says which device holds it.
+    
     private string ResolveSessionToken(Player player, string? deviceToken)
     {
         string sessionToken = string.Empty;

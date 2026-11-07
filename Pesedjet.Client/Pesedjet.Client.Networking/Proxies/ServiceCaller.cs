@@ -33,7 +33,6 @@ public sealed class ServiceCaller : IServiceCaller
         }
         catch (FaultException exception)
         {
-            // The server failed while processing the request (a fault that is not part of the contract).
             Debug.WriteLine($"ServiceCaller: server fault at {address}: {exception}");
             result = ClientResult<TResult>.TechnicalFailure(FailureKind.Unexpected);
         }

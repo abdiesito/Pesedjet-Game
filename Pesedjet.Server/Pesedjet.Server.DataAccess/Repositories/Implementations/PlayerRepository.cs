@@ -93,8 +93,7 @@ public class PlayerRepository : IPlayerRepository
 
         return isUpdated;
     }
-
-    // Stores the token only while the player has none, in a single statement so two devices cannot both win.
+    
     public bool TryClaimRememberToken(Guid playerId, string token)
     {
         int affectedRows = _context.Players

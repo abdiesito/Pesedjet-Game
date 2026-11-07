@@ -76,8 +76,7 @@ public sealed class LobbyClient : ILobbyClient
             }
         }
     }
-
-    // Request-reply calls block the calling thread: callers must invoke them from a worker thread, never the UI thread.
+    
     public string CreateLobby(LobbyMember host, bool isPublic, int maxPlayers)
     {
         ClearPendingEvents();

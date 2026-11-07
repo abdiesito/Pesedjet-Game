@@ -23,8 +23,7 @@ public partial class GameSetupViewModel : ViewModelBase, INavigable
     private const int MaximumCapacity = 6;
     private const int DefaultCapacity = 4;
     private const string GoalInfoKey = "GameSetup.GoalInfo";
-
-    // Amulets needed to win for each capacity from 2 to 6 players (RJ-03).
+    
     private static readonly int[] AmuletGoals = [6, 5, 4, 3, 3];
 
     private readonly INavigator _navigator;
