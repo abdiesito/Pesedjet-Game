@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using System.ServiceModel;
-using Pesedjet.Client.Networking.Interfaces;
+using Pesedjet.Client.Networking.Proxies.Interfaces;
 using Pesedjet.Client.Networking.Results;
 using Pesedjet.Server.Contracts.DTOs;
 

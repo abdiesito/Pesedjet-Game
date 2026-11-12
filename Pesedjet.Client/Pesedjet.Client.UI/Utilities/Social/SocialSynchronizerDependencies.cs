@@ -1,4 +1,4 @@
-using Pesedjet.Client.Networking.Interfaces;
+using Pesedjet.Client.Networking.Proxies.Interfaces;
 using Pesedjet.Client.UI.Utilities.Notifications;
 using Pesedjet.Client.UI.Utilities.Session;
 

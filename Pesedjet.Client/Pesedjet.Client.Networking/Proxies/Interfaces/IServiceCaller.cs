@@ -1,6 +1,6 @@
 using Pesedjet.Client.Networking.Results;
 
-namespace Pesedjet.Client.Networking.Interfaces;
+namespace Pesedjet.Client.Networking.Proxies.Interfaces;
 
 public interface IServiceCaller
 {

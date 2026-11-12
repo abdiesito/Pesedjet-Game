@@ -1,10 +1,10 @@
-using Pesedjet.Client.Networking.Interfaces;
+using Pesedjet.Client.Networking.Proxies.Interfaces;
 using Pesedjet.Client.Networking.Results;
 using Pesedjet.Server.Contracts.DTOs;
 using Pesedjet.Server.Contracts.Endpoints;
 using Pesedjet.Server.Contracts.Interfaces;
 
-namespace Pesedjet.Client.Networking.Proxies;
+namespace Pesedjet.Client.Networking.Proxies.Implementations;
 
 public sealed class AuthClient : IAuthClient
 {
