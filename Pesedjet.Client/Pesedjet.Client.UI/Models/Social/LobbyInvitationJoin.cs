@@ -1,4 +1,4 @@
-using LobbyMemberDto = Pesedjet.Server.Contracts.DTOs.LobbyMember;
+using LobbyMemberDto = Pesedjet.Server.Contracts.DTO.LobbyMember;
 
 namespace Pesedjet.Client.UI.Models.Social;
 

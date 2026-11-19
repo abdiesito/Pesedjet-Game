@@ -27,6 +27,7 @@ builder.WebHost.UseNetTcp(ServiceEndpoints.TcpPort);
 builder.Services.AddServiceModelServices();
 builder.Services.AddDbContext<PesedjetDatabaseContext>(options => options.UseSqlServer(connectionString));
 
+//TODO: EVALUATE IF HOST NEEDS TO KNOW THE CROSSCUTTING CONFIGURATIONS. IN THIS CASE, COMMUNICATES WITH INTERFACES
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 builder.Services.AddSingleton<ITokenGenerator, TokenGenerator>();
@@ -36,6 +37,8 @@ builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<IFriendshipRepository, FriendshipRepository>();
 builder.Services.AddScoped<IBlockedPlayerRepository, BlockedPlayerRepository>();
 
+//FIXME: NOWADAYS, THE HOST KNOWS THE IMPLEMENTATION OF THE SERVICE AND ITS DEPENDENCIES.
+//HOST NEEDS COMUNICATE ONLY WITH INTERFACES
 builder.Services.AddTransient<AccountService>();
 builder.Services.AddTransient<AuthServiceDependencies>();
 builder.Services.AddTransient<AuthService>();

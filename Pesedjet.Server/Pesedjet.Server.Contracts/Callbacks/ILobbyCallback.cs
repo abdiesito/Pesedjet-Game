@@ -1,7 +1,7 @@
 #nullable enable
 
 using System.ServiceModel;
-using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.DTO;
 
 namespace Pesedjet.Server.Contracts.Callbacks;
 

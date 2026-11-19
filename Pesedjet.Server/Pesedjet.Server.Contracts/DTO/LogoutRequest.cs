@@ -1,6 +1,6 @@
-namespace Pesedjet.Server.Contracts.DTOs;
-
 using System.Runtime.Serialization;
+
+namespace Pesedjet.Server.Contracts.DTO;
 
 [DataContract]
 public class LogoutRequest

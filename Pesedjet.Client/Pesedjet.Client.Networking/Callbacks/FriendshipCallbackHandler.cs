@@ -1,6 +1,6 @@
 using System.ServiceModel;
 using Pesedjet.Server.Contracts.Callbacks;
-using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.DTO;
 
 namespace Pesedjet.Client.Networking.Callbacks;
 

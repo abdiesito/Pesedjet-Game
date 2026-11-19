@@ -11,10 +11,10 @@ using Pesedjet.Client.Networking.Results;
 using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Navigation;
 using Pesedjet.Client.UI.Utilities.Validation;
-using Pesedjet.Server.Contracts.DTOs;
 using Pesedjet.Client.UI.Utilities.Threading;
 using Pesedjet.Server.Contracts.Faults;
 using Pesedjet.Client.UI.Models.Account;
+using Pesedjet.Server.Contracts.DTO;
 
 namespace Pesedjet.Client.UI.ViewModels;
 

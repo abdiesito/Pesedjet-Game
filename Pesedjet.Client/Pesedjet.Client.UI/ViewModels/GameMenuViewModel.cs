@@ -14,12 +14,12 @@ using Pesedjet.Client.UI.Utilities.Navigation;
 using Pesedjet.Client.UI.Utilities.Lobbies;
 using Pesedjet.Client.UI.Utilities.Session;
 using Pesedjet.Client.UI.Utilities.Validation;
-using Pesedjet.Server.Contracts.DTOs;
 using Pesedjet.Server.Contracts.Faults;
 using Pesedjet.Client.UI.Utilities.Threading;
 using Pesedjet.Client.UI.ViewModels.Dependencies;
 using Pesedjet.Client.UI.ViewModels.Dialogs;
 using Pesedjet.Client.UI.Models.Lobbies;
+using Pesedjet.Server.Contracts.DTO;
 
 namespace Pesedjet.Client.UI.ViewModels;
 

@@ -17,7 +17,7 @@ using Pesedjet.Client.UI.Utilities.Toasts;
 using Pesedjet.Client.UI.ViewModels.Dialogs.Dependencies;
 using Pesedjet.Client.UI.Models.Lobbies;
 using Pesedjet.Client.UI.Models.Social;
-using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.DTO;
 using Pesedjet.Server.Contracts.Faults;
 
 namespace Pesedjet.Client.UI.ViewModels.Dialogs;

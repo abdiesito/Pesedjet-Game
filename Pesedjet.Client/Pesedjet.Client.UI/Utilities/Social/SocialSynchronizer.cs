@@ -8,7 +8,7 @@ using Pesedjet.Client.UI.Models.Social;
 using Pesedjet.Client.UI.Utilities.Notifications;
 using Pesedjet.Client.UI.Utilities.Session;
 using Pesedjet.Client.UI.Utilities.Threading;
-using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.DTO;
 
 namespace Pesedjet.Client.UI.Utilities.Social;
 
