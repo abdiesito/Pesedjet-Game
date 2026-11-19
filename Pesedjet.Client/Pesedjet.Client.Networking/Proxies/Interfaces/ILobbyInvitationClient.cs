@@ -7,7 +7,7 @@ public interface ILobbyInvitationClient
 {
     ClientResult<List<FriendEntry>> GetInvitableFriends(InvitableFriendsRequest request);
 
-    ClientResult<List<Guid>> SendLobbyInvitations(LobbyInvitationRequest request);
+    ClientResult<List<Guid>> SendLobbyInvitations(LobbyInvitation lobbyInvitation);
 
     ClientResult<List<LobbyInvitationEntry>> GetPendingLobbyInvitations(Guid playerId);
 

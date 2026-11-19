@@ -12,7 +12,7 @@ public interface ILobbyInvitationService
 
     [OperationContract]
     [FaultContract(typeof(ServiceFault))]
-    List<Guid> SendLobbyInvitations(LobbyInvitationRequest request);
+    List<Guid> SendLobbyInvitations(LobbyInvitation request);
 
     [OperationContract]
     [FaultContract(typeof(ServiceFault))]

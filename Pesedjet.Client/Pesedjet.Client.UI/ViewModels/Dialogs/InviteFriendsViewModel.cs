@@ -168,14 +168,14 @@ public partial class InviteFriendsViewModel : DialogViewModelBase, IDialogParame
         {
             _isSending = true;
 
-            LobbyInvitationRequest request = new LobbyInvitationRequest
+            LobbyInvitation request = new LobbyInvitation
             {
                 SenderId = _playerSession.PlayerId,
                 LobbyCode = _lobbyCode,
                 TargetIds = FindSelectedIds()
             };
 
-            BackgroundJob<LobbyInvitationRequest, ClientResult<List<Guid>>> job = new()
+            BackgroundJob<LobbyInvitation, ClientResult<List<Guid>>> job = new()
             {
                 Work = SendInvitationsOnWorker,
                 State = request,
@@ -187,12 +187,12 @@ public partial class InviteFriendsViewModel : DialogViewModelBase, IDialogParame
         }
     }
 
-    private ClientResult<List<Guid>> SendInvitationsOnWorker(LobbyInvitationRequest request)
+    private ClientResult<List<Guid>> SendInvitationsOnWorker(LobbyInvitation lobbyInvitation)
     {
-        return _lobbyInvitationClient.SendLobbyInvitations(request);
+        return _lobbyInvitationClient.SendLobbyInvitations(lobbyInvitation);
     }
 
-    private void OnInvitationsSent(ClientResult<List<Guid>> result, LobbyInvitationRequest request)
+    private void OnInvitationsSent(ClientResult<List<Guid>> result, LobbyInvitation lobbyInvitation)
     {
         _isSending = false;
 
@@ -211,9 +211,9 @@ public partial class InviteFriendsViewModel : DialogViewModelBase, IDialogParame
         }
     }
 
-    private void OnInvitationsFailed(Exception error, LobbyInvitationRequest request)
+    private void OnInvitationsFailed(Exception error, LobbyInvitation lobbyInvitation)
     {
-        OnInvitationsSent(ClientResult<List<Guid>>.TechnicalFailure(FailureKind.Unexpected), request);
+        OnInvitationsSent(ClientResult<List<Guid>>.TechnicalFailure(FailureKind.Unexpected), lobbyInvitation);
     }
 
     private List<Guid> FindSelectedIds()
