@@ -16,4 +16,8 @@
         <ProjectReference Include="..\..\Pesedjet.Server\Pesedjet.Server.Contracts\Pesedjet.Server.Contracts.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Policies\" />
+    </ItemGroup>
+
 </Project>
