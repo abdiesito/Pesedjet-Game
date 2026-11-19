@@ -8,7 +8,7 @@ namespace Pesedjet.Server.Contracts.Interfaces
     {
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]
-        bool RegisterAccount(UserRegisterRequest request);
+        bool RegisterAccount(UserRegistration request);
 
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]

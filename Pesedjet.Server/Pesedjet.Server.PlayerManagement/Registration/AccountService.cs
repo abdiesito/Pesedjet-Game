@@ -26,7 +26,7 @@ public class AccountService : IAccountService
         _timeProvider = timeProvider;
     }
 
-    public bool RegisterAccount(UserRegisterRequest request)
+    public bool RegisterAccount(UserRegistration request)
     {
         bool isCreated = false;
 
@@ -134,7 +134,7 @@ public class AccountService : IAccountService
         return new FaultException<ServiceFault>(fault, new FaultReason(errorCode));
     }
 
-    private void EnsureRequestIsValid(UserRegisterRequest request)
+    private void EnsureRequestIsValid(UserRegistration request)
     {
         DateOnly today = DateOnly.FromDateTime(_timeProvider.GetLocalNow().DateTime);
         DateOnly birthDate = DateOnly.FromDateTime(request.BirthDate);
@@ -151,7 +151,7 @@ public class AccountService : IAccountService
         }
     }
 
-    private void EnsureAccountIsAvailable(UserRegisterRequest request)
+    private void EnsureAccountIsAvailable(UserRegistration request)
     {
         Player? playerWithUsername = _playerRepository.GetPlayerByUsername(request.Username);
 
@@ -170,7 +170,7 @@ public class AccountService : IAccountService
         }
     }
 
-    private Player CreatePlayer(UserRegisterRequest request)
+    private Player CreatePlayer(UserRegistration request)
     {
         Guid playerId = Guid.NewGuid();
 

@@ -5,5 +5,5 @@ namespace Pesedjet.Client.Networking.Proxies.Interfaces;
 
 public interface IAccountClient
 {
-    ClientResult<bool> RegisterAccount(UserRegisterRequest request);
+    ClientResult<bool> RegisterAccount(UserRegistration request);
 }
