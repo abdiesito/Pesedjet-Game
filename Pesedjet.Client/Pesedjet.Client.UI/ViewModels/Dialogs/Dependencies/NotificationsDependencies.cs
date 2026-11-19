@@ -1,5 +1,5 @@
 using System;
-using Pesedjet.Client.Networking.Interfaces;
+using Pesedjet.Client.Networking.Proxies.Interfaces;
 using Pesedjet.Client.UI.Utilities.Lobbies;
 using Pesedjet.Client.UI.Utilities.Navigation;
 using Pesedjet.Client.UI.Utilities.Notifications;

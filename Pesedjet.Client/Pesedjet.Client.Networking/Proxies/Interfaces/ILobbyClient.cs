@@ -1,10 +1,8 @@
 #nullable enable
 
-using System;
-using System.Collections.Generic;
 using Pesedjet.Server.Contracts.DTOs;
 
-namespace Pesedjet.Client.Networking.Interfaces;
+namespace Pesedjet.Client.Networking.Proxies.Interfaces;
 
 public interface ILobbyClient : IDisposable
 {

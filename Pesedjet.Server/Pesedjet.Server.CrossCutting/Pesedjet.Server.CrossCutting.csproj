@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Diagnostics\" />
+      <Folder Include="Notifications\" />
+    </ItemGroup>
+
 </Project>

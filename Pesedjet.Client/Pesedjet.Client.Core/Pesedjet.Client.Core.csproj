@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="MatchManagement\" />
+      <Folder Include="Model\" />
+    </ItemGroup>
+
 </Project>

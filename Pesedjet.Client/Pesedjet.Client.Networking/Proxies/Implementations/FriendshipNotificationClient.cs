@@ -1,11 +1,11 @@
 using System.ServiceModel;
 using Pesedjet.Client.Networking.Callbacks;
-using Pesedjet.Client.Networking.Interfaces;
+using Pesedjet.Client.Networking.Proxies.Interfaces;
 using Pesedjet.Server.Contracts.DTOs;
 using Pesedjet.Server.Contracts.Endpoints;
 using Pesedjet.Server.Contracts.Interfaces;
 
-namespace Pesedjet.Client.Networking.Proxies;
+namespace Pesedjet.Client.Networking.Proxies.Implementations;
 
 public sealed class FriendshipNotificationClient : IFriendshipNotificationClient
 {

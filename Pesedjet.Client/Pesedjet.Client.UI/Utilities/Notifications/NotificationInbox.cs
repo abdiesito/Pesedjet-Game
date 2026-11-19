@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Pesedjet.Client.Networking.Interfaces;
+using Pesedjet.Client.Networking.Proxies.Interfaces;
 using Pesedjet.Client.Networking.Results;
 using Pesedjet.Client.UI.Models.Social;
 using Pesedjet.Client.UI.Utilities.Session;

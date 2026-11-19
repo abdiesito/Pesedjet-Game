@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.ServiceModel;
 using CommunityToolkit.Mvvm.Input;
-using Pesedjet.Client.Networking.Interfaces;
+using Pesedjet.Client.Networking.Proxies.Interfaces;
 using Pesedjet.Client.Networking.Results;
 using Pesedjet.Client.UI.Utilities.Lobbies;
 using Pesedjet.Client.UI.Utilities.Localization;

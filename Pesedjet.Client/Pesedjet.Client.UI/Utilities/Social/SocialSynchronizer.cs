@@ -2,7 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Avalonia.Threading;
-using Pesedjet.Client.Networking.Interfaces;
+using Pesedjet.Client.Networking.Proxies.Interfaces;
 using Pesedjet.Client.Networking.Results;
 using Pesedjet.Client.UI.Models.Social;
 using Pesedjet.Client.UI.Utilities.Notifications;

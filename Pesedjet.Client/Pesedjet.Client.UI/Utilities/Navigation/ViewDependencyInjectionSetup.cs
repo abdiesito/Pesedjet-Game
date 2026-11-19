@@ -1,7 +1,8 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Pesedjet.Client.Networking.Proxies;
-using Pesedjet.Client.Networking.Interfaces;
+using Pesedjet.Client.Networking.Proxies.Implementations;
+using Pesedjet.Client.Networking.Proxies.Interfaces;
 using Pesedjet.Client.UI.Utilities.Dialogs;
 using Pesedjet.Client.UI.Utilities.Clipboard;
 using Pesedjet.Client.UI.Utilities.Localization;

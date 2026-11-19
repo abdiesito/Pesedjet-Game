@@ -22,4 +22,8 @@
       <ProjectReference Include="..\Pesedjet.Server.PlayerManagement\Pesedjet.Server.PlayerManagement.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Configuration\" />
+    </ItemGroup>
+
 </Project>
