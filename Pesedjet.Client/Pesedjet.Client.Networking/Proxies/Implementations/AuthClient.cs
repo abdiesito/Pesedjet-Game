@@ -15,12 +15,12 @@ public sealed class AuthClient : IAuthClient
         _serviceCaller = serviceCaller;
     }
 
-    public ClientResult<UserSession> Login(UserLoginRequest request)
+    public ClientResult<UserSession> Login(LoginCredentials loginCredentials)
     {
-        return _serviceCaller.Call<IAuthService, UserLoginRequest, UserSession>(
+        return _serviceCaller.Call<IAuthService, LoginCredentials, UserSession>(
             ServiceEndpoints.AuthServiceAddress,
             LoginOperation,
-            request);
+            loginCredentials);
     }
 
     public ClientResult<UserSession> ResumeSession(string rememberToken)
@@ -52,9 +52,9 @@ public sealed class AuthClient : IAuthClient
             request);
     }
 
-    private static UserSession LoginOperation(IAuthService channel, UserLoginRequest request)
+    private static UserSession LoginOperation(IAuthService channel, LoginCredentials loginCredentials)
     {
-        return channel.Login(request);
+        return channel.Login(loginCredentials);
     }
 
     private static UserSession ResumeSessionOperation(IAuthService channel, string rememberToken)

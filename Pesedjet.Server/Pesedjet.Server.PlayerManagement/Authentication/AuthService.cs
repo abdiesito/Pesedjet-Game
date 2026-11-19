@@ -25,28 +25,28 @@ public class AuthService : IAuthService
         _activePlayers = dependencies.ActivePlayers;
     }
 
-    public UserSession Login(UserLoginRequest request)
+    public UserSession Login(LoginCredentials credentials)
     {
         UserSession session = null!;
 
-        if (request is null || string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
+        if (credentials is null || string.IsNullOrWhiteSpace(credentials.Username) || string.IsNullOrWhiteSpace(credentials.Password))
         {
             throw CreateFault(ServiceErrorCodes.InvalidData, ServiceMessageKeys.InvalidData);
         }
 
-        Player? player = _playerRepository.GetPlayerByUsername(request.Username);
+        Player? player = _playerRepository.GetPlayerByUsername(credentials.Username);
         if (player is null)
         {
             throw CreateFault(ServiceErrorCodes.InvalidCredentials, ServiceMessageKeys.InvalidCredentials);
         }
 
-        bool isPasswordValid = _passwordHasher.VerifyPassword(request.Password, player.PasswordHash, player.Id);
+        bool isPasswordValid = _passwordHasher.VerifyPassword(credentials.Password, player.PasswordHash, player.Id);
         if (!isPasswordValid)
         {
             throw CreateFault(ServiceErrorCodes.InvalidCredentials, ServiceMessageKeys.InvalidCredentials);
         }
 
-        string sessionToken = ResolveSessionToken(player, request.DeviceToken);
+        string sessionToken = ResolveSessionToken(player, credentials.DeviceToken);
 
         session = new UserSession
         {

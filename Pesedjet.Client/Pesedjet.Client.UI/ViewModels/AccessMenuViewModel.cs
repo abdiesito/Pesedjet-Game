@@ -122,14 +122,14 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
             IsBusy = true;
             ClearStatus();
 
-            UserLoginRequest request = new UserLoginRequest
+            LoginCredentials request = new LoginCredentials
             {
                 Username = Username,
                 Password = Password,
                 DeviceToken = _userSettingsStore.Load().RememberToken
             };
 
-            BackgroundJob<UserLoginRequest, ClientResult<UserSession>> job = new()
+            BackgroundJob<LoginCredentials, ClientResult<UserSession>> job = new()
             {
                 Work = _authClient.Login,
                 State = request,
@@ -141,12 +141,12 @@ public partial class AccessMenuViewModel : ViewModelBase, INavigable
         }
     }
 
-    private void OnLoginCompleted(ClientResult<UserSession> result, UserLoginRequest request)
+    private void OnLoginCompleted(ClientResult<UserSession> result, LoginCredentials request)
     {
         ApplyLoginResult(result);
     }
 
-    private void OnLoginFailed(Exception error, UserLoginRequest request)
+    private void OnLoginFailed(Exception error, LoginCredentials request)
     {
         ApplyLoginResult(ClientResult<UserSession>.TechnicalFailure(FailureKind.Unexpected));
     }

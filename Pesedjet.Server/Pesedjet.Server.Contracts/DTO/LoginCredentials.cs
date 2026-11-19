@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 namespace Pesedjet.Server.Contracts.DTO
 {
     [DataContract]
-    public class UserLoginRequest
+    public class LoginCredentials
     {
         [DataMember] 
         public string Username { get; set; } = string.Empty;
@@ -11,7 +11,7 @@ namespace Pesedjet.Server.Contracts.DTO
         [DataMember] 
         public string Password { get; set; } = string.Empty;
         
-        // Token this machine received on its last login; empty when the machine has none.
+        
         [DataMember]
         public string DeviceToken { get; set; } = string.Empty;
     }
