@@ -1,5 +1,5 @@
 using System.ServiceModel;
-using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.DTO;
 
 namespace Pesedjet.Server.Contracts.Interfaces;
 
@@ -12,7 +12,7 @@ public interface ILobbyInvitationService
 
     [OperationContract]
     [FaultContract(typeof(ServiceFault))]
-    List<Guid> SendLobbyInvitations(LobbyInvitationRequest request);
+    List<Guid> SendLobbyInvitations(LobbyInvitation request);
 
     [OperationContract]
     [FaultContract(typeof(ServiceFault))]

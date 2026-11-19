@@ -1,6 +1,6 @@
 using Pesedjet.Server.Contracts.Internal;
 using CoreWCF;
-using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.DTO;
 using Pesedjet.Server.Contracts.Faults;
 using Pesedjet.Server.Contracts.Interfaces;
 using Pesedjet.Server.DataAccess.Entities.Identity;
@@ -39,7 +39,7 @@ public class LobbyInvitationService : ILobbyInvitationService
         return FindInvitableFriends(request.PlayerId, lobby);
     }
 
-    public List<Guid> SendLobbyInvitations(LobbyInvitationRequest request)
+    public List<Guid> SendLobbyInvitations(LobbyInvitation request)
     {
         List<Guid> invitedIds = new List<Guid>();
 
@@ -129,7 +129,7 @@ public class LobbyInvitationService : ILobbyInvitationService
         return new FaultException<ServiceFault>(fault, new FaultReason(errorCode));
     }
 
-    private static void EnsureInvitationRequestIsValid(LobbyInvitationRequest request)
+    private static void EnsureInvitationRequestIsValid(LobbyInvitation request)
     {
         bool isValid = request is not null
                        && request.SenderId != Guid.Empty

@@ -7,9 +7,9 @@ using Pesedjet.Client.Networking.Results;
 using Pesedjet.Client.UI.Utilities.Dialogs;
 using Pesedjet.Client.UI.Utilities.Navigation;
 using Pesedjet.Client.UI.Utilities.Session;
-using Pesedjet.Server.Contracts.DTOs;
 using Pesedjet.Client.UI.Utilities.Threading;
 using Pesedjet.Client.UI.Models.DialogParameters;
+using Pesedjet.Server.Contracts.DTO;
 
 namespace Pesedjet.Client.UI.ViewModels.Dialogs;
 

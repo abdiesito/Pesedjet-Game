@@ -2,19 +2,17 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Pesedjet.Client.Networking.Proxies;
 using Pesedjet.Client.Networking.Proxies.Interfaces;
 using Pesedjet.Client.Networking.Results;
 using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Navigation;
 using Pesedjet.Client.UI.Utilities.Validation;
-using Pesedjet.Server.Contracts.DTOs;
 using Pesedjet.Client.UI.Utilities.Threading;
 using Pesedjet.Server.Contracts.Faults;
 using Pesedjet.Client.UI.Models.Account;
+using Pesedjet.Server.Contracts.DTO;
 
 namespace Pesedjet.Client.UI.ViewModels;
 
@@ -228,12 +226,12 @@ public partial class RegisterAccountViewModel : ViewModelBase
         if (!IsBusy && ValidateFields())
         {
             IsBusy = true;
-            UserRegisterRequest request = CreateRegisterRequest();
+            UserRegistration userRegistration = BuildUserRegistration();
 
-            BackgroundJob<UserRegisterRequest, ClientResult<bool>> job = new()
+            BackgroundJob<UserRegistration, ClientResult<bool>> job = new()
             {
                 Work = _accountClient.RegisterAccount,
-                State = request,
+                State = userRegistration,
                 OnCompleted = OnRegisterCompleted,
                 OnFailed = OnRegisterFailed
             };
@@ -242,12 +240,12 @@ public partial class RegisterAccountViewModel : ViewModelBase
         }
     }
 
-    private void OnRegisterCompleted(ClientResult<bool> result, UserRegisterRequest request)
+    private void OnRegisterCompleted(ClientResult<bool> result, UserRegistration request)
     {
         FinishRegistration(result);
     }
 
-    private void OnRegisterFailed(Exception error, UserRegisterRequest request)
+    private void OnRegisterFailed(Exception error, UserRegistration request)
     {
         FinishRegistration(ClientResult<bool>.TechnicalFailure(FailureKind.Unexpected));
     }
@@ -265,11 +263,11 @@ public partial class RegisterAccountViewModel : ViewModelBase
         _navigator.GoBack();
     }
 
-    private UserRegisterRequest CreateRegisterRequest()
+    private UserRegistration BuildUserRegistration()
     {
         TryParseBirthDate(out DateOnly birthDate);
 
-        return new UserRegisterRequest
+        return new UserRegistration
         {
             FullName = FullName,
             Username = Username,

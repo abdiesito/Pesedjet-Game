@@ -1,5 +1,5 @@
 using System.ServiceModel;
-using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.DTO;
 
 namespace Pesedjet.Server.Contracts.Interfaces
 {
@@ -8,7 +8,7 @@ namespace Pesedjet.Server.Contracts.Interfaces
     {
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]
-        bool RegisterAccount(UserRegisterRequest request);
+        bool RegisterAccount(UserRegistration request);
 
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]
@@ -20,10 +20,10 @@ namespace Pesedjet.Server.Contracts.Interfaces
 
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]
-        bool ResetPassword(ResetPasswordRequest request);
+        bool ResetPassword(PasswordReset request);
 
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]
-        bool ChangePassword(ChangePasswordRequest request);
+        bool ChangePassword(PasswordUpdate update);
     }
 }

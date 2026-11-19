@@ -1,9 +1,9 @@
 using System.Runtime.Serialization;
 
-namespace Pesedjet.Server.Contracts.DTOs;
+namespace Pesedjet.Server.Contracts.DTO;
 
 [DataContract]
-public class LobbyInvitationRequest
+public class LobbyInvitation
 {
     [DataMember]
     public Guid SenderId { get; set; }

@@ -1,5 +1,5 @@
 using System.ServiceModel;
-using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.DTO;
 
 namespace Pesedjet.Server.Contracts.Interfaces
 {
@@ -8,7 +8,7 @@ namespace Pesedjet.Server.Contracts.Interfaces
     {
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]
-        UserSession Login(UserLoginRequest request);
+        UserSession Login(LoginCredentials credentials);
 
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]

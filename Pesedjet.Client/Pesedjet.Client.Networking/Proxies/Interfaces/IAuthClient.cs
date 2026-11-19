@@ -1,11 +1,11 @@
 using Pesedjet.Client.Networking.Results;
-using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.DTO;
 
 namespace Pesedjet.Client.Networking.Proxies.Interfaces;
 
 public interface IAuthClient
 {
-    ClientResult<UserSession> Login(UserLoginRequest request);
+    ClientResult<UserSession> Login(LoginCredentials loginCredentials);
 
     ClientResult<UserSession> ResumeSession(string rememberToken);
 

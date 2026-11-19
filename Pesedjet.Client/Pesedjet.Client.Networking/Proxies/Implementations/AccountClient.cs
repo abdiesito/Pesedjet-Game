@@ -1,6 +1,6 @@
 using Pesedjet.Client.Networking.Proxies.Interfaces;
 using Pesedjet.Client.Networking.Results;
-using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.DTO;
 using Pesedjet.Server.Contracts.Endpoints;
 using Pesedjet.Server.Contracts.Interfaces;
 
@@ -15,15 +15,15 @@ public sealed class AccountClient : IAccountClient
         _serviceCaller = serviceCaller;
     }
 
-    public ClientResult<bool> RegisterAccount(UserRegisterRequest request)
+    public ClientResult<bool> RegisterAccount(UserRegistration request)
     {
-        return _serviceCaller.Call<IAccountService, UserRegisterRequest, bool>(
+        return _serviceCaller.Call<IAccountService, UserRegistration, bool>(
             ServiceEndpoints.AccountServiceAddress,
             RegisterAccountOperation,
             request);
     }
 
-    private static bool RegisterAccountOperation(IAccountService channel, UserRegisterRequest request)
+    private static bool RegisterAccountOperation(IAccountService channel, UserRegistration request)
     {
         return channel.RegisterAccount(request);
     }

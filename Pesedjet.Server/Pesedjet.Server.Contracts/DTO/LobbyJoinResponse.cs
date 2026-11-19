@@ -1,10 +1,8 @@
 #nullable enable
 
-using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Pesedjet.Server.Contracts.DTOs;
+namespace Pesedjet.Server.Contracts.DTO;
 
 [DataContract]
 public class LobbyJoinResponse

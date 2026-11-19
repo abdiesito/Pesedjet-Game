@@ -1,7 +1,8 @@
+using Pesedjet.Server.Contracts.DTO;
+
 namespace Pesedjet.Server.Contracts.Interfaces;
 
 using System.ServiceModel;
-using Pesedjet.Server.Contracts.DTOs;
 
 [ServiceContract]
 public interface IIdentityService

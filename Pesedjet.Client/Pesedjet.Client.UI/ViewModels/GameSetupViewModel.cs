@@ -10,7 +10,6 @@ using Pesedjet.Client.UI.Utilities.Localization;
 using Pesedjet.Client.UI.Utilities.Navigation;
 using Pesedjet.Client.UI.Utilities.Lobbies;
 using Pesedjet.Client.UI.Utilities.Session;
-using Pesedjet.Server.Contracts.DTOs;
 using Pesedjet.Client.UI.Utilities.Threading;
 using Pesedjet.Client.UI.ViewModels.Dependencies;
 using Pesedjet.Client.UI.Models.Lobbies;

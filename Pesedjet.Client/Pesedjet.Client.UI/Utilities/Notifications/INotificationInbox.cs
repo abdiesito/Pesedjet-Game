@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using System;
 using Pesedjet.Client.UI.Models.Social;
-using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.DTO;
 
 namespace Pesedjet.Client.UI.Utilities.Notifications;
 

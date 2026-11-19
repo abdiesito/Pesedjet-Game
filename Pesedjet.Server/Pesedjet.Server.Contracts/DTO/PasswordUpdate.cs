@@ -1,9 +1,9 @@
 using System.Runtime.Serialization;
 
-namespace Pesedjet.Server.Contracts.DTOs
+namespace Pesedjet.Server.Contracts.DTO
 {
     [DataContract]
-    public class ChangePasswordRequest
+    public class PasswordUpdate
     {
         [DataMember] 
         public string Username { get; set; } = string.Empty;

@@ -1,7 +1,5 @@
-#nullable enable
-
 using Pesedjet.Server.Contracts.Callbacks;
-using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.DTO;
 
 namespace Pesedjet.Server.Matchmaking.Lobbies;
 

@@ -1,6 +1,6 @@
 using Pesedjet.Client.Networking.Proxies.Interfaces;
 using Pesedjet.Client.Networking.Results;
-using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.DTO;
 using Pesedjet.Server.Contracts.Endpoints;
 using Pesedjet.Server.Contracts.Interfaces;
 
@@ -23,12 +23,12 @@ public sealed class LobbyInvitationClient : ILobbyInvitationClient
             request);
     }
 
-    public ClientResult<List<Guid>> SendLobbyInvitations(LobbyInvitationRequest request)
+    public ClientResult<List<Guid>> SendLobbyInvitations(LobbyInvitation lobbyInvitation)
     {
-        return _serviceCaller.Call<ILobbyInvitationService, LobbyInvitationRequest, List<Guid>>(
+        return _serviceCaller.Call<ILobbyInvitationService, LobbyInvitation, List<Guid>>(
             ServiceEndpoints.LobbyInvitationServiceAddress,
             SendLobbyInvitationsOperation,
-            request);
+            lobbyInvitation);
     }
 
     public ClientResult<List<LobbyInvitationEntry>> GetPendingLobbyInvitations(Guid playerId)
@@ -56,9 +56,9 @@ public sealed class LobbyInvitationClient : ILobbyInvitationClient
 
     private static List<Guid> SendLobbyInvitationsOperation(
         ILobbyInvitationService channel,
-        LobbyInvitationRequest request)
+        LobbyInvitation lobbyInvitation)
     {
-        return channel.SendLobbyInvitations(request);
+        return channel.SendLobbyInvitations(lobbyInvitation);
     }
 
     private static List<LobbyInvitationEntry> GetPendingLobbyInvitationsOperation(

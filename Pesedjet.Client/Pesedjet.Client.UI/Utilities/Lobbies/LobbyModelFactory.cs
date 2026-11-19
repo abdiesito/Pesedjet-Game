@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Pesedjet.Client.UI.Utilities.Session;
-using Pesedjet.Server.Contracts.DTOs;
 using LobbyMember = Pesedjet.Client.UI.Models.Lobbies.LobbyMember;
 using Pesedjet.Client.UI.Models.Common;
 using Pesedjet.Client.UI.Models.Lobbies;
+using Pesedjet.Server.Contracts.DTO;
 
 namespace Pesedjet.Client.UI.Utilities.Lobbies;
 
@@ -12,9 +12,9 @@ public static class LobbyModelFactory
 {
     private const string JoinedNoticeKey = "Lobby.JoinedNotice";
 
-    public static Server.Contracts.DTOs.LobbyMember CreateLocalMember(IPlayerSession playerSession)
+    public static Server.Contracts.DTO.LobbyMember CreateLocalMember(IPlayerSession playerSession)
     {
-        Server.Contracts.DTOs.LobbyMember member = new()
+        Server.Contracts.DTO.LobbyMember member = new()
         {
             PlayerId = playerSession.PlayerId,
             Username = playerSession.GuestAlias ?? playerSession.CurrentPlayer?.Username ?? string.Empty,
@@ -28,7 +28,7 @@ public static class LobbyModelFactory
     {
         LobbyVisibility visibility = request.IsPublic ? LobbyVisibility.Public : LobbyVisibility.Private;
 
-        Server.Contracts.DTOs.LobbyMember local = CreateLocalMember(playerSession);
+        Server.Contracts.DTO.LobbyMember local = CreateLocalMember(playerSession);
         List<LobbyMember> members = [CreateMember(local, playerSession.CurrentPlayer?.AvatarId, true)];
         List<LobbyChatEntry> chat = [];
 
@@ -37,10 +37,10 @@ public static class LobbyModelFactory
 
     public static LobbySnapshot CreateJoinedLobby(LobbyJoinResponse response, IPlayerSession playerSession)
     {
-        Server.Contracts.DTOs.LobbyMember local = CreateLocalMember(playerSession);
+        Server.Contracts.DTO.LobbyMember local = CreateLocalMember(playerSession);
         List<LobbyMember> members = new();
 
-        foreach (Server.Contracts.DTOs.LobbyMember existing in response.ExistingMembers)
+        foreach (Server.Contracts.DTO.LobbyMember existing in response.ExistingMembers)
         {
             members.Add(CreateMember(existing, null, existing.PlayerId == response.HostPlayerId));
         }
@@ -54,7 +54,7 @@ public static class LobbyModelFactory
         return new LobbySnapshot(response.LobbyCode, response.MaxPlayers, visibility, isHost, members, chat);
     }
 
-    public static LobbyMember CreateMember(Server.Contracts.DTOs.LobbyMember member, int? avatarId, bool isHost)
+    public static LobbyMember CreateMember(Server.Contracts.DTO.LobbyMember member, int? avatarId, bool isHost)
     {
         return new LobbyMember(member.PlayerId, member.Username, avatarId, isHost);
     }

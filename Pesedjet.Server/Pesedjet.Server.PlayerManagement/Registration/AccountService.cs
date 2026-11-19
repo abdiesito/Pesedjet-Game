@@ -1,5 +1,5 @@
 using CoreWCF;
-using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.DTO;
 using Pesedjet.Server.Contracts.Faults;
 using Pesedjet.Server.Contracts.Interfaces;
 using Pesedjet.Server.CrossCutting.Security;
@@ -26,7 +26,7 @@ public class AccountService : IAccountService
         _timeProvider = timeProvider;
     }
 
-    public bool RegisterAccount(UserRegisterRequest request)
+    public bool RegisterAccount(UserRegistration request)
     {
         bool isCreated = false;
 
@@ -73,7 +73,7 @@ public class AccountService : IAccountService
         return isProcessed;
     }
 
-    public bool ResetPassword(ResetPasswordRequest request)
+    public bool ResetPassword(PasswordReset request)
     {
         bool isResetSuccessful = false;
 
@@ -100,7 +100,7 @@ public class AccountService : IAccountService
         return isResetSuccessful;
     }
 
-    public bool ChangePassword(ChangePasswordRequest request)
+    public bool ChangePassword(PasswordUpdate request)
     {
         bool isChanged = false;
 
@@ -134,7 +134,7 @@ public class AccountService : IAccountService
         return new FaultException<ServiceFault>(fault, new FaultReason(errorCode));
     }
 
-    private void EnsureRequestIsValid(UserRegisterRequest request)
+    private void EnsureRequestIsValid(UserRegistration request)
     {
         DateOnly today = DateOnly.FromDateTime(_timeProvider.GetLocalNow().DateTime);
         DateOnly birthDate = DateOnly.FromDateTime(request.BirthDate);
@@ -151,7 +151,7 @@ public class AccountService : IAccountService
         }
     }
 
-    private void EnsureAccountIsAvailable(UserRegisterRequest request)
+    private void EnsureAccountIsAvailable(UserRegistration request)
     {
         Player? playerWithUsername = _playerRepository.GetPlayerByUsername(request.Username);
 
@@ -170,7 +170,7 @@ public class AccountService : IAccountService
         }
     }
 
-    private Player CreatePlayer(UserRegisterRequest request)
+    private Player CreatePlayer(UserRegistration request)
     {
         Guid playerId = Guid.NewGuid();
 

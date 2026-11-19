@@ -1,9 +1,9 @@
 using System.Runtime.Serialization;
 
-namespace Pesedjet.Server.Contracts.DTOs;
+namespace Pesedjet.Server.Contracts.DTO;
 
 [DataContract]
-public class UserRegisterRequest
+public class UserRegistration
 {
     [DataMember]
     public string FullName { get; set; } = string.Empty;
