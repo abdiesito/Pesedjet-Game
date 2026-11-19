@@ -73,7 +73,7 @@ public class AccountService : IAccountService
         return isProcessed;
     }
 
-    public bool ResetPassword(ResetPasswordRequest request)
+    public bool ResetPassword(PasswordReset request)
     {
         bool isResetSuccessful = false;
 

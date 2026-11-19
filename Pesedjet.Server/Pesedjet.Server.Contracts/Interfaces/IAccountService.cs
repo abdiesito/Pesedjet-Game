@@ -20,7 +20,7 @@ namespace Pesedjet.Server.Contracts.Interfaces
 
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]
-        bool ResetPassword(ResetPasswordRequest request);
+        bool ResetPassword(PasswordReset request);
 
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]
