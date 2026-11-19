@@ -100,7 +100,7 @@ public class AccountService : IAccountService
         return isResetSuccessful;
     }
 
-    public bool ChangePassword(PasswordData request)
+    public bool ChangePassword(PasswordUpdate request)
     {
         bool isChanged = false;
 

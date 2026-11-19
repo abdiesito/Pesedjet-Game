@@ -24,6 +24,6 @@ namespace Pesedjet.Server.Contracts.Interfaces
 
         [OperationContract]
         [FaultContract(typeof(ServiceFault))]
-        bool ChangePassword(PasswordData data);
+        bool ChangePassword(PasswordUpdate update);
     }
 }

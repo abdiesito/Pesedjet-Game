@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 namespace Pesedjet.Server.Contracts.DTO
 {
     [DataContract]
-    public class PasswordData
+    public class PasswordUpdate
     {
         [DataMember] 
         public string Username { get; set; } = string.Empty;
