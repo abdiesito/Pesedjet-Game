@@ -1,5 +1,5 @@
 using CoreWCF;
-using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.DTO;
 using Pesedjet.Server.Contracts.Faults;
 using Pesedjet.Server.Contracts.Interfaces;
 using Pesedjet.Server.CrossCutting.Security;
@@ -100,7 +100,7 @@ public class AccountService : IAccountService
         return isResetSuccessful;
     }
 
-    public bool ChangePassword(ChangePasswordRequest request)
+    public bool ChangePassword(PasswordData request)
     {
         bool isChanged = false;
 

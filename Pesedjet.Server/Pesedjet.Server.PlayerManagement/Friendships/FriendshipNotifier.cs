@@ -2,7 +2,7 @@ using Pesedjet.Server.Contracts.Internal;
 using System.Collections.Concurrent;
 using CoreWCF;
 using Pesedjet.Server.Contracts.Callbacks;
-using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.DTO;
 
 namespace Pesedjet.Server.PlayerManagement.Friendships;
 

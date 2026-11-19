@@ -2,7 +2,7 @@ using Pesedjet.Server.Contracts.Internal;
 using System.Security.Cryptography;
 using CoreWCF;
 using Pesedjet.Server.Contracts.Callbacks;
-using Pesedjet.Server.Contracts.DTOs;
+using Pesedjet.Server.Contracts.DTO;
 using Pesedjet.Server.Contracts.Faults;
 using Pesedjet.Server.Contracts.Interfaces;
 using Pesedjet.Server.Matchmaking.Lobbies;
